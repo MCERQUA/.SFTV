@@ -33,23 +33,39 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
+  const [showVideo, setShowVideo] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    if (videoRef.current && item.videoPath) {
-      // Set the current time to get a thumbnail
-      videoRef.current.currentTime = 0.1
+    // Detect mobile devices
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
-      const handleLoadedData = () => {
+  useEffect(() => {
+    if (videoRef.current && item.videoPath && showVideo) {
+      const handleLoadedMetadata = () => {
         setIsLoaded(true)
       }
 
-      videoRef.current.addEventListener('loadeddata', handleLoadedData)
+      const handleError = () => {
+        console.error('Video failed to load:', item.videoPath)
+        setShowVideo(false)
+      }
+
+      videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata)
+      videoRef.current.addEventListener('error', handleError)
 
       return () => {
-        videoRef.current?.removeEventListener('loadeddata', handleLoadedData)
+        videoRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata)
+        videoRef.current?.removeEventListener('error', handleError)
       }
     }
-  }, [item.videoPath])
+  }, [item.videoPath, showVideo])
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -62,6 +78,23 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const handleExpand = (e: React.MouseEvent) => {
     e.stopPropagation()
     onExpand()
+  }
+
+  const handleInteraction = () => {
+    if (item.videoPath && !showVideo) {
+      setShowVideo(true)
+    }
+    if (videoRef.current && showVideo && !isMobile) {
+      videoRef.current.play().catch(() => {})
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    if (videoRef.current && !isMobile) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
   }
 
   if (!item.videoPath) {
@@ -78,24 +111,33 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
     <>
       <div
         className="absolute inset-0"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => {
+          setIsHovered(true)
+          handleInteraction()
+        }}
+        onMouseLeave={handleMouseLeave}
+        onClick={isMobile ? handleInteraction : undefined}
       >
-        <video
-          ref={videoRef}
-          className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
-          muted={isMuted}
-          loop
-          playsInline
-          preload="auto"
-          onMouseEnter={(e) => e.currentTarget.play()}
-          onMouseLeave={(e) => {
-            e.currentTarget.pause()
-            e.currentTarget.currentTime = 0.1
-          }}
-        >
-          <source src={item.videoPath} type="video/mp4" />
-        </video>
+        {/* Always show thumbnail as fallback */}
+        <img
+          src={item.thumbnail || "/placeholder.svg"}
+          alt={item.title}
+          className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`}
+        />
+
+        {showVideo && (
+          <video
+            ref={videoRef}
+            className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
+            muted={isMuted}
+            loop
+            playsInline
+            preload={isMobile ? "metadata" : "auto"}
+            poster={item.thumbnail}
+          >
+            <source src={item.videoPath} type="video/mp4" />
+          </video>
+        )}
 
         {isHovered && (
           <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
@@ -120,8 +162,10 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
           </div>
         )}
       </div>
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-muted animate-pulse" />
+      {showVideo && !isLoaded && (
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+          <div className="h-8 w-8 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+        </div>
       )}
     </>
   )

@@ -23,20 +23,32 @@ const videoPlaylist = [
 ]
 
 export function LiveHero() {
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [userInteracted, setUserInteracted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     if (videoRef.current) {
       if (isPlaying) {
-        videoRef.current.play()
+        videoRef.current.play().catch((error) => {
+          console.log('Auto-play was prevented:', error)
+          setIsPlaying(false)
+        })
       } else {
         videoRef.current.pause()
       }
     }
   }, [isPlaying])
+
+  useEffect(() => {
+    // Start playing on first user interaction if not already playing
+    if (userInteracted && !isPlaying && isVideoLoaded) {
+      setIsPlaying(true)
+    }
+  }, [userInteracted, isVideoLoaded])
 
   useEffect(() => {
     const video = videoRef.current
@@ -55,12 +67,27 @@ export function LiveHero() {
 
   useEffect(() => {
     if (videoRef.current) {
+      setIsVideoLoaded(false)
       videoRef.current.load()
-      if (isPlaying) {
-        videoRef.current.play()
+
+      const handleCanPlay = () => {
+        setIsVideoLoaded(true)
+        if (userInteracted && isPlaying) {
+          videoRef.current?.play().catch(() => {})
+        }
+      }
+
+      videoRef.current.addEventListener('canplay', handleCanPlay)
+      return () => {
+        videoRef.current?.removeEventListener('canplay', handleCanPlay)
       }
     }
-  }, [currentVideoIndex, isPlaying])
+  }, [currentVideoIndex])
+
+  const handlePlayClick = () => {
+    setUserInteracted(true)
+    setIsPlaying(!isPlaying)
+  }
 
   const toggleFullscreen = () => {
     if (videoRef.current) {
@@ -83,16 +110,25 @@ export function LiveHero() {
     <section className="relative h-[70vh] min-h-[500px] w-full overflow-hidden bg-card">
       {/* Video background */}
       <div className="absolute inset-0 bg-gradient-to-br from-muted/50 to-background">
+        {/* Fallback gradient for mobile/loading state */}
+        <div className={`absolute inset-0 bg-gradient-to-br from-orange-600/20 via-blue-600/20 to-purple-600/20 ${isVideoLoaded && isPlaying ? 'opacity-0' : ''} transition-opacity duration-500`} />
+
         <video
           ref={videoRef}
-          className="h-full w-full object-cover opacity-60"
-          autoPlay
+          className={`h-full w-full object-cover opacity-60 ${!isVideoLoaded ? 'invisible' : ''}`}
           muted={isMuted}
           playsInline
-          poster={`${videoPlaylist[currentVideoIndex]}#t=0.1`}
+          preload="metadata"
         >
           <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
         </video>
+
+        {/* Loading indicator */}
+        {!isVideoLoaded && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="h-12 w-12 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+          </div>
+        )}
       </div>
 
       {/* Overlay content */}
@@ -110,7 +146,16 @@ export function LiveHero() {
               Entertainment for the Spray Foam Industry
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-4">
-              <Button size="lg" className="gap-2">
+              <Button
+                size="lg"
+                className="gap-2"
+                onClick={() => {
+                  setUserInteracted(true)
+                  if (isVideoLoaded) {
+                    setIsPlaying(true)
+                  }
+                }}
+              >
                 <Play className="h-5 w-5" />
                 Watch Live
               </Button>
@@ -128,7 +173,7 @@ export function LiveHero() {
           size="icon"
           variant="secondary"
           className="h-10 w-10 bg-card/80 backdrop-blur"
-          onClick={() => setIsPlaying(!isPlaying)}
+          onClick={handlePlayClick}
         >
           {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
           <span className="sr-only">{isPlaying ? "Pause" : "Play"}</span>
