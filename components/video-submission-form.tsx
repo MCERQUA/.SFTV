@@ -62,10 +62,13 @@ export function VideoSubmissionForm() {
         id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }
 
-      // Use Netlify Functions endpoint on production
-      const endpoint = window.location.hostname.includes('netlify')
+      // Use Netlify Functions endpoint on production (custom domain or Netlify)
+      const isProduction = !window.location.hostname.includes('localhost')
+      const endpoint = isProduction
         ? "/.netlify/functions/submissions"
         : "/api/submissions"
+
+      console.log('Using endpoint:', endpoint, 'Production:', isProduction)
 
       const response = await fetch(endpoint, {
         method: "POST",

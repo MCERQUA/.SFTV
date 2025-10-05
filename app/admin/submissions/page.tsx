@@ -37,8 +37,9 @@ export default function AdminSubmissionsPage() {
   const fetchSubmissions = async () => {
     try {
       setLoading(true)
-      // Use Netlify Functions endpoint on production
-      const endpoint = window.location.hostname.includes('netlify')
+      // Use Netlify Functions endpoint on production (custom domain or Netlify)
+      const isProduction = !window.location.hostname.includes('localhost')
+      const endpoint = isProduction
         ? "/.netlify/functions/submissions"
         : "/api/submissions"
 
@@ -56,8 +57,9 @@ export default function AdminSubmissionsPage() {
   const updateSubmissionStatus = async (id: string, status: "approved" | "rejected") => {
     setProcessingId(id)
     try {
-      // Use Netlify Functions endpoint on production
-      const endpoint = window.location.hostname.includes('netlify')
+      // Use Netlify Functions endpoint on production (custom domain or Netlify)
+      const isProduction = !window.location.hostname.includes('localhost')
+      const endpoint = isProduction
         ? "/.netlify/functions/submissions"
         : "/api/submissions"
 
