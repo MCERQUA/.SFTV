@@ -37,7 +37,12 @@ export default function AdminSubmissionsPage() {
   const fetchSubmissions = async () => {
     try {
       setLoading(true)
-      const response = await fetch("/api/submissions")
+      // Use Netlify Functions endpoint on production
+      const endpoint = window.location.hostname.includes('netlify')
+        ? "/.netlify/functions/submissions"
+        : "/api/submissions"
+
+      const response = await fetch(endpoint)
       if (!response.ok) throw new Error("Failed to fetch")
       const data = await response.json()
       setSubmissions(data)
@@ -51,7 +56,12 @@ export default function AdminSubmissionsPage() {
   const updateSubmissionStatus = async (id: string, status: "approved" | "rejected") => {
     setProcessingId(id)
     try {
-      const response = await fetch("/api/submissions", {
+      // Use Netlify Functions endpoint on production
+      const endpoint = window.location.hostname.includes('netlify')
+        ? "/.netlify/functions/submissions"
+        : "/api/submissions"
+
+      const response = await fetch(endpoint, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

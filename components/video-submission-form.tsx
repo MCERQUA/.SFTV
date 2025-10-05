@@ -62,7 +62,12 @@ export function VideoSubmissionForm() {
         id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }
 
-      const response = await fetch("/api/submissions", {
+      // Use Netlify Functions endpoint on production
+      const endpoint = window.location.hostname.includes('netlify')
+        ? "/.netlify/functions/submissions"
+        : "/api/submissions"
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submission)
