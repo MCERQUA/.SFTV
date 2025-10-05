@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin } from "lucide-react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 interface CarouselItem {
   id: number
@@ -25,6 +25,61 @@ interface ContentCarouselProps {
   title: string
   items: CarouselItem[]
   comingSoon?: boolean
+}
+
+function VideoCard({ item }: { item: CarouselItem }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    if (videoRef.current && item.videoPath) {
+      // Set the current time to get a thumbnail
+      videoRef.current.currentTime = 0.1
+
+      const handleLoadedData = () => {
+        setIsLoaded(true)
+      }
+
+      videoRef.current.addEventListener('loadeddata', handleLoadedData)
+
+      return () => {
+        videoRef.current?.removeEventListener('loadeddata', handleLoadedData)
+      }
+    }
+  }, [item.videoPath])
+
+  if (!item.videoPath) {
+    return (
+      <img
+        src={item.thumbnail || "/placeholder.svg"}
+        alt={item.title}
+        className="h-full w-full object-cover transition-transform group-hover:scale-105"
+      />
+    )
+  }
+
+  return (
+    <>
+      <video
+        ref={videoRef}
+        className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        onMouseEnter={(e) => e.currentTarget.play()}
+        onMouseLeave={(e) => {
+          e.currentTarget.pause()
+          e.currentTarget.currentTime = 0.1
+        }}
+      >
+        <source src={item.videoPath} type="video/mp4" />
+      </video>
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-muted animate-pulse" />
+      )}
+    </>
+  )
 }
 
 export function ContentCarousel({ title, items, comingSoon = false }: ContentCarouselProps) {
@@ -88,31 +143,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               className="group overflow-hidden transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/20"
             >
               <div className="relative aspect-video overflow-hidden bg-muted">
-                {item.videoPath ? (
-                  <>
-                    <video
-                      className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      poster={item.thumbnail}
-                      onMouseEnter={(e) => e.currentTarget.play()}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.pause()
-                        e.currentTarget.currentTime = 0
-                      }}
-                    >
-                      <source src={item.videoPath} type="video/mp4" />
-                    </video>
-                  </>
-                ) : (
-                  <img
-                    src={item.thumbnail || "/placeholder.svg"}
-                    alt={item.title}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                  />
-                )}
+                <VideoCard item={item} />
                 {item.duration && (
                   <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-background/90 px-2 py-1 text-xs font-medium backdrop-blur">
                     <Clock className="h-3 w-3" />
