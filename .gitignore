@@ -1,0 +1,15 @@
+node_modules
+.next
+.out
+.vercel
+.env
+.env.local
+.env.*
+dist
+coverage
+.vscode
+.idea
+.DS_Store
+
+# pnpm store
+.pnpm-store
