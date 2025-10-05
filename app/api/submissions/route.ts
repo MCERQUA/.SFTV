@@ -1,39 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
-import { promises as fs } from "fs"
-import path from "path"
 import { VideoSubmission } from "@/lib/video-utils"
 
-const SUBMISSIONS_FILE = path.join(process.cwd(), "data", "submissions.json")
-
-async function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), "data")
-  try {
-    await fs.access(dataDir)
-  } catch {
-    await fs.mkdir(dataDir, { recursive: true })
-  }
-}
-
-async function getSubmissions(): Promise<VideoSubmission[]> {
-  try {
-    await ensureDataDir()
-    const data = await fs.readFile(SUBMISSIONS_FILE, "utf-8")
-    return JSON.parse(data)
-  } catch {
-    return []
-  }
-}
-
-async function saveSubmissions(submissions: VideoSubmission[]) {
-  await ensureDataDir()
-  await fs.writeFile(SUBMISSIONS_FILE, JSON.stringify(submissions, null, 2))
-}
+// In-memory storage for development/demo
+// In production, you'd use a database
+let inMemorySubmissions: VideoSubmission[] = []
 
 export async function GET() {
   try {
-    const submissions = await getSubmissions()
-    return NextResponse.json(submissions)
+    return NextResponse.json(inMemorySubmissions)
   } catch (error) {
+    console.error("Error in GET /api/submissions:", error)
     return NextResponse.json(
       { error: "Failed to fetch submissions" },
       { status: 500 }
@@ -43,26 +19,52 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const submission: VideoSubmission = await request.json()
+    const body = await request.json()
 
-    if (!submission.title || !submission.videoUrl || !submission.contactEmail) {
+    // Ensure we have all required fields
+    if (!body.title || !body.videoUrl || !body.contactEmail) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       )
     }
 
-    const submissions = await getSubmissions()
-    submissions.push(submission)
-    await saveSubmissions(submissions)
+    // Create submission object with all fields
+    const submission: VideoSubmission = {
+      id: body.id || `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      title: body.title,
+      description: body.description || "",
+      category: body.category || "",
+      creatorName: body.creatorName || "",
+      contactEmail: body.contactEmail,
+      videoUrl: body.videoUrl,
+      sourceType: body.sourceType || "other",
+      embedUrl: body.embedUrl,
+      thumbnailUrl: body.thumbnailUrl,
+      duration: body.duration,
+      socialMedia: {
+        twitter: body.twitter,
+        instagram: body.instagram,
+        website: body.website
+      },
+      additionalNotes: body.additionalNotes,
+      status: "pending",
+      submittedAt: body.submittedAt || new Date().toISOString()
+    }
+
+    // Add to in-memory storage
+    inMemorySubmissions.push(submission)
+
+    console.log("Submission saved:", submission.id)
 
     return NextResponse.json(
       { message: "Submission received", id: submission.id },
       { status: 201 }
     )
   } catch (error) {
+    console.error("Error in POST /api/submissions:", error)
     return NextResponse.json(
-      { error: "Failed to save submission" },
+      { error: "Failed to save submission", details: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     )
   }
@@ -79,8 +81,7 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const submissions = await getSubmissions()
-    const index = submissions.findIndex(s => s.id === id)
+    const index = inMemorySubmissions.findIndex(s => s.id === id)
 
     if (index === -1) {
       return NextResponse.json(
@@ -89,20 +90,21 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    submissions[index] = {
-      ...submissions[index],
+    inMemorySubmissions[index] = {
+      ...inMemorySubmissions[index],
       status,
       adminNotes,
       reviewedAt: new Date().toISOString()
     }
 
-    await saveSubmissions(submissions)
+    console.log("Submission updated:", id)
 
     return NextResponse.json(
-      { message: "Submission updated", submission: submissions[index] },
+      { message: "Submission updated", submission: inMemorySubmissions[index] },
       { status: 200 }
     )
   } catch (error) {
+    console.error("Error in PATCH /api/submissions:", error)
     return NextResponse.json(
       { error: "Failed to update submission" },
       { status: 500 }
