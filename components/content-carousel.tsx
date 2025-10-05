@@ -105,7 +105,7 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
               className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
               onClick={toggleMute}
             >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              {isMuted ? <VolumeX className="h-4 w-4 text-white" /> : <Volume2 className="h-4 w-4 text-white" />}
               <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
             </Button>
             <Button
@@ -114,7 +114,7 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
               className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
               onClick={handleExpand}
             >
-              <Maximize2 className="h-4 w-4" />
+              <Maximize2 className="h-4 w-4 text-white" />
               <span className="sr-only">Expand</span>
             </Button>
           </div>
