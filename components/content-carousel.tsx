@@ -2,8 +2,9 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin } from "lucide-react"
+import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, Maximize2 } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
+import { VideoModal } from "./video-modal"
 
 interface CarouselItem {
   id: number
@@ -27,9 +28,11 @@ interface ContentCarouselProps {
   comingSoon?: boolean
 }
 
-function VideoCard({ item }: { item: CarouselItem }) {
+function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     if (videoRef.current && item.videoPath) {
@@ -48,6 +51,19 @@ function VideoCard({ item }: { item: CarouselItem }) {
     }
   }, [item.videoPath])
 
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted
+      setIsMuted(!isMuted)
+    }
+  }
+
+  const handleExpand = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onExpand()
+  }
+
   if (!item.videoPath) {
     return (
       <img
@@ -60,21 +76,50 @@ function VideoCard({ item }: { item: CarouselItem }) {
 
   return (
     <>
-      <video
-        ref={videoRef}
-        className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
-        muted
-        loop
-        playsInline
-        preload="auto"
-        onMouseEnter={(e) => e.currentTarget.play()}
-        onMouseLeave={(e) => {
-          e.currentTarget.pause()
-          e.currentTarget.currentTime = 0.1
-        }}
+      <div
+        className="absolute inset-0"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <source src={item.videoPath} type="video/mp4" />
-      </video>
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
+          muted={isMuted}
+          loop
+          playsInline
+          preload="auto"
+          onMouseEnter={(e) => e.currentTarget.play()}
+          onMouseLeave={(e) => {
+            e.currentTarget.pause()
+            e.currentTarget.currentTime = 0.1
+          }}
+        >
+          <source src={item.videoPath} type="video/mp4" />
+        </video>
+
+        {isHovered && (
+          <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <Button
+              size="icon"
+              variant="secondary"
+              className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+              onClick={toggleMute}
+            >
+              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+              <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
+            </Button>
+            <Button
+              size="icon"
+              variant="secondary"
+              className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+              onClick={handleExpand}
+            >
+              <Maximize2 className="h-4 w-4" />
+              <span className="sr-only">Expand</span>
+            </Button>
+          </div>
+        )}
+      </div>
       {!isLoaded && (
         <div className="absolute inset-0 bg-muted animate-pulse" />
       )}
@@ -84,6 +129,7 @@ function VideoCard({ item }: { item: CarouselItem }) {
 
 export function ContentCarousel({ title, items, comingSoon = false }: ContentCarouselProps) {
   const [startIndex, setStartIndex] = useState(0)
+  const [modalVideo, setModalVideo] = useState<CarouselItem | null>(null)
 
   const handlePrev = () => {
     setStartIndex(Math.max(0, startIndex - 1))
@@ -143,7 +189,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               className="group overflow-hidden transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/20"
             >
               <div className="relative aspect-video overflow-hidden bg-muted">
-                <VideoCard item={item} />
+                <VideoCard item={item} onExpand={() => setModalVideo(item)} />
                 {item.duration && (
                   <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-background/90 px-2 py-1 text-xs font-medium backdrop-blur">
                     <Clock className="h-3 w-3" />
@@ -180,6 +226,15 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
         )}
         </div>
       </div>
+
+      {modalVideo && modalVideo.videoPath && (
+        <VideoModal
+          isOpen={true}
+          onClose={() => setModalVideo(null)}
+          videoPath={modalVideo.videoPath}
+          title={modalVideo.title}
+        />
+      )}
     </section>
   )
 }
