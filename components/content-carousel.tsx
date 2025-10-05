@@ -9,6 +9,7 @@ interface CarouselItem {
   id: number
   title: string
   thumbnail: string
+  videoPath?: string
   show?: string
   category?: string
   artist?: string
@@ -87,11 +88,30 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               className="group overflow-hidden transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/20"
             >
               <div className="relative aspect-video overflow-hidden bg-muted">
-                <img
-                  src={item.thumbnail || "/placeholder.svg"}
-                  alt={item.title}
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                />
+                {item.videoPath ? (
+                  <>
+                    <video
+                      className="absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105"
+                      muted
+                      loop
+                      playsInline
+                      poster={item.thumbnail}
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause()
+                        e.currentTarget.currentTime = 0
+                      }}
+                    >
+                      <source src={item.videoPath} type="video/mp4" />
+                    </video>
+                  </>
+                ) : (
+                  <img
+                    src={item.thumbnail || "/placeholder.svg"}
+                    alt={item.title}
+                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
+                  />
+                )}
                 {item.duration && (
                   <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded bg-background/90 px-2 py-1 text-xs font-medium backdrop-blur">
                     <Clock className="h-3 w-3" />
