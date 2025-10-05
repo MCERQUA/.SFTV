@@ -83,9 +83,12 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const handleInteraction = () => {
     if (item.videoPath && !showVideo) {
       setShowVideo(true)
-    }
-    if (videoRef.current && showVideo && !isMobile) {
-      videoRef.current.play().catch(() => {})
+      // Give time for video to load before playing
+      setTimeout(() => {
+        if (videoRef.current && !isMobile) {
+          videoRef.current.play().catch(() => {})
+        }
+      }, 100)
     }
   }
 
@@ -118,22 +121,25 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
         onMouseLeave={handleMouseLeave}
         onClick={isMobile ? handleInteraction : undefined}
       >
-        {/* Always show thumbnail as fallback */}
-        <img
-          src={item.thumbnail || "/placeholder.svg"}
-          alt={item.title}
-          className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`}
-        />
+        {/* Always show video poster or black background as fallback */}
+        {item.thumbnail ? (
+          <img
+            src={item.thumbnail}
+            alt={item.title}
+            className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`}
+          />
+        ) : (
+          <div className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`} />
+        )}
 
-        {showVideo && (
+        {showVideo && item.videoPath && (
           <video
             ref={videoRef}
             className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
             muted={isMuted}
             loop
             playsInline
-            preload={isMobile ? "metadata" : "auto"}
-            poster={item.thumbnail}
+            preload="metadata"
           >
             <source src={item.videoPath} type="video/mp4" />
           </video>
