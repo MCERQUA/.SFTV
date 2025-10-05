@@ -7,22 +7,22 @@ export function SchedulePreview() {
   const schedule = [
     {
       time: "2:00 PM",
-      title: "Foam Facts: Closed Cell Deep Dive",
+      title: "Livestream coming soon...",
       status: "live",
     },
     {
       time: "3:00 PM",
-      title: "Pro Tips: Attic Application Techniques",
+      title: "Livestream coming soon...",
       status: "upcoming",
     },
     {
       time: "4:00 PM",
-      title: "Gear Guide: Equipment Maintenance",
+      title: "Livestream coming soon...",
       status: "upcoming",
     },
     {
       time: "5:00 PM",
-      title: "On the Job: Commercial Project Tour",
+      title: "Livestream coming soon...",
       status: "upcoming",
     },
   ]
