@@ -13,3 +13,4 @@ coverage
 
 # pnpm store
 .pnpm-store
+# Ignore data directory\ndata/
