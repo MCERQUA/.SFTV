@@ -3,16 +3,55 @@
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Play, Pause, Volume2, Maximize } from "lucide-react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 export function LiveHero() {
   const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.play()
+      } else {
+        videoRef.current.pause()
+      }
+    }
+  }, [isPlaying])
+
+  const toggleFullscreen = () => {
+    if (videoRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen()
+      } else {
+        videoRef.current.requestFullscreen()
+      }
+    }
+  }
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted
+      setIsMuted(!isMuted)
+    }
+  }
 
   return (
     <section className="relative h-[70vh] min-h-[500px] w-full overflow-hidden bg-card">
-      {/* Video placeholder */}
+      {/* Video background */}
       <div className="absolute inset-0 bg-gradient-to-br from-muted/50 to-background">
-        <img src="/spray-foam-insulation-application-action-shot.jpg" alt="Live broadcast" className="h-full w-full object-cover opacity-60" />
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover opacity-60"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4#t=0.1"
+        >
+          <source src="/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Overlay content */}
@@ -53,11 +92,21 @@ export function LiveHero() {
           {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
           <span className="sr-only">{isPlaying ? "Pause" : "Play"}</span>
         </Button>
-        <Button size="icon" variant="secondary" className="h-10 w-10 bg-card/80 backdrop-blur">
-          <Volume2 className="h-4 w-4" />
-          <span className="sr-only">Volume</span>
+        <Button
+          size="icon"
+          variant="secondary"
+          className="h-10 w-10 bg-card/80 backdrop-blur"
+          onClick={toggleMute}
+        >
+          <Volume2 className={`h-4 w-4 ${isMuted ? 'opacity-50' : ''}`} />
+          <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
         </Button>
-        <Button size="icon" variant="secondary" className="h-10 w-10 bg-card/80 backdrop-blur">
+        <Button
+          size="icon"
+          variant="secondary"
+          className="h-10 w-10 bg-card/80 backdrop-blur"
+          onClick={toggleFullscreen}
+        >
           <Maximize className="h-4 w-4" />
           <span className="sr-only">Fullscreen</span>
         </Button>
