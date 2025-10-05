@@ -12,98 +12,148 @@ export default function HomePage() {
       <main>
         <LiveHero />
         <SchedulePreview />
-        <ContentCarousel title="Recent Episodes" items={recentEpisodes} />
-        <ContentCarousel title="Popular Shows" items={popularShows} />
+        <ContentCarousel title="Commercial Shorts" items={commercialShorts} />
+        <ContentCarousel title="Commercials Longer" items={commercialsLonger} />
+        <ContentCarousel title="Music Video Commercials" items={musicVideoCommercials} />
         <CTASection />
-        <ContentCarousel title="Upcoming Events" items={upcomingEvents} />
+        <ContentCarousel title="Funny Clips" items={funnyClips} />
+        <ContentCarousel title="Shows/Cartoons" items={showsCartoons} comingSoon={true} />
       </main>
       <Footer />
     </div>
   )
 }
 
-const recentEpisodes = [
+const commercialShorts = [
   {
     id: 1,
-    title: "Closed Cell vs Open Cell: The Ultimate Showdown",
-    show: "Foam Facts",
+    title: "Quick Foam Application Demo",
+    category: "Commercial Short",
     thumbnail: "/spray-foam-insulation-close-up.jpg",
-    duration: "24:15",
+    duration: "0:30",
   },
   {
     id: 2,
-    title: "Attic Insulation Best Practices",
-    show: "Pro Tips",
+    title: "Energy Savings in 60 Seconds",
+    category: "Commercial Short",
     thumbnail: "/attic-insulation.png",
-    duration: "18:42",
+    duration: "0:45",
   },
   {
     id: 3,
-    title: "Equipment Maintenance 101",
-    show: "Gear Guide",
+    title: "Why Choose Spray Foam?",
+    category: "Commercial Short",
     thumbnail: "/spray-foam-equipment-maintenance.jpg",
-    duration: "31:20",
+    duration: "0:55",
   },
   {
     id: 4,
-    title: "Commercial Project Walkthrough",
-    show: "On the Job",
+    title: "Professional Installation Quick Look",
+    category: "Commercial Short",
     thumbnail: "/commercial-building-insulation.jpg",
-    duration: "45:10",
+    duration: "0:40",
   },
 ]
 
-const popularShows = [
+const commercialsLonger = [
   {
     id: 1,
-    title: "Foam Facts",
-    description: "Deep dives into spray foam science and chemistry",
+    title: "Complete Home Insulation Guide",
+    category: "Extended Commercial",
     thumbnail: "/spray-foam-science-laboratory.jpg",
-    episodes: 24,
+    duration: "3:45",
   },
   {
     id: 2,
-    title: "Pro Tips",
-    description: "Expert techniques from industry veterans",
+    title: "Commercial Building Case Study",
+    category: "Extended Commercial",
     thumbnail: "/professional-contractor-teaching.jpg",
-    episodes: 18,
+    duration: "5:20",
   },
   {
     id: 3,
-    title: "Gear Guide",
-    description: "Equipment reviews and maintenance tutorials",
+    title: "ROI of Spray Foam Insulation",
+    category: "Extended Commercial",
     thumbnail: "/spray-foam-equipment-tools.jpg",
-    episodes: 15,
+    duration: "4:15",
   },
   {
     id: 4,
-    title: "On the Job",
-    description: "Real project walkthroughs and case studies",
+    title: "Full Service Overview",
+    category: "Extended Commercial",
     thumbnail: "/construction-site-insulation-work.jpg",
-    episodes: 32,
+    duration: "6:30",
   },
 ]
 
-const upcomingEvents = [
+const musicVideoCommercials = [
   {
     id: 1,
-    title: "SprayFoam Expo 2025",
-    date: "March 15-17, 2025",
-    location: "Las Vegas, NV",
+    title: "Foam It Up - The Anthem",
+    artist: "SprayFoam Crew",
     thumbnail: "/trade-show-convention-center.jpg",
+    duration: "2:30",
   },
   {
     id: 2,
-    title: "Safety Certification Workshop",
-    date: "April 8, 2025",
-    location: "Online",
+    title: "Insulation Nation",
+    artist: "Industry Beats",
     thumbnail: "/safety-training-workshop.jpg",
+    duration: "3:15",
   },
   {
     id: 3,
-    title: "New Product Launch Livestream",
-    date: "April 22, 2025",
-    location: "Live on SprayFoam TV",
+    title: "Seal the Deal",
+    artist: "Foam Kings",
     thumbnail: "/product-launch-event.png",
+    duration: "2:45",
+  },
+]
+
+const funnyClips = [
+  {
+    id: 1,
+    title: "Foam Fails Compilation",
+    category: "Comedy",
+    thumbnail: "/spray-foam-insulation-close-up.jpg",
+    duration: "1:45",
+  },
+  {
+    id: 2,
+    title: "DIY Disasters: What Not to Do",
+    category: "Comedy",
+    thumbnail: "/attic-insulation.png",
+    duration: "2:20",
+  },
+  {
+    id: 3,
+    title: "Contractor Bloopers Reel",
+    category: "Comedy",
+    thumbnail: "/spray-foam-equipment-maintenance.jpg",
+    duration: "3:00",
+  },
+]
+
+const showsCartoons = [
+  {
+    id: 1,
+    title: "The Foam Rangers",
+    description: "Animated series coming soon",
+    thumbnail: "/commercial-building-insulation.jpg",
+    status: "Coming Soon",
+  },
+  {
+    id: 2,
+    title: "Insulation Adventures",
+    description: "Educational cartoon series",
+    thumbnail: "/spray-foam-science-laboratory.jpg",
+    status: "Coming Soon",
+  },
+  {
+    id: 3,
+    title: "SprayFoam TV Weekly",
+    description: "Weekly industry show",
+    thumbnail: "/professional-contractor-teaching.jpg",
+    status: "Coming Soon",
   },
 ]

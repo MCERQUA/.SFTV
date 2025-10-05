@@ -10,19 +10,23 @@ interface CarouselItem {
   title: string
   thumbnail: string
   show?: string
+  category?: string
+  artist?: string
   description?: string
   duration?: string
   episodes?: number
   date?: string
   location?: string
+  status?: string
 }
 
 interface ContentCarouselProps {
   title: string
   items: CarouselItem[]
+  comingSoon?: boolean
 }
 
-export function ContentCarousel({ title, items }: ContentCarouselProps) {
+export function ContentCarousel({ title, items, comingSoon = false }: ContentCarouselProps) {
   const [startIndex, setStartIndex] = useState(0)
 
   const handlePrev = () => {
@@ -50,7 +54,34 @@ export function ContentCarousel({ title, items }: ContentCarouselProps) {
           </div>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {items.slice(startIndex, startIndex + 4).map((item) => (
+          {comingSoon ? (
+            items.slice(startIndex, startIndex + 4).map((item) => (
+              <Card
+                key={item.id}
+                className="group overflow-hidden transition-all opacity-75"
+              >
+                <div className="relative aspect-video overflow-hidden bg-muted">
+                  <img
+                    src={item.thumbnail || "/placeholder.svg"}
+                    alt={item.title}
+                    className="h-full w-full object-cover opacity-50"
+                  />
+                  {item.status && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="rounded bg-background/90 px-4 py-2 text-lg font-bold backdrop-blur">
+                        {item.status}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <div className="p-4 space-y-2">
+                  <h3 className="font-semibold leading-tight text-pretty">{item.title}</h3>
+                  {item.description && <p className="text-sm text-muted-foreground text-pretty">{item.description}</p>}
+                </div>
+              </Card>
+            ))
+          ) : (
+            items.slice(startIndex, startIndex + 4).map((item) => (
             <Card
               key={item.id}
               className="group overflow-hidden transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/20"
@@ -75,6 +106,8 @@ export function ContentCarousel({ title, items }: ContentCarouselProps) {
               </div>
               <div className="p-4 space-y-2">
                 {item.show && <p className="text-xs font-medium text-primary">{item.show}</p>}
+                {item.category && <p className="text-xs font-medium text-primary">{item.category}</p>}
+                {item.artist && <p className="text-xs font-medium text-muted-foreground">by {item.artist}</p>}
                 <h3 className="font-semibold leading-tight text-pretty">{item.title}</h3>
                 {item.description && <p className="text-sm text-muted-foreground text-pretty">{item.description}</p>}
                 {item.date && (
@@ -91,7 +124,8 @@ export function ContentCarousel({ title, items }: ContentCarouselProps) {
                 )}
               </div>
             </Card>
-          ))}
+          ))
+        )}
         </div>
       </div>
     </section>
