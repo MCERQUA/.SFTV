@@ -104,10 +104,10 @@ export function LiveHero() {
               LIVE NOW
             </Badge>
             <h1 className="font-mono text-5xl font-bold leading-tight tracking-tight text-balance md:text-6xl lg:text-7xl">
-              FOAM FACTS: CLOSED CELL DEEP DIVE
+              SprayFoamTV
             </h1>
             <p className="text-lg text-muted-foreground text-pretty md:text-xl">
-              Join industry expert Mike Johnson as he breaks down the science behind closed cell spray foam insulation
+              Entertainment for the Spray Foam Industry
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-4">
               <Button size="lg" className="gap-2">
