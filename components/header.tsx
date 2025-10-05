@@ -32,18 +32,9 @@ export function Header() {
             >
               Events
             </Link>
-            <Link
-              href="/contractors"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Find a Contractor
-            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" className="hidden md:inline-flex bg-transparent" asChild>
-            <Link href="/submit">Submit Video</Link>
-          </Button>
           <Button size="sm" className="hidden md:inline-flex" asChild>
             <Link href="/sponsor">Sponsor Kit</Link>
           </Button>
