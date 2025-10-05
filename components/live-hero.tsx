@@ -5,9 +5,27 @@ import { Badge } from "@/components/ui/badge"
 import { Play, Pause, Volume2, Maximize } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 
+const videoPlaylist = [
+  "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
+  "/videos/commercial-shorts/Graco Fusion AP.mp4",
+  "/videos/commercial-shorts/duckcleaning-commerical.mp4",
+  "/videos/commercial-shorts/koolfoam-fly-south.mp4",
+  "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
+  "/videos/commercials-longer/EDI-Commerical.mp4",
+  "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
+  "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
+  "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
+  "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",
+  "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4",
+  "/videos/funny-clips/Breaking-Batts.mp4",
+  "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4",
+  "/videos/funny-clips/Insulated-chicken-brothers-cartoon.mp4"
+]
+
 export function LiveHero() {
   const [isPlaying, setIsPlaying] = useState(true)
   const [isMuted, setIsMuted] = useState(true)
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -19,6 +37,30 @@ export function LiveHero() {
       }
     }
   }, [isPlaying])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const handleVideoEnd = () => {
+      const nextIndex = (currentVideoIndex + 1) % videoPlaylist.length
+      setCurrentVideoIndex(nextIndex)
+    }
+
+    video.addEventListener('ended', handleVideoEnd)
+    return () => {
+      video.removeEventListener('ended', handleVideoEnd)
+    }
+  }, [currentVideoIndex])
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load()
+      if (isPlaying) {
+        videoRef.current.play()
+      }
+    }
+  }, [currentVideoIndex, isPlaying])
 
   const toggleFullscreen = () => {
     if (videoRef.current) {
@@ -45,12 +87,11 @@ export function LiveHero() {
           ref={videoRef}
           className="h-full w-full object-cover opacity-60"
           autoPlay
-          muted
-          loop
+          muted={isMuted}
           playsInline
-          poster="/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4#t=0.1"
+          poster={`${videoPlaylist[currentVideoIndex]}#t=0.1`}
         >
-          <source src="/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4" type="video/mp4" />
+          <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
         </video>
       </div>
 

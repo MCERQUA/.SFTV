@@ -128,3 +128,6 @@ The `components/ui/` directory contains base primitives. Modify carefully as the
 - Dark mode support (theme-provider.tsx is scaffolded but unused)
 - push whenever updates and changes are completed.
 - YOU ARE OPERATING ON A CLOUD VPS DO NOT TOUCH ANY PORTS, AND DO NOT DEPLOY TO LOCALHOST
+- DO NOT DEPLOY TO LOCAL HOST!!!
+- DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!# DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!
+- PUSH TO GITHUB AFTER CHANGES!!!
