@@ -41,11 +41,11 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" className="hidden md:inline-flex bg-transparent">
-            Submit Video
+          <Button variant="outline" size="sm" className="hidden md:inline-flex bg-transparent" asChild>
+            <Link href="/submit">Submit Video</Link>
           </Button>
-          <Button size="sm" className="hidden md:inline-flex">
-            Sponsor Kit
+          <Button size="sm" className="hidden md:inline-flex" asChild>
+            <Link href="/sponsor">Sponsor Kit</Link>
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
