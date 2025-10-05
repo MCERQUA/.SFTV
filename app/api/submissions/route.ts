@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from "next/server"
 import { VideoSubmission } from "@/lib/video-utils"
+import {
+  initDatabase,
+  getSubmissions,
+  createSubmission,
+  updateSubmissionStatus
+} from "@/lib/db"
 
-// In-memory storage for development/demo
-// In production, you'd use a database
-let inMemorySubmissions: VideoSubmission[] = []
+// Initialize database on first load
+initDatabase()
 
 export async function GET() {
   try {
-    return NextResponse.json(inMemorySubmissions)
+    const submissions = await getSubmissions()
+    return NextResponse.json(submissions)
   } catch (error) {
     console.error("Error in GET /api/submissions:", error)
     return NextResponse.json(
@@ -52,8 +58,12 @@ export async function POST(request: NextRequest) {
       submittedAt: body.submittedAt || new Date().toISOString()
     }
 
-    // Add to in-memory storage
-    inMemorySubmissions.push(submission)
+    // Save to database
+    const success = await createSubmission(submission)
+
+    if (!success) {
+      throw new Error("Failed to save submission to database")
+    }
 
     console.log("Submission saved:", submission.id)
 
@@ -81,26 +91,19 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    const index = inMemorySubmissions.findIndex(s => s.id === id)
+    const success = await updateSubmissionStatus(id, status, adminNotes)
 
-    if (index === -1) {
+    if (!success) {
       return NextResponse.json(
-        { error: "Submission not found" },
+        { error: "Submission not found or update failed" },
         { status: 404 }
       )
-    }
-
-    inMemorySubmissions[index] = {
-      ...inMemorySubmissions[index],
-      status,
-      adminNotes,
-      reviewedAt: new Date().toISOString()
     }
 
     console.log("Submission updated:", id)
 
     return NextResponse.json(
-      { message: "Submission updated", submission: inMemorySubmissions[index] },
+      { message: "Submission updated" },
       { status: 200 }
     )
   } catch (error) {

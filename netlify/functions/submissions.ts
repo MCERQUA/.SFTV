@@ -1,7 +1,47 @@
 import { Handler } from '@netlify/functions'
+import { Pool } from 'pg'
 
-// In-memory storage (resets on deploy)
-let submissions: any[] = []
+// Create connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+})
+
+// Initialize database table
+async function initDatabase() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS submissions (
+        id VARCHAR(255) PRIMARY KEY,
+        title VARCHAR(500) NOT NULL,
+        description TEXT,
+        category VARCHAR(100),
+        creator_name VARCHAR(255),
+        contact_email VARCHAR(255) NOT NULL,
+        video_url TEXT NOT NULL,
+        source_type VARCHAR(50),
+        embed_url TEXT,
+        thumbnail_url TEXT,
+        duration VARCHAR(100),
+        twitter VARCHAR(255),
+        instagram VARCHAR(255),
+        website TEXT,
+        additional_notes TEXT,
+        status VARCHAR(50) DEFAULT 'pending',
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        reviewed_at TIMESTAMP,
+        admin_notes TEXT
+      )
+    `)
+  } catch (error) {
+    console.error('Failed to initialize database:', error)
+  }
+}
+
+// Initialize on first load
+initDatabase()
 
 export const handler: Handler = async (event) => {
   const headers = {
@@ -21,10 +61,47 @@ export const handler: Handler = async (event) => {
 
   // GET - fetch all submissions
   if (event.httpMethod === 'GET') {
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify(submissions)
+    try {
+      const result = await pool.query(
+        'SELECT * FROM submissions ORDER BY submitted_at DESC'
+      )
+
+      const submissions = result.rows.map(row => ({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        category: row.category,
+        creatorName: row.creator_name,
+        contactEmail: row.contact_email,
+        videoUrl: row.video_url,
+        sourceType: row.source_type,
+        embedUrl: row.embed_url,
+        thumbnailUrl: row.thumbnail_url,
+        duration: row.duration,
+        socialMedia: {
+          twitter: row.twitter,
+          instagram: row.instagram,
+          website: row.website
+        },
+        additionalNotes: row.additional_notes,
+        status: row.status,
+        submittedAt: row.submitted_at,
+        reviewedAt: row.reviewed_at,
+        adminNotes: row.admin_notes
+      }))
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify(submissions)
+      }
+    } catch (error) {
+      console.error('Failed to get submissions:', error)
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({ error: 'Failed to fetch submissions' })
+      }
     }
   }
 
@@ -42,13 +119,52 @@ export const handler: Handler = async (event) => {
       }
 
       const submission = {
-        ...body,
         id: body.id || `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        title: body.title,
+        description: body.description || '',
+        category: body.category || '',
+        creatorName: body.creatorName || '',
+        contactEmail: body.contactEmail,
+        videoUrl: body.videoUrl,
+        sourceType: body.sourceType || 'other',
+        embedUrl: body.embedUrl,
+        thumbnailUrl: body.thumbnailUrl,
+        duration: body.duration,
+        twitter: body.twitter,
+        instagram: body.instagram,
+        website: body.website,
+        additionalNotes: body.additionalNotes,
         status: 'pending',
         submittedAt: body.submittedAt || new Date().toISOString()
       }
 
-      submissions.push(submission)
+      await pool.query(
+        `INSERT INTO submissions (
+          id, title, description, category, creator_name,
+          contact_email, video_url, source_type, embed_url,
+          thumbnail_url, duration, twitter, instagram, website,
+          additional_notes, status, submitted_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+        [
+          submission.id,
+          submission.title,
+          submission.description,
+          submission.category,
+          submission.creatorName,
+          submission.contactEmail,
+          submission.videoUrl,
+          submission.sourceType,
+          submission.embedUrl,
+          submission.thumbnailUrl,
+          submission.duration,
+          submission.twitter,
+          submission.instagram,
+          submission.website,
+          submission.additionalNotes,
+          submission.status,
+          submission.submittedAt
+        ]
+      )
 
       return {
         statusCode: 201,
@@ -56,6 +172,7 @@ export const handler: Handler = async (event) => {
         body: JSON.stringify({ message: 'Submission received', id: submission.id })
       }
     } catch (error) {
+      console.error('Failed to save submission:', error)
       return {
         statusCode: 500,
         headers,
@@ -78,31 +195,22 @@ export const handler: Handler = async (event) => {
         }
       }
 
-      const index = submissions.findIndex(s => s.id === id)
-      if (index === -1) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ error: 'Submission not found' })
-        }
-      }
-
-      submissions[index] = {
-        ...submissions[index],
-        status,
-        adminNotes,
-        reviewedAt: new Date().toISOString()
-      }
+      await pool.query(
+        `UPDATE submissions
+         SET status = $1, admin_notes = $2, reviewed_at = CURRENT_TIMESTAMP
+         WHERE id = $3`,
+        [status, adminNotes, id]
+      )
 
       return {
         statusCode: 200,
         headers,
         body: JSON.stringify({
-          message: 'Submission updated',
-          submission: submissions[index]
+          message: 'Submission updated'
         })
       }
     } catch (error) {
+      console.error('Failed to update submission:', error)
       return {
         statusCode: 500,
         headers,
