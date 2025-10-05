@@ -95,6 +95,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
                       muted
                       loop
                       playsInline
+                      preload="metadata"
                       poster={item.thumbnail}
                       onMouseEnter={(e) => e.currentTarget.play()}
                       onMouseLeave={(e) => {
