@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, Maximize2, Play } from "lucide-react"
+import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, Maximize2, Play, Eye } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { VideoModal } from "./video-modal"
 import { PlaceholderThumbnail } from "./create-placeholder-thumbnail"
@@ -36,6 +36,22 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const [isHovered, setIsHovered] = useState(false)
   const [videoThumbnail, setVideoThumbnail] = useState<string | null>(null)
   const [thumbnailError, setThumbnailError] = useState(false)
+  const [viewCount, setViewCount] = useState<number | null>(null)
+  const [hasTrackedView, setHasTrackedView] = useState(false)
+
+  useEffect(() => {
+    // Fetch view count for this video
+    if (item.videoPath) {
+      fetch(`/api/video-views?videoPath=${encodeURIComponent(item.videoPath)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.viewCount !== undefined) {
+            setViewCount(data.viewCount)
+          }
+        })
+        .catch(err => console.error('Failed to fetch view count:', err))
+    }
+  }, [item.videoPath])
 
   useEffect(() => {
     // Generate thumbnail from video if thumbnail doesn't exist or is invalid
@@ -68,6 +84,32 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
     if (videoRef.current && item.videoPath) {
       videoRef.current.play().catch(() => {})
       setIsPlaying(true)
+
+      // Track view after 3 seconds of play
+      if (!hasTrackedView) {
+        setTimeout(() => {
+          if (isPlaying && item.videoPath) {
+            trackVideoView(item.videoPath, item.title)
+            setHasTrackedView(true)
+          }
+        }, 3000)
+      }
+    }
+  }
+
+  const trackVideoView = async (videoPath: string, title: string) => {
+    try {
+      const response = await fetch('/api/video-views', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoPath, videoTitle: title })
+      })
+      const data = await response.json()
+      if (data.viewCount !== undefined) {
+        setViewCount(data.viewCount)
+      }
+    } catch (error) {
+      console.error('Failed to track view:', error)
     }
   }
 
@@ -135,6 +177,14 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
           <div className="h-12 w-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg transition-opacity group-hover:opacity-0">
             <Play className="h-6 w-6 text-gray-900 ml-0.5" />
           </div>
+        </div>
+      )}
+
+      {/* View count display */}
+      {viewCount !== null && viewCount > 0 && (
+        <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded bg-black/70 px-2 py-1 text-xs font-medium text-white backdrop-blur">
+          <Eye className="h-3 w-3" />
+          {viewCount.toLocaleString()} views
         </div>
       )}
 

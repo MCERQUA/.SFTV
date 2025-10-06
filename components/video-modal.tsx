@@ -20,6 +20,13 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
     if (isOpen && videoRef.current) {
       videoRef.current.play()
       setIsPlaying(true)
+
+      // Track view when modal opens
+      fetch('/api/video-views', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoPath, videoTitle: title })
+      }).catch(err => console.error('Failed to track modal view:', err))
     }
 
     return () => {
@@ -28,7 +35,7 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
         setIsPlaying(false)
       }
     }
-  }, [isOpen])
+  }, [isOpen, videoPath, title])
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

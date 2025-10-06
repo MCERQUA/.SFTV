@@ -35,6 +35,32 @@ export async function initDatabase() {
         admin_notes TEXT
       )
     `)
+
+    // Create video views tracking table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS video_views (
+        id SERIAL PRIMARY KEY,
+        video_path VARCHAR(500) NOT NULL,
+        video_title VARCHAR(500),
+        view_count INTEGER DEFAULT 0,
+        last_viewed TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(video_path)
+      )
+    `)
+
+    // Create individual view logs for analytics
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS view_logs (
+        id SERIAL PRIMARY KEY,
+        video_path VARCHAR(500) NOT NULL,
+        viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        session_id VARCHAR(255),
+        user_agent TEXT,
+        ip_hash VARCHAR(64)
+      )
+    `)
+
     console.log('Database initialized')
   } catch (error) {
     console.error('Failed to initialize database:', error)
@@ -171,5 +197,94 @@ export async function getSubmissionById(id: string): Promise<VideoSubmission | n
   } catch (error) {
     console.error('Failed to get submission by ID:', error)
     return null
+  }
+}
+
+// Track video view
+export async function trackVideoView(
+  videoPath: string,
+  videoTitle?: string,
+  sessionId?: string,
+  userAgent?: string,
+  ipHash?: string
+): Promise<boolean> {
+  try {
+    // Log individual view
+    await pool.query(
+      `INSERT INTO view_logs (video_path, session_id, user_agent, ip_hash)
+       VALUES ($1, $2, $3, $4)`,
+      [videoPath, sessionId, userAgent, ipHash]
+    )
+
+    // Update or insert video view count
+    await pool.query(
+      `INSERT INTO video_views (video_path, video_title, view_count, last_viewed)
+       VALUES ($1, $2, 1, CURRENT_TIMESTAMP)
+       ON CONFLICT (video_path)
+       DO UPDATE SET
+         view_count = video_views.view_count + 1,
+         last_viewed = CURRENT_TIMESTAMP,
+         video_title = COALESCE($2, video_views.video_title)`,
+      [videoPath, videoTitle]
+    )
+
+    return true
+  } catch (error) {
+    console.error('Failed to track video view:', error)
+    return false
+  }
+}
+
+// Get video view count
+export async function getVideoViewCount(videoPath: string): Promise<number> {
+  try {
+    const result = await pool.query(
+      'SELECT view_count FROM video_views WHERE video_path = $1',
+      [videoPath]
+    )
+
+    if (result.rows.length === 0) return 0
+    return result.rows[0].view_count || 0
+  } catch (error) {
+    console.error('Failed to get video view count:', error)
+    return 0
+  }
+}
+
+// Get all video views
+export async function getAllVideoViews(): Promise<{ [videoPath: string]: number }> {
+  try {
+    const result = await pool.query(
+      'SELECT video_path, view_count FROM video_views'
+    )
+
+    const viewCounts: { [videoPath: string]: number } = {}
+    result.rows.forEach(row => {
+      viewCounts[row.video_path] = row.view_count || 0
+    })
+
+    return viewCounts
+  } catch (error) {
+    console.error('Failed to get all video views:', error)
+    return {}
+  }
+}
+
+// Get top viewed videos
+export async function getTopViewedVideos(limit: number = 10): Promise<Array<{ videoPath: string, videoTitle: string, viewCount: number }>> {
+  try {
+    const result = await pool.query(
+      'SELECT video_path, video_title, view_count FROM video_views ORDER BY view_count DESC LIMIT $1',
+      [limit]
+    )
+
+    return result.rows.map(row => ({
+      videoPath: row.video_path,
+      videoTitle: row.video_title || 'Unknown',
+      viewCount: row.view_count || 0
+    }))
+  } catch (error) {
+    console.error('Failed to get top viewed videos:', error)
+    return []
   }
 }
