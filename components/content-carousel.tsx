@@ -2,9 +2,10 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, Maximize2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, Maximize2, Play } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import { VideoModal } from "./video-modal"
+import { PlaceholderThumbnail } from "./create-placeholder-thumbnail"
 
 interface CarouselItem {
   id: number
@@ -30,43 +31,26 @@ interface ContentCarouselProps {
 
 function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
-  const [showVideo, setShowVideo] = useState(true) // Always show video element
-  const [isMobile, setIsMobile] = useState(false)
 
-  useEffect(() => {
-    // Detect mobile devices
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768 || 'ontouchstart' in window
-      setIsMobile(mobile)
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    if (videoRef.current && item.videoPath) {
+      videoRef.current.play().catch(() => {})
+      setIsPlaying(true)
     }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }
 
-  useEffect(() => {
-    if (videoRef.current && item.videoPath && showVideo) {
-      const handleLoadedMetadata = () => {
-        setIsLoaded(true)
-      }
-
-      const handleError = () => {
-        console.error('Video failed to load:', item.videoPath)
-        setShowVideo(false)
-      }
-
-      videoRef.current.addEventListener('loadedmetadata', handleLoadedMetadata)
-      videoRef.current.addEventListener('error', handleError)
-
-      return () => {
-        videoRef.current?.removeEventListener('loadedmetadata', handleLoadedMetadata)
-        videoRef.current?.removeEventListener('error', handleError)
-      }
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+      setIsPlaying(false)
     }
-  }, [item.videoPath, showVideo])
+  }
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -81,88 +65,74 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
     onExpand()
   }
 
-  const handleInteraction = () => {
-    if (videoRef.current && !isMobile) {
-      videoRef.current.play().catch(() => {})
-    }
-  }
-
-  const handleMouseLeave = () => {
-    setIsHovered(false)
-    if (videoRef.current && !isMobile) {
-      videoRef.current.pause()
-      videoRef.current.currentTime = 0
-    }
-  }
-
-  if (!item.videoPath) {
-    return (
-      <img
-        src={item.thumbnail || "/placeholder.svg"}
-        alt={item.title}
-        className="h-full w-full object-cover transition-transform group-hover:scale-105"
-      />
-    )
-  }
-
   return (
-    <>
-      <div
-        className="absolute inset-0"
-        onMouseEnter={() => {
-          setIsHovered(true)
-          handleInteraction()
-        }}
-        onMouseLeave={handleMouseLeave}
-        onClick={isMobile ? handleInteraction : undefined}
-      >
-        {/* Always show gradient background as fallback for videos */}
-        <div className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-transform group-hover:scale-105 ${isLoaded ? 'opacity-0' : ''}`} />
-
-        {/* Always render video element if there's a video path */}
-        {item.videoPath && (
-          <video
-            ref={videoRef}
-            className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
-            muted={isMuted}
-            loop
-            playsInline
-            preload="metadata"
-            poster={`${item.videoPath}#t=0.1`}
-          >
-            <source src={item.videoPath} type="video/mp4" />
-          </video>
-        )}
-
-        {isHovered && (
-          <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-            <Button
-              size="icon"
-              variant="secondary"
-              className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
-              onClick={toggleMute}
-            >
-              {isMuted ? <VolumeX className="h-4 w-4 text-white" /> : <Volume2 className="h-4 w-4 text-white" />}
-              <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
-            </Button>
-            <Button
-              size="icon"
-              variant="secondary"
-              className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
-              onClick={handleExpand}
-            >
-              <Maximize2 className="h-4 w-4 text-white" />
-              <span className="sr-only">Expand</span>
-            </Button>
-          </div>
-        )}
-      </div>
-      {!isLoaded && item.videoPath && (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-          <div className="h-8 w-8 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+    <div
+      className="relative h-full w-full"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Always show thumbnail image */}
+      {item.thumbnail ? (
+        <img
+          src={item.thumbnail}
+          alt={item.title}
+          className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${
+            isPlaying ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      ) : (
+        <div className="absolute inset-0">
+          <PlaceholderThumbnail title={item.title} category={item.category} />
         </div>
       )}
-    </>
+
+      {/* Video element (hidden until hover) */}
+      {item.videoPath && (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          muted={isMuted}
+          loop
+          playsInline
+          preload="none"
+        >
+          <source src={item.videoPath} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Play icon overlay (shows when not playing) */}
+      {item.videoPath && !isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="h-12 w-12 rounded-full bg-white/90 flex items-center justify-center shadow-lg transition-opacity group-hover:opacity-0">
+            <Play className="h-6 w-6 text-gray-900 ml-0.5" />
+          </div>
+        </div>
+      )}
+
+      {/* Control buttons (show on hover) */}
+      {isHovered && item.videoPath && (
+        <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <Button
+            size="icon"
+            variant="secondary"
+            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+            onClick={toggleMute}
+          >
+            {isMuted ? <VolumeX className="h-4 w-4 text-white" /> : <Volume2 className="h-4 w-4 text-white" />}
+            <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
+          </Button>
+          <Button
+            size="icon"
+            variant="secondary"
+            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+            onClick={handleExpand}
+          >
+            <Maximize2 className="h-4 w-4 text-white" />
+            <span className="sr-only">Expand</span>
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }
 
