@@ -3,7 +3,7 @@ import { Pool } from 'pg'
 
 // Create connection pool
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.NETLIFY_DATABASE_URL || process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false
   }
@@ -32,9 +32,24 @@ async function initDatabase() {
         status VARCHAR(50) DEFAULT 'pending',
         submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         reviewed_at TIMESTAMP,
-        admin_notes TEXT
+        admin_notes TEXT,
+        cloudinary_public_id VARCHAR(500),
+        cloudinary_url TEXT,
+        file_size INTEGER,
+        video_format VARCHAR(50)
       )
     `)
+
+    // Add new columns if they don't exist (for existing databases)
+    await pool.query(`
+      ALTER TABLE submissions
+      ADD COLUMN IF NOT EXISTS cloudinary_public_id VARCHAR(500),
+      ADD COLUMN IF NOT EXISTS cloudinary_url TEXT,
+      ADD COLUMN IF NOT EXISTS file_size INTEGER,
+      ADD COLUMN IF NOT EXISTS video_format VARCHAR(50)
+    `).catch(() => {
+      // Ignore errors if columns already exist
+    })
   } catch (error) {
     console.error('Failed to initialize database:', error)
   }
@@ -135,7 +150,11 @@ export const handler: Handler = async (event) => {
         website: body.website,
         additionalNotes: body.additionalNotes,
         status: 'pending',
-        submittedAt: body.submittedAt || new Date().toISOString()
+        submittedAt: body.submittedAt || new Date().toISOString(),
+        cloudinaryPublicId: body.cloudinaryPublicId || null,
+        cloudinaryUrl: body.cloudinaryUrl || null,
+        fileSize: body.fileSize || null,
+        videoFormat: body.videoFormat || null
       }
 
       await pool.query(
@@ -143,8 +162,9 @@ export const handler: Handler = async (event) => {
           id, title, description, category, creator_name,
           contact_email, video_url, source_type, embed_url,
           thumbnail_url, duration, twitter, instagram, website,
-          additional_notes, status, submitted_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+          additional_notes, status, submitted_at, cloudinary_public_id,
+          cloudinary_url, file_size, video_format
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`,
         [
           submission.id,
           submission.title,
@@ -162,7 +182,11 @@ export const handler: Handler = async (event) => {
           submission.website,
           submission.additionalNotes,
           submission.status,
-          submission.submittedAt
+          submission.submittedAt,
+          submission.cloudinaryPublicId,
+          submission.cloudinaryUrl,
+          submission.fileSize,
+          submission.videoFormat
         ]
       )
 
