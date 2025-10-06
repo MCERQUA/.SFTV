@@ -4,9 +4,11 @@ import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, Radio, X } from "lucide-react"
+import { SponsorModal } from "@/components/sponsor-modal"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSponsorModalOpen, setIsSponsorModalOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -40,8 +42,12 @@ export function Header() {
           </nav>
         </div>
         <div className="flex items-center gap-4">
-          <Button size="sm" className="hidden md:inline-flex" asChild>
-            <Link href="/sponsor">Sponsor Kit</Link>
+          <Button
+            size="sm"
+            className="hidden md:inline-flex"
+            onClick={() => setIsSponsorModalOpen(true)}
+          >
+            Sponsor Kit
           </Button>
           <Button
             variant="ghost"
@@ -84,16 +90,24 @@ export function Header() {
             >
               Events
             </Link>
-            <Link
-              href="/sponsor"
-              onClick={() => setIsMenuOpen(false)}
-              className="block py-2 text-sm font-medium text-primary transition-colors hover:opacity-80"
+            <button
+              onClick={() => {
+                setIsMenuOpen(false)
+                setIsSponsorModalOpen(true)
+              }}
+              className="block py-2 text-sm font-medium text-primary transition-colors hover:opacity-80 text-left"
             >
               Sponsor Kit
-            </Link>
+            </button>
           </nav>
         </div>
       )}
+
+      {/* Sponsor Modal */}
+      <SponsorModal
+        isOpen={isSponsorModalOpen}
+        onClose={() => setIsSponsorModalOpen(false)}
+      />
     </header>
   )
 }
