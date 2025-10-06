@@ -34,6 +34,34 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
+  const [videoThumbnail, setVideoThumbnail] = useState<string | null>(null)
+  const [thumbnailError, setThumbnailError] = useState(false)
+
+  useEffect(() => {
+    // Generate thumbnail from video if thumbnail doesn't exist or is invalid
+    if (item.videoPath && (!item.thumbnail || thumbnailError)) {
+      const video = document.createElement('video')
+      video.crossOrigin = 'anonymous'
+      video.preload = 'metadata'
+
+      video.onloadedmetadata = () => {
+        video.currentTime = Math.min(10, video.duration * 0.1) // 10 seconds or 10% of video
+      }
+
+      video.onseeked = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = video.videoWidth
+        canvas.height = video.videoHeight
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+          setVideoThumbnail(canvas.toDataURL('image/jpeg', 0.8))
+        }
+      }
+
+      video.src = item.videoPath
+    }
+  }, [item.videoPath, item.thumbnail, thumbnailError])
 
   const handleMouseEnter = () => {
     setIsHovered(true)
@@ -72,13 +100,14 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
       onMouseLeave={handleMouseLeave}
     >
       {/* Always show thumbnail image */}
-      {item.thumbnail ? (
+      {(videoThumbnail || (item.thumbnail && !thumbnailError)) ? (
         <img
-          src={item.thumbnail}
+          src={videoThumbnail || item.thumbnail}
           alt={item.title}
           className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${
             isPlaying ? 'opacity-0' : 'opacity-100'
           }`}
+          onError={() => setThumbnailError(true)}
         />
       ) : (
         <div className="absolute inset-0">

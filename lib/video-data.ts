@@ -121,6 +121,22 @@ export const funnyClips = [
     videoPath: "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4",
     category: "Animation",
     duration: "2:00"
+  },
+  {
+    id: 15,
+    title: "Cortex Rex: Day Off Camping",
+    thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
+    videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
+    category: "Animation",
+    duration: "3:45"
+  },
+  {
+    id: 16,
+    title: "Rex Camping Recap",
+    thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
+    videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
+    category: "Animation",
+    duration: "3:50"
   }
 ]
 
