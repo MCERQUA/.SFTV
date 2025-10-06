@@ -4,6 +4,7 @@ import { SchedulePreview } from "@/components/schedule-preview"
 import { ContentCarousel } from "@/components/content-carousel"
 import { CTASection } from "@/components/cta-section"
 import { Footer } from "@/components/footer"
+import { FloatingUploadButton } from "@/components/floating-upload-button"
 import { commercialShorts, commercialsLonger, musicVideoCommercials, funnyClips, upcomingShows } from "@/lib/video-data"
 
 export default function HomePage() {
@@ -21,6 +22,7 @@ export default function HomePage() {
         <CTASection />
       </main>
       <Footer />
+      <FloatingUploadButton />
     </div>
   )
 }
