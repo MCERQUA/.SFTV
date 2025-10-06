@@ -7,7 +7,7 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/cortex-rex.jpg",
     videoPath: "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
     category: "Commercial Short",
-    duration: "0:30"
+    duration: "0:17"
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/duck-cleaning.jpg",
     videoPath: "/videos/commercial-shorts/duckcleaning-commerical.mp4",
     category: "Commercial Short",
-    duration: "0:45"
+    duration: "0:15"
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/graco-fusion.jpg",
     videoPath: "/videos/commercial-shorts/Graco Fusion AP.mp4",
     category: "Commercial Short",
-    duration: "0:30"
+    duration: "0:16"
   },
   {
     id: 4,
@@ -31,7 +31,7 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/koolfoam.jpg",
     videoPath: "/videos/commercial-shorts/koolfoam-fly-south.mp4",
     category: "Commercial Short",
-    duration: "0:35"
+    duration: "0:16"
   },
   {
     id: 5,
@@ -39,7 +39,7 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/noble-insulation.jpg",
     videoPath: "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
     category: "Commercial Short",
-    duration: "0:40"
+    duration: "0:10"
   }
 ]
 
@@ -50,7 +50,7 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/edi.jpg",
     videoPath: "/videos/commercials-longer/EDI-Commerical.mp4",
     category: "Commercial",
-    duration: "1:30"
+    duration: "1:47"
   },
   {
     id: 7,
@@ -58,7 +58,7 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/ica-bodywash.jpg",
     videoPath: "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
     category: "Commercial",
-    duration: "1:45"
+    duration: "0:23"
   },
   {
     id: 8,
@@ -66,7 +66,7 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/ica-ducts.jpg",
     videoPath: "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
     category: "Commercial",
-    duration: "2:00"
+    duration: "0:33"
   },
   {
     id: 9,
@@ -74,7 +74,7 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/foam-party.jpg",
     videoPath: "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
     category: "Commercial",
-    duration: "1:20"
+    duration: "1:13"
   }
 ]
 
@@ -85,7 +85,7 @@ export const musicVideoCommercials = [
     thumbnail: "/thumbnails/music-video-commercials/call-me-maybe.jpg",
     videoPath: "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",
     artist: "Mrs. SprayFoam",
-    duration: "3:30"
+    duration: "1:28"
   },
   {
     id: 11,
@@ -93,7 +93,7 @@ export const musicVideoCommercials = [
     thumbnail: "/thumbnails/music-video-commercials/let-it-foam.jpg",
     videoPath: "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4",
     artist: "Mrs. SprayFoam",
-    duration: "3:45"
+    duration: "1:32"
   }
 ]
 
@@ -104,7 +104,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/breaking-batts.jpg",
     videoPath: "/videos/funny-clips/Breaking-Batts.mp4",
     category: "Comedy",
-    duration: "2:15"
+    duration: "0:09"
   },
   {
     id: 13,
@@ -112,7 +112,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/chicken-brothers-1.jpg",
     videoPath: "/videos/funny-clips/Insulated-chicken-brothers-cartoon.mp4",
     category: "Animation",
-    duration: "1:50"
+    duration: "0:10"
   },
   {
     id: 14,
@@ -120,7 +120,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/chicken-brothers-2.jpg",
     videoPath: "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4",
     category: "Animation",
-    duration: "2:00"
+    duration: "0:10"
   },
   {
     id: 15,
@@ -128,7 +128,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
     videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
     category: "Animation",
-    duration: "--:--"
+    duration: "0:56"
   },
   {
     id: 16,
@@ -136,7 +136,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
     videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
     category: "Animation",
-    duration: "--:--"
+    duration: "1:18"
   },
   {
     id: 17,
@@ -144,7 +144,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
     videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
     category: "Animation",
-    duration: "--:--"
+    duration: "0:08"
   },
   {
     id: 18,
@@ -152,7 +152,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
     videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
     category: "Animation",
-    duration: "--:--"
+    duration: "0:08"
   },
   {
     id: 19,
@@ -160,7 +160,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
     videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
     category: "Comedy",
-    duration: "--:--"
+    duration: "0:10"
   }
 ]
 
