@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
 import {
   CheckCircle,
   XCircle,
@@ -29,6 +31,7 @@ export default function AdminSubmissionsPage() {
   const [error, setError] = useState("")
   const [adminNotes, setAdminNotes] = useState<{ [key: string]: string }>({})
   const [processingId, setProcessingId] = useState<string | null>(null)
+  const [approvalCategories, setApprovalCategories] = useState<{ [key: string]: string }>({})
 
   useEffect(() => {
     fetchSubmissions()
@@ -54,26 +57,46 @@ export default function AdminSubmissionsPage() {
     }
   }
 
-  const updateSubmissionStatus = async (id: string, status: "approved" | "rejected") => {
+  const updateSubmissionStatus = async (id: string, status: "approved" | "rejected", category?: string, newFileName?: string) => {
     setProcessingId(id)
     try {
-      // Use Netlify Functions endpoint on production (custom domain or Netlify)
-      const isProduction = !window.location.hostname.includes('localhost')
-      const endpoint = isProduction
-        ? "/.netlify/functions/submissions"
-        : "/api/submissions"
+      // Find the submission to check if it has Cloudinary video
+      const submission = submissions.find(s => s.id === id)
 
-      const response = await fetch(endpoint, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id,
-          status,
-          adminNotes: adminNotes[id] || ""
+      // If submission has Cloudinary video, use the approval API
+      if (submission && (submission as any).cloudinaryPublicId) {
+        const response = await fetch("/api/videos/approve", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            submissionId: id,
+            action: status === "approved" ? "approve" : "reject",
+            category: category || submission.category,
+            newFileName: newFileName,
+            adminNotes: adminNotes[id] || ""
+          })
         })
-      })
 
-      if (!response.ok) throw new Error("Failed to update")
+        if (!response.ok) throw new Error("Failed to process video")
+      } else {
+        // For non-Cloudinary videos, use the regular submission endpoint
+        const isProduction = !window.location.hostname.includes('localhost')
+        const endpoint = isProduction
+          ? "/.netlify/functions/submissions"
+          : "/api/submissions"
+
+        const response = await fetch(endpoint, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id,
+            status,
+            adminNotes: adminNotes[id] || ""
+          })
+        })
+
+        if (!response.ok) throw new Error("Failed to update")
+      }
 
       await fetchSubmissions()
       setAdminNotes({ ...adminNotes, [id]: "" })
@@ -100,6 +123,7 @@ export default function AdminSubmissionsPage() {
       youtube: "bg-red-500",
       vimeo: "bg-blue-500",
       direct: "bg-purple-500",
+      cloudinary: "bg-indigo-500",
       "google-drive": "bg-yellow-500",
       dropbox: "bg-blue-600",
       streamable: "bg-orange-500",
@@ -118,8 +142,12 @@ export default function AdminSubmissionsPage() {
   }
 
   const SubmissionCard = ({ submission }: { submission: VideoSubmission }) => {
-    const embedUrl = getEmbedUrl(submission.videoUrl, submission.sourceType)
-    const showEmbed = ["youtube", "vimeo", "streamable"].includes(submission.sourceType)
+    const extendedSubmission = submission as any
+    const embedUrl = submission.sourceType === "cloudinary" && extendedSubmission.cloudinaryUrl
+      ? extendedSubmission.cloudinaryUrl
+      : getEmbedUrl(submission.videoUrl, submission.sourceType)
+    const showEmbed = ["youtube", "vimeo", "streamable"].includes(submission.sourceType) ||
+                      (submission.sourceType === "cloudinary" && extendedSubmission.cloudinaryUrl)
 
     return (
       <Card className="overflow-hidden">
@@ -141,12 +169,21 @@ export default function AdminSubmissionsPage() {
         <CardContent className="space-y-4">
           {showEmbed ? (
             <div className="aspect-video overflow-hidden rounded-lg bg-muted">
-              <iframe
-                src={embedUrl}
-                className="h-full w-full"
-                allowFullScreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
+              {submission.sourceType === "cloudinary" ? (
+                <video
+                  src={extendedSubmission.cloudinaryUrl}
+                  poster={extendedSubmission.thumbnailUrl}
+                  controls
+                  className="h-full w-full"
+                />
+              ) : (
+                <iframe
+                  src={embedUrl}
+                  className="h-full w-full"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
+              )}
             </div>
           ) : (
             <div className="flex items-center justify-center rounded-lg bg-muted p-8">
@@ -183,11 +220,47 @@ export default function AdminSubmissionsPage() {
                   {submission.duration}
                 </span>
               )}
+              {extendedSubmission.fileSize && (
+                <span className="flex items-center gap-1">
+                  <Film className="h-3 w-3" />
+                  {(extendedSubmission.fileSize / 1024 / 1024).toFixed(1)} MB
+                </span>
+              )}
+              {extendedSubmission.videoFormat && (
+                <span className="flex items-center gap-1">
+                  Format: {extendedSubmission.videoFormat.toUpperCase()}
+                </span>
+              )}
             </div>
+            {extendedSubmission.cloudinaryPublicId && (
+              <div className="text-xs text-muted-foreground">
+                Cloudinary ID: {extendedSubmission.cloudinaryPublicId}
+              </div>
+            )}
           </div>
 
           {submission.status === "pending" && (
             <div className="space-y-3 border-t pt-4">
+              {extendedSubmission.cloudinaryPublicId && (
+                <div className="space-y-2">
+                  <Label htmlFor={`category-${submission.id}`}>Approval Category</Label>
+                  <Select
+                    value={approvalCategories[submission.id] || submission.category}
+                    onValueChange={(value) => setApprovalCategories({ ...approvalCategories, [submission.id]: value })}
+                  >
+                    <SelectTrigger id={`category-${submission.id}`}>
+                      <SelectValue placeholder="Select category for approval" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="commercial-shorts">Commercial Shorts</SelectItem>
+                      <SelectItem value="commercials-longer">Commercials Longer</SelectItem>
+                      <SelectItem value="music-video-commercials">Music Video Commercials</SelectItem>
+                      <SelectItem value="funny-clips">Funny Clips</SelectItem>
+                      <SelectItem value="shows-cartoons">Shows/Cartoons</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
               <Textarea
                 placeholder="Admin notes (optional)"
                 value={adminNotes[submission.id] || ""}
@@ -197,7 +270,11 @@ export default function AdminSubmissionsPage() {
               <div className="flex gap-2">
                 <Button
                   className="flex-1"
-                  onClick={() => updateSubmissionStatus(submission.id, "approved")}
+                  onClick={() => updateSubmissionStatus(
+                    submission.id,
+                    "approved",
+                    approvalCategories[submission.id] || submission.category
+                  )}
                   disabled={processingId === submission.id}
                 >
                   <CheckCircle className="mr-2 h-4 w-4" />
