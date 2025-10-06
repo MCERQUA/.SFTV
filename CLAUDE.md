@@ -95,7 +95,19 @@ The `/docs` folder contains living documentation:
 - Static data currently defined in `app/page.tsx`
 - Video categories: Commercial Shorts, Commercials Longer, Music Video Commercials, Funny Clips, Shows/Cartoons (Coming Soon)
 - Future: Replace with CMS/API integrations
-- No environment variables required currently
+
+### Database
+- **Database Provider:** Netlify DB (powered by Neon PostgreSQL)
+- **Database Name:** sprayfoamtv (neondb)
+- **Connection:** Uses pooled connection via `DATABASE_URL` environment variable
+- **Tables:**
+  - `submissions` - Video submission tracking
+  - `video_views` - Aggregate video view counts
+  - `view_logs` - Detailed view analytics
+- **Library:** Using `pg` (node-postgres) with connection pooling
+- **Location:** Database configuration in `lib/db.ts`
+- **Environment Variables Required:**
+  - `DATABASE_URL` - PostgreSQL connection string (already configured)
 
 ### Video Asset Structure
 - Videos organized in `/public/videos/` by category:
@@ -131,3 +143,4 @@ The `components/ui/` directory contains base primitives. Modify carefully as the
 - DO NOT DEPLOY TO LOCAL HOST!!!
 - DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!# DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!
 - PUSH TO GITHUB AFTER CHANGES!!!
+- DO not assume or code anything "new" without asking questions or finding our answers to "if" that new thing already has a system, or somthing realated setup.
