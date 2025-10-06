@@ -33,13 +33,14 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const [isLoaded, setIsLoaded] = useState(false)
   const [isMuted, setIsMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
-  const [showVideo, setShowVideo] = useState(false)
+  const [showVideo, setShowVideo] = useState(true) // Always show video element
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     // Detect mobile devices
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768 || 'ontouchstart' in window)
+      const mobile = window.innerWidth < 768 || 'ontouchstart' in window
+      setIsMobile(mobile)
     }
     checkMobile()
     window.addEventListener('resize', checkMobile)
@@ -81,14 +82,8 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   }
 
   const handleInteraction = () => {
-    if (item.videoPath && !showVideo) {
-      setShowVideo(true)
-      // Give time for video to load before playing
-      setTimeout(() => {
-        if (videoRef.current && !isMobile) {
-          videoRef.current.play().catch(() => {})
-        }
-      }, 100)
+    if (videoRef.current && !isMobile) {
+      videoRef.current.play().catch(() => {})
     }
   }
 
@@ -121,18 +116,11 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
         onMouseLeave={handleMouseLeave}
         onClick={isMobile ? handleInteraction : undefined}
       >
-        {/* Always show video poster or black background as fallback */}
-        {item.thumbnail ? (
-          <img
-            src={item.thumbnail}
-            alt={item.title}
-            className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`}
-          />
-        ) : (
-          <div className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-transform group-hover:scale-105 ${showVideo && isLoaded ? 'opacity-0' : ''}`} />
-        )}
+        {/* Always show gradient background as fallback for videos */}
+        <div className={`absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 transition-transform group-hover:scale-105 ${isLoaded ? 'opacity-0' : ''}`} />
 
-        {showVideo && item.videoPath && (
+        {/* Always render video element if there's a video path */}
+        {item.videoPath && (
           <video
             ref={videoRef}
             className={`absolute inset-0 h-full w-full object-cover transition-transform group-hover:scale-105 ${!isLoaded ? 'invisible' : ''}`}
@@ -140,6 +128,7 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
             loop
             playsInline
             preload="metadata"
+            poster={`${item.videoPath}#t=0.1`}
           >
             <source src={item.videoPath} type="video/mp4" />
           </video>
@@ -168,8 +157,8 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
           </div>
         )}
       </div>
-      {showVideo && !isLoaded && (
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+      {!isLoaded && item.videoPath && (
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
           <div className="h-8 w-8 border-2 border-white/50 border-t-white rounded-full animate-spin" />
         </div>
       )}
