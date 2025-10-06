@@ -168,13 +168,25 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
 export function ContentCarousel({ title, items, comingSoon = false }: ContentCarouselProps) {
   const [startIndex, setStartIndex] = useState(0)
   const [modalVideo, setModalVideo] = useState<CarouselItem | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  const itemsPerPage = isMobile ? 2 : 4
 
   const handlePrev = () => {
-    setStartIndex(Math.max(0, startIndex - 1))
+    setStartIndex(Math.max(0, startIndex - itemsPerPage))
   }
 
   const handleNext = () => {
-    setStartIndex(Math.min(items.length - 4, startIndex + 1))
+    setStartIndex(Math.min(items.length - itemsPerPage, startIndex + itemsPerPage))
   }
 
   return (
@@ -182,7 +194,8 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
       <div className="container mx-auto px-4">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="font-mono text-3xl font-bold">{title}</h2>
-          <div className="flex gap-2">
+          {/* Desktop navigation - hide on mobile */}
+          <div className="hidden md:flex gap-2">
             <Button
               variant={startIndex > 0 ? "default" : "outline"}
               size="icon"
@@ -194,11 +207,11 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               <span className="sr-only">Previous</span>
             </Button>
             <Button
-              variant={startIndex < items.length - 4 ? "default" : "outline"}
+              variant={startIndex < items.length - itemsPerPage ? "default" : "outline"}
               size="icon"
               onClick={handleNext}
-              disabled={startIndex >= items.length - 4}
-              className={startIndex < items.length - 4 ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
+              disabled={startIndex >= items.length - itemsPerPage}
+              className={startIndex < items.length - itemsPerPage ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
             >
               <ChevronRight className="h-4 w-4" />
               <span className="sr-only">Next</span>
@@ -207,7 +220,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {comingSoon ? (
-            items.slice(startIndex, startIndex + 4).map((item) => (
+            items.slice(startIndex, startIndex + itemsPerPage).map((item) => (
               <Card
                 key={item.id}
                 className="group overflow-hidden transition-all opacity-75"
@@ -233,7 +246,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               </Card>
             ))
           ) : (
-            items.slice(startIndex, startIndex + 4).map((item) => (
+            items.slice(startIndex, startIndex + itemsPerPage).map((item) => (
             <Card
               key={item.id}
               className="group overflow-hidden transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/20"
@@ -275,6 +288,32 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
           ))
         )}
         </div>
+
+        {/* Mobile navigation at bottom - only show on mobile when there are more items */}
+        {items.length > itemsPerPage && (
+          <div className="mt-6 flex justify-center gap-3 md:hidden">
+            <Button
+              variant={startIndex > 0 ? "default" : "outline"}
+              size="lg"
+              onClick={handlePrev}
+              disabled={startIndex === 0}
+              className={startIndex > 0 ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
+            >
+              <ChevronLeft className="h-5 w-5 mr-2" />
+              Previous
+            </Button>
+            <Button
+              variant={startIndex < items.length - itemsPerPage ? "default" : "outline"}
+              size="lg"
+              onClick={handleNext}
+              disabled={startIndex >= items.length - itemsPerPage}
+              className={startIndex < items.length - itemsPerPage ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
+            >
+              Next
+              <ChevronRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {modalVideo && modalVideo.videoPath && (
