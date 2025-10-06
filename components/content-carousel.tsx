@@ -183,11 +183,23 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
         <div className="mb-6 flex items-center justify-between">
           <h2 className="font-mono text-3xl font-bold">{title}</h2>
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" onClick={handlePrev} disabled={startIndex === 0}>
+            <Button
+              variant={startIndex > 0 ? "default" : "outline"}
+              size="icon"
+              onClick={handlePrev}
+              disabled={startIndex === 0}
+              className={startIndex > 0 ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
+            >
               <ChevronLeft className="h-4 w-4" />
               <span className="sr-only">Previous</span>
             </Button>
-            <Button variant="outline" size="icon" onClick={handleNext} disabled={startIndex >= items.length - 4}>
+            <Button
+              variant={startIndex < items.length - 4 ? "default" : "outline"}
+              size="icon"
+              onClick={handleNext}
+              disabled={startIndex >= items.length - 4}
+              className={startIndex < items.length - 4 ? "bg-orange-500 hover:bg-orange-600 text-black border-orange-500" : ""}
+            >
               <ChevronRight className="h-4 w-4" />
               <span className="sr-only">Next</span>
             </Button>
