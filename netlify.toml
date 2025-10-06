@@ -1,6 +1,9 @@
 [build]
   command = "pnpm build"
   publish = ".next"
+  # These are public Cloudinary configuration values, not secrets
+  # They're designed to be exposed in client-side code
+  environment = { SECRETS_SCAN_OMIT_KEYS = "CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME" }
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
