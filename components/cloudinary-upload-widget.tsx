@@ -57,11 +57,18 @@ export function CloudinaryUploadWidget({
       return
     }
 
+    // Check if environment variables are set
+    if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET) {
+      setErrorMessage("Upload service is not configured. Please contact support.")
+      setUploadStatus("error")
+      return
+    }
+
     // Create upload widget
     const widget = window.cloudinary.createUploadWidget(
       {
-        cloudName: "dtgk8kqkq", // Your cloud name
-        uploadPreset: "sprayfoam_uploads",
+        cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,
         sources: ["local", "url", "camera"],
         resourceType: "video",
         folder: folder,
