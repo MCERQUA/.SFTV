@@ -138,25 +138,25 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
         </div>
       )}
 
-      {/* Control buttons (show on hover) */}
-      {isHovered && item.videoPath && (
-        <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+      {/* Control buttons (always visible on mobile, show on hover on desktop) */}
+      {item.videoPath && (
+        <div className="absolute top-2 right-2 flex gap-2 opacity-100 md:opacity-0 transition-opacity duration-200 md:group-hover:opacity-100">
           <Button
             size="icon"
             variant="secondary"
-            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+            className="h-10 w-10 md:h-8 md:w-8 rounded-full bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
             onClick={toggleMute}
           >
-            {isMuted ? <VolumeX className="h-4 w-4 text-white" /> : <Volume2 className="h-4 w-4 text-white" />}
+            {isMuted ? <VolumeX className="h-5 w-5 md:h-4 md:w-4 text-white" /> : <Volume2 className="h-5 w-5 md:h-4 md:w-4 text-white" />}
             <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
           </Button>
           <Button
             size="icon"
             variant="secondary"
-            className="h-8 w-8 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
+            className="h-10 w-10 md:h-8 md:w-8 rounded-full bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
             onClick={handleExpand}
           >
-            <Maximize2 className="h-4 w-4 text-white" />
+            <Maximize2 className="h-5 w-5 md:h-4 md:w-4 text-white" />
             <span className="sr-only">Expand</span>
           </Button>
         </div>

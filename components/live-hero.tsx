@@ -172,28 +172,28 @@ export function LiveHero() {
         <Button
           size="icon"
           variant="secondary"
-          className="h-10 w-10 bg-card/80 backdrop-blur"
+          className="h-12 w-12 md:h-10 md:w-10 bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
           onClick={handlePlayClick}
         >
-          {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {isPlaying ? <Pause className="h-5 w-5 md:h-4 md:w-4 text-white" /> : <Play className="h-5 w-5 md:h-4 md:w-4 text-white" />}
           <span className="sr-only">{isPlaying ? "Pause" : "Play"}</span>
         </Button>
         <Button
           size="icon"
           variant="secondary"
-          className="h-10 w-10 bg-card/80 backdrop-blur"
+          className="h-12 w-12 md:h-10 md:w-10 bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
           onClick={toggleMute}
         >
-          <Volume2 className={`h-4 w-4 ${isMuted ? 'opacity-50' : ''}`} />
+          <Volume2 className={`h-5 w-5 md:h-4 md:w-4 text-white ${isMuted ? 'opacity-50' : ''}`} />
           <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
         </Button>
         <Button
           size="icon"
           variant="secondary"
-          className="h-10 w-10 bg-card/80 backdrop-blur"
+          className="h-12 w-12 md:h-10 md:w-10 bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
           onClick={toggleFullscreen}
         >
-          <Maximize className="h-4 w-4" />
+          <Maximize className="h-5 w-5 md:h-4 md:w-4 text-white" />
           <span className="sr-only">Fullscreen</span>
         </Button>
       </div>
