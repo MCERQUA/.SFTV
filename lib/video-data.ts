@@ -125,7 +125,7 @@ export const funnyClips = [
   {
     id: 15,
     title: "Cortex Rex: Day Off Camping",
-    thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
+    thumbnail: "",
     videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
     category: "Animation",
     duration: "--:--"
@@ -133,7 +133,7 @@ export const funnyClips = [
   {
     id: 16,
     title: "Rex Camping Recap",
-    thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
+    thumbnail: "",
     videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
     category: "Animation",
     duration: "--:--"
@@ -141,7 +141,7 @@ export const funnyClips = [
   {
     id: 17,
     title: "Cortex Rex: Density Check",
-    thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
+    thumbnail: "",
     videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
     category: "Animation",
     duration: "--:--"
@@ -149,7 +149,7 @@ export const funnyClips = [
   {
     id: 18,
     title: "Cortex Rex: Jobsite Emergency",
-    thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
+    thumbnail: "",
     videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
     category: "Animation",
     duration: "--:--"
@@ -157,7 +157,7 @@ export const funnyClips = [
   {
     id: 19,
     title: "Mad Dog SprayFoam",
-    thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
+    thumbnail: "",
     videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
     category: "Comedy",
     duration: "--:--"
