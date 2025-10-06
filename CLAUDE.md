@@ -4,9 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Critical Rules
 - **DO NOT** assume or code anything "new" without asking questions or finding answers to "if" that new thing already has a system or something related setup
-- **DO NOT DEPLOY TO LOCALHOST** - This runs on a cloud VPS
-- **ALWAYS PUSH TO GITHUB** after changes are completed
 - **CHECK EXISTING SYSTEMS FIRST** before implementing new features
+- **ALWAYS PUSH TO GITHUB** after changes are completed
+- **YOU ARE OPERATING ON A CLOUD VPS DO NOT TOUCH ANY PORTS, AND DO NOT DEPLOY TO LOCALHOST**
+- **DO NOT DEPLOY TO LOCAL HOST!!!**
+- **DO NOT DEPLOY TO LOCAL HOST!!!** # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!# DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!
+- **PUSH TO GITHUB AFTER CHANGES!!!**
 
 ## Project Overview
 
