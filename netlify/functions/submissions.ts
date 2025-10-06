@@ -41,15 +41,21 @@ async function initDatabase() {
     `)
 
     // Add new columns if they don't exist (for existing databases)
-    await pool.query(`
-      ALTER TABLE submissions
-      ADD COLUMN IF NOT EXISTS cloudinary_public_id VARCHAR(500),
-      ADD COLUMN IF NOT EXISTS cloudinary_url TEXT,
-      ADD COLUMN IF NOT EXISTS file_size INTEGER,
-      ADD COLUMN IF NOT EXISTS video_format VARCHAR(50)
-    `).catch(() => {
-      // Ignore errors if columns already exist
-    })
+    // Try adding each column individually to avoid failing if some already exist
+    const columnsToAdd = [
+      'ALTER TABLE submissions ADD COLUMN IF NOT EXISTS cloudinary_public_id VARCHAR(500)',
+      'ALTER TABLE submissions ADD COLUMN IF NOT EXISTS cloudinary_url TEXT',
+      'ALTER TABLE submissions ADD COLUMN IF NOT EXISTS file_size INTEGER',
+      'ALTER TABLE submissions ADD COLUMN IF NOT EXISTS video_format VARCHAR(50)'
+    ]
+
+    for (const query of columnsToAdd) {
+      try {
+        await pool.query(query)
+      } catch (err) {
+        // Column might already exist, continue
+      }
+    }
   } catch (error) {
     console.error('Failed to initialize database:', error)
   }
@@ -195,12 +201,20 @@ export const handler: Handler = async (event) => {
         headers,
         body: JSON.stringify({ message: 'Submission received', id: submission.id })
       }
-    } catch (error) {
-      console.error('Failed to save submission:', error)
+    } catch (error: any) {
+      console.error('Failed to save submission - Details:', {
+        error: error.message,
+        code: error.code,
+        detail: error.detail,
+        stack: error.stack
+      })
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'Failed to save submission' })
+        body: JSON.stringify({
+          error: 'Failed to save submission',
+          details: error.message || 'Database error'
+        })
       }
     }
   }
