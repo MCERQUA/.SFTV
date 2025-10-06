@@ -153,6 +153,14 @@ export const funnyClips = [
     videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
     category: "Animation",
     duration: "2:30"
+  },
+  {
+    id: 19,
+    title: "Mad Dog SprayFoam",
+    thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
+    videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
+    category: "Comedy",
+    duration: "2:45"
   }
 ]
 
