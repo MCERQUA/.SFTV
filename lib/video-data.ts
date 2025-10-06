@@ -137,6 +137,22 @@ export const funnyClips = [
     videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
     category: "Animation",
     duration: "3:50"
+  },
+  {
+    id: 17,
+    title: "Cortex Rex: Density Check",
+    thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
+    videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
+    category: "Animation",
+    duration: "1:20"
+  },
+  {
+    id: 18,
+    title: "Cortex Rex: Jobsite Emergency",
+    thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
+    videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
+    category: "Animation",
+    duration: "2:30"
   }
 ]
 
