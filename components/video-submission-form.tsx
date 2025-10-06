@@ -15,6 +15,30 @@ import { CloudinaryUploadWidget } from "@/components/cloudinary-upload-widget"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function VideoSubmissionForm() {
+  // Hidden form for Netlify form detection
+  const HiddenNetlifyForm = () => (
+    <form name="video-submission" data-netlify="true" hidden>
+      <input type="hidden" name="form-name" value="video-submission" />
+      <input type="text" name="title" />
+      <textarea name="description" />
+      <input type="text" name="category" />
+      <input type="text" name="creatorName" />
+      <input type="email" name="contactEmail" />
+      <input type="url" name="videoUrl" />
+      <input type="text" name="duration" />
+      <input type="text" name="twitter" />
+      <input type="text" name="instagram" />
+      <input type="url" name="website" />
+      <textarea name="additionalNotes" />
+      <input type="text" name="cloudinaryPublicId" />
+      <input type="url" name="cloudinaryUrl" />
+      <input type="text" name="thumbnailUrl" />
+      <input type="number" name="fileSize" />
+      <input type="text" name="videoFormat" />
+      <input type="text" name="sourceType" />
+    </form>
+  )
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -86,21 +110,43 @@ export function VideoSubmissionForm() {
         id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
       }
 
-      // Use Netlify Functions endpoint on production (custom domain or Netlify)
-      const isProduction = !window.location.hostname.includes('localhost')
-      const endpoint = isProduction
-        ? "/.netlify/functions/submissions"
-        : "/api/submissions"
+      // Option 1: Try Netlify Forms first (more reliable)
+      const useNetlifyForms = true // Set to false to use custom function
 
-      console.log('Using endpoint:', endpoint, 'Production:', isProduction)
+      if (useNetlifyForms && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
+        // Submit to Netlify Forms
+        const formBody = new URLSearchParams()
+        formBody.append("form-name", "video-submission")
+        Object.entries(submission).forEach(([key, value]) => {
+          if (value !== null && value !== undefined) {
+            formBody.append(key, String(value))
+          }
+        })
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(submission)
-      })
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formBody.toString()
+        })
 
-      if (!response.ok) throw new Error("Failed to submit")
+        if (!response.ok) throw new Error("Failed to submit via Netlify Forms")
+      } else {
+        // Option 2: Use custom Netlify Function
+        const isProduction = !window.location.hostname.includes('localhost')
+        const endpoint = isProduction
+          ? "/.netlify/functions/submissions"
+          : "/api/submissions"
+
+        console.log('Using endpoint:', endpoint, 'Production:', isProduction)
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(submission)
+        })
+
+        if (!response.ok) throw new Error("Failed to submit")
+      }
 
       setSubmitStatus("success")
       setFormData({
@@ -151,7 +197,9 @@ export function VideoSubmissionForm() {
   }
 
   return (
-    <Card>
+    <>
+      <HiddenNetlifyForm />
+      <Card>
       <CardHeader>
         <CardTitle>Video Submission Form</CardTitle>
         <CardDescription>
@@ -407,5 +455,6 @@ export function VideoSubmissionForm() {
         </form>
       </CardContent>
     </Card>
+    </>
   )
 }
