@@ -149,10 +149,21 @@ export function CloudinaryUploadWidget({
         }
 
         if (error) {
-          console.error("Upload error:", error)
+          console.error("Upload error details:", error)
           setIsLoading(false)
           setUploadStatus("error")
-          setErrorMessage(error.statusText || "Upload failed. Please try again.")
+
+          // Provide more specific error messages
+          let errorMsg = "Upload failed. Please try again."
+          if (error.status === 400) {
+            errorMsg = "Upload configuration error. Please ensure the upload preset 'sprayfoam_uploads' exists in your Cloudinary account."
+          } else if (error.status === 401) {
+            errorMsg = "Authentication failed. Please check your Cloudinary credentials."
+          } else if (error.statusText) {
+            errorMsg = error.statusText
+          }
+
+          setErrorMessage(errorMsg)
           if (onUploadError) {
             onUploadError(error)
           }

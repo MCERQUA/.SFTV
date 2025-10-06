@@ -42,7 +42,13 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   useEffect(() => {
     // Fetch view count for this video
     if (item.videoPath) {
-      fetch(`/api/video-views?videoPath=${encodeURIComponent(item.videoPath)}`)
+      // Use Netlify Functions endpoint in production
+      const isProduction = typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
+      const endpoint = isProduction
+        ? `/.netlify/functions/video-views?videoPath=${encodeURIComponent(item.videoPath)}`
+        : `/api/video-views?videoPath=${encodeURIComponent(item.videoPath)}`
+
+      fetch(endpoint)
         .then(res => res.json())
         .then(data => {
           if (data.viewCount !== undefined) {
@@ -99,7 +105,13 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
 
   const trackVideoView = async (videoPath: string, title: string) => {
     try {
-      const response = await fetch('/api/video-views', {
+      // Use Netlify Functions endpoint in production
+      const isProduction = typeof window !== 'undefined' && !window.location.hostname.includes('localhost')
+      const endpoint = isProduction
+        ? '/.netlify/functions/video-views'
+        : '/api/video-views'
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ videoPath, videoTitle: title })
