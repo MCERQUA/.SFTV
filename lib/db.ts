@@ -32,7 +32,11 @@ export async function initDatabase() {
         status VARCHAR(50) DEFAULT 'pending',
         submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         reviewed_at TIMESTAMP,
-        admin_notes TEXT
+        admin_notes TEXT,
+        cloudinary_public_id VARCHAR(500),
+        cloudinary_url TEXT,
+        file_size INTEGER,
+        video_format VARCHAR(50)
       )
     `)
 

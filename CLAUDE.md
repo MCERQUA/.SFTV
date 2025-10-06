@@ -216,3 +216,4 @@ The `components/ui/` directory contains base primitives. Modify carefully as the
 - Enhanced analytics dashboard
 - Dark mode support (theme-provider.tsx is scaffolded but unused)
 - Migration to @netlify/neon package for optimized database queries
+- these warnings serve as a reminder of how many times "CLAUDE" "you" have assumed you are smart and know what your doing while completely ignoring your instructions. \

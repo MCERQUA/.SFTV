@@ -9,8 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Loader2, CheckCircle, AlertCircle, Link, Youtube, Film } from "lucide-react"
+import { Loader2, CheckCircle, AlertCircle, Link, Youtube, Film, Upload, Cloud } from "lucide-react"
 import { detectVideoSource, getEmbedUrl, getThumbnailUrl, videoCategories, type VideoSourceType } from "@/lib/video-utils"
+import { CloudinaryUploadWidget } from "@/components/cloudinary-upload-widget"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function VideoSubmissionForm() {
   const [formData, setFormData] = useState({
@@ -25,18 +27,40 @@ export function VideoSubmissionForm() {
     instagram: "",
     website: "",
     additionalNotes: "",
-    termsAccepted: false
+    termsAccepted: false,
+    cloudinaryPublicId: "",
+    cloudinaryUrl: "",
+    thumbnailUrl: "",
+    fileSize: 0,
+    videoFormat: ""
   })
 
   const [detectedSource, setDetectedSource] = useState<VideoSourceType>("other")
+  const [uploadMethod, setUploadMethod] = useState<"url" | "upload">("url")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
+  const [hasUploadedVideo, setHasUploadedVideo] = useState(false)
 
   const handleUrlChange = (url: string) => {
     setFormData({ ...formData, videoUrl: url })
     const source = detectVideoSource(url)
     setDetectedSource(source)
+  }
+
+  const handleCloudinaryUpload = (result: any) => {
+    setFormData({
+      ...formData,
+      videoUrl: result.url,
+      cloudinaryPublicId: result.publicId,
+      cloudinaryUrl: result.url,
+      thumbnailUrl: result.thumbnailUrl,
+      duration: result.duration ? `${Math.floor(result.duration / 60)}:${String(Math.floor(result.duration % 60)).padStart(2, '0')}` : "",
+      fileSize: result.size,
+      videoFormat: result.format
+    })
+    setDetectedSource("cloudinary" as VideoSourceType)
+    setHasUploadedVideo(true)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -54,9 +78,9 @@ export function VideoSubmissionForm() {
     try {
       const submission = {
         ...formData,
-        sourceType: detectedSource,
-        embedUrl: getEmbedUrl(formData.videoUrl, detectedSource),
-        thumbnailUrl: getThumbnailUrl(formData.videoUrl, detectedSource),
+        sourceType: uploadMethod === "upload" ? "cloudinary" : detectedSource,
+        embedUrl: uploadMethod === "upload" ? formData.cloudinaryUrl : getEmbedUrl(formData.videoUrl, detectedSource),
+        thumbnailUrl: formData.thumbnailUrl || getThumbnailUrl(formData.videoUrl, detectedSource),
         status: "pending" as const,
         submittedAt: new Date().toISOString(),
         id: `sub_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
@@ -149,26 +173,87 @@ export function VideoSubmissionForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="videoUrl">Video URL *</Label>
-              <div className="relative">
-                <Input
-                  id="videoUrl"
-                  required
-                  type="url"
-                  value={formData.videoUrl}
-                  onChange={(e) => handleUrlChange(e.target.value)}
-                  placeholder="YouTube, Vimeo, Google Drive, or direct video URL"
-                />
-                {formData.videoUrl && (
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 text-sm text-muted-foreground">
-                    {getSourceIcon()}
-                    <span>{getSourceLabel()}</span>
+              <Label>Video Source *</Label>
+              <Tabs value={uploadMethod} onValueChange={(v) => setUploadMethod(v as "url" | "upload")}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="url">
+                    <Link className="mr-2 h-4 w-4" />
+                    Video URL
+                  </TabsTrigger>
+                  <TabsTrigger value="upload">
+                    <Upload className="mr-2 h-4 w-4" />
+                    Upload Video
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="url" className="space-y-2">
+                  <div className="relative">
+                    <Input
+                      id="videoUrl"
+                      required={uploadMethod === "url"}
+                      type="url"
+                      value={formData.videoUrl}
+                      onChange={(e) => handleUrlChange(e.target.value)}
+                      placeholder="https://youtube.com/watch?v=..."
+                      className={formData.videoUrl && uploadMethod === "url" ? "pr-24" : ""}
+                    />
+                    {formData.videoUrl && uploadMethod === "url" && (
+                      <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2 text-sm text-muted-foreground">
+                        {getSourceIcon()}
+                        <span>{getSourceLabel()}</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Supported: YouTube, Vimeo, Google Drive, Dropbox, Streamable, or direct MP4/WebM links
-              </p>
+                  <p className="text-xs text-muted-foreground">
+                    Supported: YouTube, Vimeo, Google Drive, Dropbox, Streamable, or direct MP4/WebM links
+                  </p>
+                </TabsContent>
+
+                <TabsContent value="upload" className="space-y-2">
+                  {hasUploadedVideo ? (
+                    <div className="rounded-lg border bg-muted/50 p-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Cloud className="h-4 w-4 text-green-600" />
+                        <span className="font-medium">Video Uploaded Successfully</span>
+                      </div>
+                      {formData.thumbnailUrl && (
+                        <img
+                          src={formData.thumbnailUrl}
+                          alt="Video thumbnail"
+                          className="mt-2 h-24 w-auto rounded"
+                        />
+                      )}
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        Duration: {formData.duration || "Processing..."} |
+                        Size: {formData.fileSize ? `${(formData.fileSize / 1024 / 1024).toFixed(1)} MB` : "N/A"}
+                      </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="mt-2"
+                        onClick={() => {
+                          setHasUploadedVideo(false)
+                          setFormData({...formData, cloudinaryPublicId: "", cloudinaryUrl: "", videoUrl: "", thumbnailUrl: ""})
+                        }}
+                      >
+                        Upload Different Video
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <CloudinaryUploadWidget
+                        onUploadSuccess={handleCloudinaryUpload}
+                        buttonText="Select Video to Upload"
+                        maxFileSize={25 * 1024 * 1024}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Maximum file size: 25MB. Supported formats: MP4, WebM, MOV, AVI, MKV
+                      </p>
+                    </>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
 
             <div className="space-y-2">
