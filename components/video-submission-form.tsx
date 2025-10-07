@@ -15,29 +15,6 @@ import { CloudinaryUploadWidget } from "@/components/cloudinary-upload-widget"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function VideoSubmissionForm() {
-  // Hidden form for Netlify form detection
-  const HiddenNetlifyForm = () => (
-    <form name="video-submission" data-netlify="true" hidden>
-      <input type="hidden" name="form-name" value="video-submission" />
-      <input type="text" name="title" />
-      <textarea name="description" />
-      <input type="text" name="category" />
-      <input type="text" name="creatorName" />
-      <input type="email" name="contactEmail" />
-      <input type="url" name="videoUrl" />
-      <input type="text" name="duration" />
-      <input type="text" name="twitter" />
-      <input type="text" name="instagram" />
-      <input type="url" name="website" />
-      <textarea name="additionalNotes" />
-      <input type="text" name="cloudinaryPublicId" />
-      <input type="url" name="cloudinaryUrl" />
-      <input type="text" name="thumbnailUrl" />
-      <input type="number" name="fileSize" />
-      <input type="text" name="videoFormat" />
-      <input type="text" name="sourceType" />
-    </form>
-  )
 
   const [formData, setFormData] = useState({
     title: "",
@@ -197,9 +174,7 @@ export function VideoSubmissionForm() {
   }
 
   return (
-    <>
-      <HiddenNetlifyForm />
-      <Card>
+    <Card>
       <CardHeader>
         <CardTitle>Video Submission Form</CardTitle>
         <CardDescription>
@@ -455,6 +430,5 @@ export function VideoSubmissionForm() {
         </form>
       </CardContent>
     </Card>
-    </>
   )
 }
