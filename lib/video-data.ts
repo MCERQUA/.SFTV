@@ -99,6 +99,14 @@ export const musicVideoCommercials = [
 
 export const funnyClips = [
   {
+    id: 20,
+    title: "Allstate Cozy Royalites",
+    thumbnail: "/thumbnails/funny-clips/Allstate-Cozy-royalites.jpg",
+    videoPath: "/videos/funny-clips/Allstate-Cozy-royalites.mp4",
+    category: "Comedy",
+    duration: "0:17"
+  },
+  {
     id: 12,
     title: "Breaking Batts",
     thumbnail: "/thumbnails/funny-clips/breaking-batts.jpg",
