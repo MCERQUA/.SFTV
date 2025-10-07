@@ -209,6 +209,15 @@ The `components/ui/` directory contains base primitives. Modify carefully as the
 - PostgreSQL database configured via Netlify DB
 - Session cookies for view tracking
 
+## Important Build Notes
+
+### Netlify Forms Migration (Critical)
+**DO NOT USE** `data-netlify` attributes or Netlify Forms with Next.js runtime v5+
+- The `@netlify/plugin-nextjs@5` does NOT support traditional Netlify Forms
+- Using `data-netlify="true"` will cause build failures with error: "Failed assembling prerendered content for upload"
+- Forms should use API routes or edge functions instead
+- Hidden forms for Netlify form detection are NOT compatible with the current runtime
+
 ## Future Integration Points
 - Real streaming player integration in LiveHero component
 - CMS/API for dynamic content (replacing static arrays)
