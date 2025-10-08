@@ -4,6 +4,7 @@ import { SchedulePreview } from "@/components/schedule-preview"
 import { ContentCarousel } from "@/components/content-carousel"
 import { CTASection } from "@/components/cta-section"
 import { JamEditorBanner } from "@/components/jam-editor-banner"
+import { SprayFoamRadioBanner } from "@/components/sprayfoam-radio-banner"
 import { Footer } from "@/components/footer"
 import { FloatingUploadButton } from "@/components/floating-upload-button"
 import { commercialShorts, commercialsLonger, musicVideoCommercials, funnyClips, upcomingShows } from "@/lib/video-data"
@@ -17,6 +18,7 @@ export default function HomePage() {
         <SchedulePreview />
         <ContentCarousel title="Commercial Shorts" items={commercialShorts} />
         <ContentCarousel title="Commercials Longer" items={commercialsLonger} />
+        <SprayFoamRadioBanner />
         <ContentCarousel title="Music Video Commercials" items={musicVideoCommercials} />
         <ContentCarousel title="Funny Clips" items={funnyClips} />
         <ContentCarousel title="Shows/Cartoons" items={upcomingShows} comingSoon={true} />
