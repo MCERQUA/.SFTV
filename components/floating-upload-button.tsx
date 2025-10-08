@@ -38,11 +38,10 @@ export function FloatingUploadButton() {
 
       <Button
         size="lg"
-        className="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-110 hover:bg-primary/90 md:h-auto md:w-auto md:rounded-md md:px-6"
+        className="h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-110 hover:bg-primary/90"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <Upload className="h-5 w-5 md:mr-2" />
-        <span className="hidden md:inline">Upload Video</span>
+        <Upload className="h-5 w-5" />
       </Button>
     </div>
   )
