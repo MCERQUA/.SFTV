@@ -241,7 +241,7 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  const itemsPerPage = isMobile ? 2 : 4
+  const itemsPerPage = isMobile ? 5 : 4
 
   const handlePrev = () => {
     setStartIndex(Math.max(0, startIndex - itemsPerPage))
