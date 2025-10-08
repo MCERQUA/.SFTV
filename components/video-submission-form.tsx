@@ -88,7 +88,7 @@ export function VideoSubmissionForm() {
       }
 
       // Option 1: Try Netlify Forms first (more reliable)
-      const useNetlifyForms = true // Set to false to use custom function
+      const useNetlifyForms = false // Set to false to use custom function
 
       if (useNetlifyForms && typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
         // Submit to Netlify Forms
