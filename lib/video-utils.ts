@@ -115,12 +115,9 @@ export function getThumbnailUrl(url: string, sourceType: VideoSourceType): strin
 }
 
 export const videoCategories = [
-  { value: 'commercial-short', label: 'Commercial Short (Under 60s)' },
-  { value: 'commercial-long', label: 'Commercial (Over 60s)' },
-  { value: 'music-video', label: 'Music Video Commercial' },
-  { value: 'funny-clip', label: 'Funny Clip' },
-  { value: 'educational', label: 'Educational Content' },
-  { value: 'documentary', label: 'Documentary' },
-  { value: 'testimonial', label: 'Customer Testimonial' },
-  { value: 'other', label: 'Other' }
+  { value: 'commercial-shorts', label: 'Commercial Shorts' },
+  { value: 'commercials-longer', label: 'Commercials Longer' },
+  { value: 'music-video-commercials', label: 'Music Video Commercials' },
+  { value: 'funny-clips', label: 'Funny Clips' },
+  { value: 'shows-cartoons', label: 'Shows/Cartoons' }
 ]
