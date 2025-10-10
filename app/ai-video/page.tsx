@@ -235,7 +235,9 @@ export default function AIVideoPage() {
   }
 
   return (
-    <div className="flex h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
+      <Header />
+      <div className="flex h-[calc(100vh-64px)] bg-background text-foreground">
       {/* Sidebar */}
       <div className="w-80 bg-card border-r border-border flex flex-col">
         {/* Header */}
@@ -488,6 +490,7 @@ export default function AIVideoPage() {
             </p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )
