@@ -153,7 +153,9 @@ export default function ChannelPage({ params }: ChannelPageProps) {
           <div
             className="w-full h-full bg-gradient-to-r from-primary/30 via-background to-secondary/30"
             style={{
-              backgroundImage: `url(/companies/${company.slug}/hero/hero-image.jpg)`,
+              backgroundImage: company.slug === 'allstate-spray-foam'
+                ? `url(/companies/${company.slug}/hero/allstate-spftv-banner.png)`
+                : `url(/companies/${company.slug}/hero/hero-image.jpg)`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
@@ -170,7 +172,9 @@ export default function ChannelPage({ params }: ChannelPageProps) {
             <div className="flex-shrink-0">
               <div className="w-24 h-24 md:w-32 md:h-32 bg-card/80 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center overflow-hidden">
                 <img
-                  src={`/companies/${company.slug}/logo/logo.png`}
+                  src={company.slug === 'allstate-spray-foam'
+                    ? `/companies/${company.slug}/logo/Asset 1.png`
+                    : `/companies/${company.slug}/logo/logo.png`}
                   alt={`${company.name} Logo`}
                   className="w-20 h-20 md:w-28 md:h-28 object-contain"
                   onError={(e) => {

@@ -73,7 +73,9 @@ export default function ChannelsPage() {
                 <div
                   className="w-full h-full bg-gradient-to-br from-primary/30 via-muted to-secondary/30 group-hover:scale-105 transition-transform duration-300"
                   style={{
-                    backgroundImage: `url(/companies/${company.slug}/hero/hero-image.jpg)`,
+                    backgroundImage: company.slug === 'allstate-spray-foam'
+                      ? `url(/companies/${company.slug}/hero/allstate-spftv-banner.png)`
+                      : `url(/companies/${company.slug}/hero/hero-image.jpg)`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                   }}
@@ -83,7 +85,9 @@ export default function ChannelsPage() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-card/90 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center overflow-hidden">
                     <img
-                      src={`/companies/${company.slug}/logo/logo.png`}
+                      src={company.slug === 'allstate-spray-foam'
+                        ? `/companies/${company.slug}/logo/Asset 1.png`
+                        : `/companies/${company.slug}/logo/logo.png`}
                       alt={`${company.name} Logo`}
                       className="w-12 h-12 object-contain"
                       onError={(e) => {
