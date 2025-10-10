@@ -7,16 +7,32 @@ export default function CompaniesPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Company Channels
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Discover spray foam contractors and their video content
-          </p>
+
+      {/* Hero Section */}
+      <div className="relative h-80 overflow-hidden mb-12">
+        {/* Background Video/Image */}
+        <div className="absolute inset-0">
+          <div className="w-full h-full bg-gradient-to-r from-primary/30 via-background to-secondary/30"></div>
+          {/* <video className="w-full h-full object-cover" autoPlay muted loop src="/hero-video.mp4" /> */}
         </div>
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/60"></div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+              Company Channels
+            </h1>
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
+              Discover spray foam contractors and their video content
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 pb-8">
 
         {/* Search and Filters */}
         <div className="mb-8 flex flex-col md:flex-row gap-4">
@@ -39,63 +55,42 @@ export default function CompaniesPage() {
           </select>
         </div>
 
-        {/* Company Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {/* Company Card Template */}
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors group">
-              {/* Square Hero Image/Video Area */}
+        {/* Company Grid - Square Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[
+            { name: "Acme Spray Foam", location: "Texas", videos: 23 },
+            { name: "Premium Insulation Co", location: "Florida", videos: 18 },
+            { name: "Elite Foam Services", location: "California", videos: 31 },
+            { name: "Pro Spray Solutions", location: "New York", videos: 15 },
+            { name: "Advanced Foam Tech", location: "Georgia", videos: 27 },
+            { name: "Superior Insulation", location: "Ohio", videos: 12 }
+          ].map((company, i) => (
+            <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 group cursor-pointer">
+              {/* Square Hero Area */}
               <div className="relative aspect-square overflow-hidden">
-                {/* Background Image/Video Placeholder */}
-                <div className="w-full h-full bg-gradient-to-br from-primary/20 via-muted to-secondary/20"></div>
+                {/* Background - can be replaced with actual company image/video */}
+                <div className="w-full h-full bg-gradient-to-br from-primary/30 via-muted to-secondary/30 group-hover:scale-105 transition-transform duration-300"></div>
 
-                {/* Optional: Video background for company cards */}
-                {/* <video
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  autoPlay
-                  muted
-                  loop
-                  src={`/company-videos/company-${i}-hero.mp4`}
-                /> */}
-
-                {/* Optional: Image background for company cards */}
-                {/* <img
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  src={`/company-images/company-${i}-hero.jpg`}
-                  alt={`Company ${i} Background`}
-                /> */}
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors"></div>
-
-                {/* Company Logo/Avatar Overlay */}
-                <div className="absolute bottom-4 left-4">
-                  <div className="w-12 h-12 bg-card/80 backdrop-blur-sm border border-border rounded-lg"></div>
+                {/* Company Logo/Avatar */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-card/90 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center">
+                    <span className="text-lg font-bold text-foreground">{company.name.charAt(0)}</span>
+                  </div>
                 </div>
 
-                {/* Stats Overlay */}
-                <div className="absolute top-4 right-4 text-right">
-                  <div className="text-white text-xs bg-black/50 backdrop-blur-sm px-2 py-1 rounded">
-                    📺 {Math.floor(Math.random() * 50) + 5} Videos
+                {/* Video Count Badge */}
+                <div className="absolute top-3 right-3">
+                  <div className="bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md">
+                    📺 {company.videos}
                   </div>
                 </div>
               </div>
 
-              {/* Card Content */}
-              <div className="p-4">
-                <h3 className="font-bold text-foreground mb-1 line-clamp-1">Company Name {i}</h3>
-                <p className="text-sm text-muted-foreground mb-3">Location {i}</p>
-
-                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">
-                  Professional spray foam insulation services and solutions.
-                </p>
-
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                  <span>👁️ {(Math.floor(Math.random() * 500) + 100).toLocaleString()} Views</span>
-                  <span>⭐ {(Math.random() * 2 + 3).toFixed(1)}</span>
-                </div>
-
-                <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
+              {/* Card Info */}
+              <div className="p-3">
+                <h3 className="font-semibold text-foreground text-sm mb-1 truncate">{company.name}</h3>
+                <p className="text-xs text-muted-foreground mb-2">{company.location}</p>
+                <button className="w-full bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground text-xs py-2 rounded-md transition-all duration-200">
                   View Channel
                 </button>
               </div>
