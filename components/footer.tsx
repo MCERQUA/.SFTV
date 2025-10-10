@@ -22,6 +22,11 @@ export function Footer() {
             <h4 className="font-mono font-semibold">Watch</h4>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link href="/channels" className="text-muted-foreground transition-colors hover:text-foreground">
+                  Channels
+                </Link>
+              </li>
+              <li>
                 <Link href="/schedule" className="text-muted-foreground transition-colors hover:text-foreground">
                   Schedule
                 </Link>

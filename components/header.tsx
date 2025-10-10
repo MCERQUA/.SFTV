@@ -22,6 +22,12 @@ export function Header() {
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link
+              href="/channels"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Channels
+            </Link>
+            <Link
               href="/schedule"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
@@ -69,6 +75,13 @@ export function Header() {
       {isMenuOpen && (
         <div className="md:hidden border-t border-border bg-background">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-2">
+            <Link
+              href="/channels"
+              onClick={() => setIsMenuOpen(false)}
+              className="block py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Channels
+            </Link>
             <Link
               href="/schedule"
               onClick={() => setIsMenuOpen(false)}
