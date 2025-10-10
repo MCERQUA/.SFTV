@@ -5,7 +5,7 @@ import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import { AlertCircle, Plus, Send, Image as ImageIcon, Trash2, MessageSquare } from "lucide-react"
+import { AlertCircle, Plus, Send, Image as ImageIcon, Trash2, MessageSquare, History, Images, Video, ChevronLeft, ChevronRight } from "lucide-react"
 
 interface ChatMessage {
   id: string
@@ -34,10 +34,12 @@ export default function AIVideoPage() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [activeTab, setActiveTab] = useState<'history' | 'images' | 'videos'>('history')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Load sessions from localStorage on mount
+  // Load sessions from localStorage on mount and set initial sidebar state
   useEffect(() => {
     const savedSessions = localStorage.getItem('ai-video-sessions')
     if (savedSessions) {
@@ -52,6 +54,15 @@ export default function AIVideoPage() {
       }))
       setSessions(parsedSessions)
     }
+
+    // Close sidebar on mobile by default
+    const checkMobile = () => {
+      setSidebarOpen(window.innerWidth >= 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   // Auto-scroll to bottom when new messages are added
@@ -237,60 +248,142 @@ export default function AIVideoPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      <div className="flex h-[calc(100vh-64px)] bg-background text-foreground">
-      {/* Sidebar */}
-      <div className="w-80 bg-card border-r border-border flex flex-col">
-        {/* Header */}
-        <div className="p-4 border-b border-border">
-          <Button
-            onClick={createNewSession}
-            className="w-full justify-start gap-2"
-            variant="outline"
-          >
-            <Plus className="h-4 w-4" />
-            New Video Chat
-          </Button>
-        </div>
+      <div className="flex h-[calc(100vh-64px)] bg-background text-foreground relative">
+        {/* Sidebar */}
+        <div className={`${
+          sidebarOpen ? 'w-80' : 'w-0'
+        } bg-card border-r border-border flex flex-col transition-all duration-300 overflow-hidden relative`}>
 
-        {/* Session History */}
-        <div className="flex-1 overflow-y-auto p-2">
-          <div className="space-y-1">
-            {sessions.map((session) => (
-              <div
-                key={session.id}
-                className={`group flex items-center gap-2 p-3 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
-                  currentSessionId === session.id ? 'bg-muted' : ''
-                }`}
-                onClick={() => loadSession(session.id)}
-              >
-                <MessageSquare className="h-4 w-4 text-muted-foreground" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{session.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {session.updatedAt.toLocaleDateString()}
-                  </p>
-                </div>
+          {/* Tab Icons Header */}
+          <div className="p-4 border-b border-border">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex gap-1">
                 <Button
                   size="sm"
-                  variant="ghost"
-                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    deleteSession(session.id)
-                  }}
+                  variant={activeTab === 'history' ? 'default' : 'ghost'}
+                  onClick={() => setActiveTab('history')}
+                  className="h-8 w-8 p-0"
                 >
-                  <Trash2 className="h-3 w-3" />
+                  <History className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant={activeTab === 'images' ? 'default' : 'ghost'}
+                  onClick={() => setActiveTab('images')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Images className="h-4 w-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant={activeTab === 'videos' ? 'default' : 'ghost'}
+                  onClick={() => setActiveTab('videos')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Video className="h-4 w-4" />
                 </Button>
               </div>
-            ))}
+            </div>
+
+            {activeTab === 'history' && (
+              <Button
+                onClick={createNewSession}
+                className="w-full justify-start gap-2"
+                variant="outline"
+              >
+                <Plus className="h-4 w-4" />
+                New Video Chat
+              </Button>
+            )}
+          </div>
+
+          {/* Content Area */}
+          <div className="flex-1 overflow-y-auto p-2">
+            {activeTab === 'history' && (
+              <div className="space-y-1">
+                {sessions.map((session) => (
+                  <div
+                    key={session.id}
+                    className={`group flex items-center gap-2 p-3 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
+                      currentSessionId === session.id ? 'bg-muted' : ''
+                    }`}
+                    onClick={() => loadSession(session.id)}
+                  >
+                    <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{session.title}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {session.updatedAt.toLocaleDateString()}
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        deleteSession(session.id)
+                      }}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {activeTab === 'images' && (
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground">Image Assets</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Placeholder for future image gallery */}
+                  <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
+                    <Images className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
+                    <Images className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">Uploaded images will appear here</p>
+              </div>
+            )}
+
+            {activeTab === 'videos' && (
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-muted-foreground">Video Assets</h3>
+                <div className="space-y-2">
+                  {/* Placeholder for future video gallery */}
+                  <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center">
+                    <Video className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">Generated videos will appear here</p>
+              </div>
+            )}
+          </div>
+
+          {/* App Info */}
+          <div className="p-4 border-t border-border text-center">
+            <p className="text-xs text-muted-foreground">SprayFoam TV AI Video Generator</p>
           </div>
         </div>
 
-        {/* App Info */}
-        <div className="p-4 border-t border-border text-center">
-          <p className="text-xs text-muted-foreground">SprayFoam TV AI Video Generator</p>
+        {/* Collapsible Tab */}
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
+          <Button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            size="sm"
+            className={`h-16 w-6 rounded-r-lg rounded-l-none p-0 bg-primary hover:bg-primary/90 border-l-0 transition-all duration-300 ${
+              sidebarOpen ? 'translate-x-80' : 'translate-x-0'
+            }`}
+          >
+            {sidebarOpen ? (
+              <ChevronLeft className="h-4 w-4 text-primary-foreground" />
+            ) : (
+              <ChevronRight className="h-4 w-4 text-primary-foreground" />
+            )}
+          </Button>
         </div>
-      </div>
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
