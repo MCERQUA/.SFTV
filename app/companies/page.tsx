@@ -58,12 +58,13 @@ export default function CompaniesPage() {
         {/* Company Grid - Square Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            { name: "Acme Spray Foam", location: "Texas", videos: 23 },
-            { name: "Premium Insulation Co", location: "Florida", videos: 18 },
-            { name: "Elite Foam Services", location: "California", videos: 31 },
-            { name: "Pro Spray Solutions", location: "New York", videos: 15 },
-            { name: "Advanced Foam Tech", location: "Georgia", videos: 27 },
-            { name: "Superior Insulation", location: "Ohio", videos: 12 }
+            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 8 },
+            { name: "On The Mark Spray Foam", location: "Regional", videos: 12 },
+            { name: "Kool Foam", location: "Southwest", videos: 15 },
+            { name: "Cortez Industries", location: "Arizona", videos: 6 },
+            { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 9 },
+            { name: "Noble Insulation", location: "Regional", videos: 7 },
+            { name: "Mad Dog SprayFoam", location: "Regional", videos: 5 }
           ].map((company, i) => (
             <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 group cursor-pointer">
               {/* Square Hero Area */}
