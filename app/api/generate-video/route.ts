@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     console.log('Starting direct video generation...')
 
     try {
-      const { HfInference } = await import('@huggingface/inference')
+      const { InferenceClient } = await import('@huggingface/inference')
       const apiKey = process.env.HF_TOKEN
 
       if (!apiKey) {
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         )
       }
 
-      const client = new HfInference(apiKey)
+      const client = new InferenceClient(apiKey)
 
       // Convert image file to buffer for Ovi
       const imageBuffer = await imageFile.arrayBuffer()
@@ -137,7 +137,7 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
       tempJobs.set(jobId, job)
     }
 
-    const { HfInference } = await import('@huggingface/inference')
+    const { InferenceClient } = await import('@huggingface/inference')
     const apiKey = process.env.HF_TOKEN
 
     if (!apiKey) {
@@ -150,7 +150,7 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
       return
     }
 
-    const client = new HfInference(apiKey)
+    const client = new InferenceClient(apiKey)
 
     // Convert image file to buffer for Ovi
     const imageBuffer = await imageFile.arrayBuffer()
