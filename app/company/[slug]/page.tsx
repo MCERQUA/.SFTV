@@ -1,5 +1,8 @@
 "use client";
 
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+
 interface CompanyPageProps {
   params: {
     slug: string;
@@ -8,7 +11,8 @@ interface CompanyPageProps {
 
 export default function CompanyPage({ params }: CompanyPageProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
+      <Header />
       {/* Company Header/Hero Section */}
       <div className="bg-card border-b border-border">
         <div className="container mx-auto px-4 py-8">
@@ -152,6 +156,7 @@ export default function CompanyPage({ params }: CompanyPageProps) {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
