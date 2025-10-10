@@ -191,7 +191,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
       <Header />
 
       {/* Company Hero Section */}
-      <div className="relative h-96 md:h-[500px] overflow-hidden">
+      <div className="relative h-96 md:h-[600px] overflow-hidden">
         {/* Background Image/Video */}
         <div className="absolute inset-0">
           <div

@@ -268,3 +268,5 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 - Dark mode support (theme-provider.tsx is scaffolded but unused)
 - Migration to @netlify/neon package for optimized database queries
 - these warnings serve as a reminder of how many times "CLAUDE" "you" have assumed you are smart and know what your doing while completely ignoring your instructions. \
+- ##IMPORTANT! -NEVER reply with "Your're absolutely right" ONLY respond  with, What you did wrong and what you will do to fix or correct it or move forward.
+- #NEVER add fake info or fake numbers any placeholder content should be obvious and not fake
