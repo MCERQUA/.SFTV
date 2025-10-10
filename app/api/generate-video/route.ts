@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createVideoJob, initDatabase } from '@/lib/db'
+
+// Temporary in-memory storage as fallback
+const tempJobs = new Map<string, {
+  id: string
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  progress: number
+  result?: string
+  error?: string
+  createdAt: Date
+}>()
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('Starting async video generation...')
-
-    // Initialize database
-    await initDatabase()
+    console.log('Starting video generation...')
 
     const formData = await request.formData()
     const prompt = formData.get('prompt') as string
@@ -29,28 +35,87 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Create a new job
-    const jobId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
-    console.log('Generated job ID:', jobId)
+    // For now, try direct generation instead of async to avoid database issues
+    console.log('Starting direct video generation...')
 
-    const created = await createVideoJob(jobId, prompt)
-    if (!created) {
-      console.log('Failed to create job in database')
+    try {
+      const { HfInference } = await import('@huggingface/inference')
+      const apiKey = process.env.HF_TOKEN
+
+      if (!apiKey) {
+        return NextResponse.json(
+          { error: 'Hugging Face API key not configured' },
+          { status: 500 }
+        )
+      }
+
+      const client = new HfInference(apiKey)
+
+      // Convert image file to blob
+      const imageBuffer = await imageFile.arrayBuffer()
+      const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
+
+      console.log('Calling HuggingFace API...')
+
+      // Call HuggingFace API with timeout
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Generation timeout - taking too long')), 30000) // 30 second timeout for testing
+      })
+
+      const apiCallPromise = client.imageToVideo({
+        inputs: imageBlob,
+        model: "chetwinlow1/Ovi",
+        parameters: {
+          prompt: prompt,
+        }
+      })
+
+      const video = await Promise.race([apiCallPromise, timeoutPromise])
+
+      // Convert video to base64
+      const videoBuffer = await (video as any).arrayBuffer()
+      const base64Video = Buffer.from(videoBuffer).toString('base64')
+      const videoDataUrl = `data:video/mp4;base64,${base64Video}`
+
+      console.log('Video generated successfully')
+
+      return NextResponse.json({
+        success: true,
+        videoUrl: videoDataUrl,
+        message: 'Video generated successfully'
+      })
+
+    } catch (hfError: any) {
+      console.error('HuggingFace error:', hfError)
+
+      if (hfError.message?.includes('timeout')) {
+        // If timeout, create async job
+        const jobId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
+        console.log('Creating async job due to timeout:', jobId)
+
+        tempJobs.set(jobId, {
+          id: jobId,
+          status: 'pending',
+          progress: 0,
+          createdAt: new Date()
+        })
+
+        // Start background processing
+        processVideoGenerationAsync(jobId, prompt, imageFile)
+
+        return NextResponse.json({
+          async: true,
+          jobId: jobId,
+          status: 'pending',
+          message: 'Video generation is taking longer - processing in background'
+        })
+      }
+
       return NextResponse.json(
-        { error: 'Failed to create job' },
+        { error: `Failed to generate video: ${hfError.message}` },
         { status: 500 }
       )
     }
-
-    // Start video generation asynchronously
-    processVideoGeneration(jobId, prompt, imageFile)
-
-    return NextResponse.json({
-      async: true,
-      jobId: jobId,
-      status: 'pending',
-      message: 'Video generation started. Use the jobId to check progress.'
-    })
 
   } catch (error) {
     console.error('Video generation error:', error)
@@ -61,18 +126,26 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function processVideoGeneration(jobId: string, prompt: string, imageFile: File) {
-  const { updateVideoJob } = await import('@/lib/db')
-
+async function processVideoGenerationAsync(jobId: string, prompt: string, imageFile: File) {
   try {
     // Update job status to processing
-    await updateVideoJob(jobId, 'processing', 10)
+    const job = tempJobs.get(jobId)
+    if (job) {
+      job.status = 'processing'
+      job.progress = 10
+      tempJobs.set(jobId, job)
+    }
 
     const { HfInference } = await import('@huggingface/inference')
     const apiKey = process.env.HF_TOKEN
 
     if (!apiKey) {
-      await updateVideoJob(jobId, 'failed', undefined, undefined, 'Hugging Face API key not configured')
+      const job = tempJobs.get(jobId)
+      if (job) {
+        job.status = 'failed'
+        job.error = 'Hugging Face API key not configured'
+        tempJobs.set(jobId, job)
+      }
       return
     }
 
@@ -82,7 +155,11 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
     const imageBuffer = await imageFile.arrayBuffer()
     const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
 
-    await updateVideoJob(jobId, 'processing', 30)
+    const job2 = tempJobs.get(jobId)
+    if (job2) {
+      job2.progress = 30
+      tempJobs.set(jobId, job2)
+    }
 
     console.log(`Processing video generation for job ${jobId}`)
 
@@ -95,7 +172,11 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
       }
     })
 
-    await updateVideoJob(jobId, 'processing', 80)
+    const job3 = tempJobs.get(jobId)
+    if (job3) {
+      job3.progress = 80
+      tempJobs.set(jobId, job3)
+    }
 
     // Convert video to base64
     const videoBuffer = await (video as any).arrayBuffer()
@@ -103,12 +184,26 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
     const videoDataUrl = `data:video/mp4;base64,${base64Video}`
 
     // Job completed successfully
-    await updateVideoJob(jobId, 'completed', 100, videoDataUrl)
+    const finalJob = tempJobs.get(jobId)
+    if (finalJob) {
+      finalJob.status = 'completed'
+      finalJob.progress = 100
+      finalJob.result = videoDataUrl
+      tempJobs.set(jobId, finalJob)
+    }
 
     console.log(`Video generation completed for job ${jobId}`)
 
   } catch (error: any) {
     console.error(`Video generation failed for job ${jobId}:`, error)
-    await updateVideoJob(jobId, 'failed', undefined, undefined, error.message || 'Unknown error occurred')
+    const job = tempJobs.get(jobId)
+    if (job) {
+      job.status = 'failed'
+      job.error = error.message || 'Unknown error occurred'
+      tempJobs.set(jobId, job)
+    }
   }
 }
+
+// Export temp jobs for access from video-jobs route
+export { tempJobs }

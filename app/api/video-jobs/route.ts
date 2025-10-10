@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getVideoJob, createVideoJob, updateVideoJob, initDatabase } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -13,7 +12,10 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const job = await getVideoJob(jobId)
+    // Try to import temp jobs from generate-video route
+    const { tempJobs } = await import('../generate-video/route')
+
+    const job = tempJobs.get(jobId)
     if (!job) {
       return NextResponse.json(
         { error: 'Job not found' },
@@ -21,7 +23,15 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(job)
+    return NextResponse.json({
+      id: job.id,
+      status: job.status,
+      progress: job.progress,
+      result: job.result,
+      error: job.error,
+      createdAt: job.createdAt,
+      updatedAt: new Date() // Since we don't track this in temp storage
+    })
   } catch (error) {
     console.error('Error getting video job:', error)
     return NextResponse.json(
