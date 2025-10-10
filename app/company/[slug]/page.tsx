@@ -13,24 +13,49 @@ export default function CompanyPage({ params }: CompanyPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
-      {/* Company Header/Hero Section */}
-      <div className="bg-card border-b border-border">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row gap-6">
+
+      {/* Company Hero Section with Background */}
+      <div className="relative h-80 overflow-hidden">
+        {/* Background Image/Video Container */}
+        <div className="absolute inset-0">
+          {/* Placeholder for background image/video */}
+          <div className="w-full h-full bg-gradient-to-r from-primary/20 via-background to-secondary/20"></div>
+          {/* Optional: Video background */}
+          {/* <video
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            src="/company-videos/company-hero.mp4"
+          /> */}
+          {/* Optional: Image background */}
+          {/* <img
+            className="w-full h-full object-cover"
+            src="/company-images/company-hero.jpg"
+            alt="Company Background"
+          /> */}
+        </div>
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+          <div className="flex flex-col md:flex-row items-center gap-6 w-full">
             {/* Company Logo/Avatar */}
             <div className="flex-shrink-0">
-              <div className="w-32 h-32 bg-muted rounded-lg"></div>
+              <div className="w-24 h-24 md:w-32 md:h-32 bg-card/80 backdrop-blur-sm border border-border rounded-lg"></div>
             </div>
 
             {/* Company Info */}
-            <div className="flex-1">
-              <h1 className="text-3xl font-bold text-foreground mb-2">
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">
                 Company Name
               </h1>
-              <p className="text-muted-foreground mb-4">
-                Company description and tagline goes here
+              <p className="text-gray-200 mb-4 text-lg">
+                Professional spray foam insulation services
               </p>
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+              <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-300">
                 <span>📍 Location</span>
                 <span>📞 Phone</span>
                 <span>🌐 Website</span>
@@ -40,10 +65,10 @@ export default function CompanyPage({ params }: CompanyPageProps) {
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-2">
-              <button className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90">
+              <button className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 font-semibold">
                 Contact Company
               </button>
-              <button className="px-6 py-2 border border-border text-foreground rounded-lg hover:bg-accent">
+              <button className="px-6 py-3 border border-white/30 text-white rounded-lg hover:bg-white/10 backdrop-blur-sm">
                 Subscribe
               </button>
             </div>

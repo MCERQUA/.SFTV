@@ -40,29 +40,62 @@ export default function CompaniesPage() {
         </div>
 
         {/* Company Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {/* Company Card Template */}
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors">
-              <div className="p-6">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 bg-muted rounded-lg flex-shrink-0"></div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-foreground truncate">Company Name {i}</h3>
-                    <p className="text-sm text-muted-foreground">Location</p>
-                  </div>
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-colors group">
+              {/* Square Hero Image/Video Area */}
+              <div className="relative aspect-square overflow-hidden">
+                {/* Background Image/Video Placeholder */}
+                <div className="w-full h-full bg-gradient-to-br from-primary/20 via-muted to-secondary/20"></div>
+
+                {/* Optional: Video background for company cards */}
+                {/* <video
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  autoPlay
+                  muted
+                  loop
+                  src={`/company-videos/company-${i}-hero.mp4`}
+                /> */}
+
+                {/* Optional: Image background for company cards */}
+                {/* <img
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  src={`/company-images/company-${i}-hero.jpg`}
+                  alt={`Company ${i} Background`}
+                /> */}
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors"></div>
+
+                {/* Company Logo/Avatar Overlay */}
+                <div className="absolute bottom-4 left-4">
+                  <div className="w-12 h-12 bg-card/80 backdrop-blur-sm border border-border rounded-lg"></div>
                 </div>
 
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  Brief company description and services offered.
+                {/* Stats Overlay */}
+                <div className="absolute top-4 right-4 text-right">
+                  <div className="text-white text-xs bg-black/50 backdrop-blur-sm px-2 py-1 rounded">
+                    📺 {Math.floor(Math.random() * 50) + 5} Videos
+                  </div>
+                </div>
+              </div>
+
+              {/* Card Content */}
+              <div className="p-4">
+                <h3 className="font-bold text-foreground mb-1 line-clamp-1">Company Name {i}</h3>
+                <p className="text-sm text-muted-foreground mb-3">Location {i}</p>
+
+                <p className="text-xs text-muted-foreground mb-4 line-clamp-2">
+                  Professional spray foam insulation services and solutions.
                 </p>
 
                 <div className="flex items-center justify-between text-xs text-muted-foreground mb-4">
-                  <span>📺 X Videos</span>
-                  <span>👁️ X Views</span>
+                  <span>👁️ {(Math.floor(Math.random() * 500) + 100).toLocaleString()} Views</span>
+                  <span>⭐ {(Math.random() * 2 + 3).toFixed(1)}</span>
                 </div>
 
-                <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+                <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium">
                   View Channel
                 </button>
               </div>
