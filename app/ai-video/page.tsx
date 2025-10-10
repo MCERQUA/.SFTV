@@ -1,22 +1,70 @@
 "use client";
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { AlertCircle, Play, Download, Sparkles } from "lucide-react"
+import { AlertCircle, Plus, Send, Image as ImageIcon, Trash2, MessageSquare } from "lucide-react"
+
+interface ChatMessage {
+  id: string
+  type: 'user' | 'assistant'
+  content: string
+  image?: string
+  video?: string
+  timestamp: Date
+}
+
+interface ChatSession {
+  id: string
+  title: string
+  messages: ChatMessage[]
+  createdAt: Date
+  updatedAt: Date
+}
 
 export default function AIVideoPage() {
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null)
+  const [sessions, setSessions] = useState<ChatSession[]>([])
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [prompt, setPrompt] = useState("")
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [generatedVideo, setGeneratedVideo] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Load sessions from localStorage on mount
+  useEffect(() => {
+    const savedSessions = localStorage.getItem('ai-video-sessions')
+    if (savedSessions) {
+      const parsedSessions = JSON.parse(savedSessions).map((session: any) => ({
+        ...session,
+        createdAt: new Date(session.createdAt),
+        updatedAt: new Date(session.updatedAt),
+        messages: session.messages.map((msg: any) => ({
+          ...msg,
+          timestamp: new Date(msg.timestamp)
+        }))
+      }))
+      setSessions(parsedSessions)
+    }
+  }, [])
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+  // Save sessions to localStorage whenever sessions change
+  useEffect(() => {
+    if (sessions.length > 0) {
+      localStorage.setItem('ai-video-sessions', JSON.stringify(sessions))
+    }
+  }, [sessions])
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -27,6 +75,66 @@ export default function AIVideoPage() {
         setImagePreview(e.target?.result as string)
       }
       reader.readAsDataURL(file)
+    }
+  }
+
+  const createNewSession = () => {
+    const newSessionId = Date.now().toString()
+    const newSession: ChatSession = {
+      id: newSessionId,
+      title: "New Video Chat",
+      messages: [],
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    setSessions(prev => [newSession, ...prev])
+    setCurrentSessionId(newSessionId)
+    setMessages([])
+    setSelectedImage(null)
+    setImagePreview(null)
+  }
+
+  const loadSession = (sessionId: string) => {
+    const session = sessions.find(s => s.id === sessionId)
+    if (session) {
+      setCurrentSessionId(sessionId)
+      setMessages(session.messages)
+    }
+  }
+
+  const deleteSession = (sessionId: string) => {
+    setSessions(prev => prev.filter(s => s.id !== sessionId))
+    if (currentSessionId === sessionId) {
+      setCurrentSessionId(null)
+      setMessages([])
+    }
+  }
+
+  const updateSessionTitle = (sessionId: string, title: string) => {
+    setSessions(prev => prev.map(session =>
+      session.id === sessionId
+        ? { ...session, title, updatedAt: new Date() }
+        : session
+    ))
+  }
+
+  const addMessage = (message: ChatMessage) => {
+    const newMessages = [...messages, message]
+    setMessages(newMessages)
+
+    if (currentSessionId) {
+      setSessions(prev => prev.map(session =>
+        session.id === currentSessionId
+          ? {
+              ...session,
+              messages: newMessages,
+              updatedAt: new Date(),
+              title: session.title === "New Video Chat" && message.type === 'user'
+                ? message.content.slice(0, 30) + (message.content.length > 30 ? '...' : '')
+                : session.title
+            }
+          : session
+      ))
     }
   }
 
@@ -41,10 +149,33 @@ export default function AIVideoPage() {
       return
     }
 
+    // Create new session if none exists
+    if (!currentSessionId) {
+      createNewSession()
+    }
+
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: prompt,
+      image: imagePreview || undefined,
+      timestamp: new Date()
+    }
+    addMessage(userMessage)
+
+    // Clear input
+    const currentPrompt = prompt
+    setPrompt("")
+    setSelectedImage(null)
+    setImagePreview(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
+
     setIsGenerating(true)
     setError(null)
     setProgress(0)
-    setGeneratedVideo(null)
 
     try {
       // Simulate progress
@@ -59,8 +190,8 @@ export default function AIVideoPage() {
       }, 2000)
 
       const formData = new FormData()
-      formData.append('prompt', prompt)
-      formData.append('image', selectedImage)
+      formData.append('prompt', currentPrompt)
+      formData.append('image', selectedImage!)
 
       const response = await fetch('/api/generate-video', {
         method: 'POST',
@@ -76,9 +207,27 @@ export default function AIVideoPage() {
       }
 
       const data = await response.json()
-      setGeneratedVideo(data.videoUrl)
+
+      // Add assistant message with video
+      const assistantMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'assistant',
+        content: `Generated video for: "${currentPrompt}"`,
+        video: data.videoUrl,
+        timestamp: new Date()
+      }
+      addMessage(assistantMessage)
+
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate video')
+      // Add error message
+      const errorMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'assistant',
+        content: `Error: ${err instanceof Error ? err.message : 'Failed to generate video'}`,
+        timestamp: new Date()
+      }
+      addMessage(errorMessage)
       setProgress(0)
     } finally {
       setIsGenerating(false)
@@ -86,234 +235,260 @@ export default function AIVideoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
+    <div className="flex h-screen bg-background text-foreground">
+      {/* Sidebar */}
+      <div className="w-80 bg-card border-r border-border flex flex-col">
+        {/* Header */}
+        <div className="p-4 border-b border-border">
+          <Button
+            onClick={createNewSession}
+            className="w-full justify-start gap-2"
+            variant="outline"
+          >
+            <Plus className="h-4 w-4" />
+            New Video Chat
+          </Button>
+        </div>
 
-      {/* Hero Section */}
-      <div className="relative h-96 md:h-[60vh] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-background to-secondary/20"></div>
-        <div className="absolute inset-0 bg-black/50"></div>
+        {/* Session History */}
+        <div className="flex-1 overflow-y-auto p-2">
+          <div className="space-y-1">
+            {sessions.map((session) => (
+              <div
+                key={session.id}
+                className={`group flex items-center gap-2 p-3 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors ${
+                  currentSessionId === session.id ? 'bg-muted' : ''
+                }`}
+                onClick={() => loadSession(session.id)}
+              >
+                <MessageSquare className="h-4 w-4 text-muted-foreground" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{session.title}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {session.updatedAt.toLocaleDateString()}
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    deleteSession(session.id)
+                  }}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
 
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center justify-center">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Sparkles className="h-12 w-12 text-primary" />
-              <h1 className="text-4xl md:text-6xl font-bold text-white">
-                AI Video Generator
-              </h1>
+        {/* App Info */}
+        <div className="p-4 border-t border-border text-center">
+          <p className="text-xs text-muted-foreground">SprayFoam TV AI Video Generator</p>
+        </div>
+      </div>
+
+      {/* Main Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Header */}
+        <div className="border-b border-border p-4">
+          <h1 className="text-lg font-semibold">AI Video Generator</h1>
+          <p className="text-sm text-muted-foreground">Create spray foam videos with AI</p>
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-6">
+          {messages.length === 0 ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center max-w-md">
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageSquare className="h-8 w-8 text-primary" />
+                </div>
+                <h2 className="text-xl font-semibold mb-2">Start Creating Videos</h2>
+                <p className="text-muted-foreground mb-6">
+                  Upload an image and describe the animation you want to create. Our AI will generate a professional video for you.
+                </p>
+                <div className="grid grid-cols-1 gap-2 text-left">
+                  <div className="p-3 bg-muted/30 rounded-lg">
+                    <p className="text-sm">"Spray foam expanding in wall cavity"</p>
+                  </div>
+                  <div className="p-3 bg-muted/30 rounded-lg">
+                    <p className="text-sm">"Professional contractor applying insulation"</p>
+                  </div>
+                  <div className="p-3 bg-muted/30 rounded-lg">
+                    <p className="text-sm">"Time-lapse of installation process"</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Create professional spray foam videos using AI. Just describe what you want and our AI will generate it for you.
+          ) : (
+            <>
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex gap-4 ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  {message.type === 'assistant' && (
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                      <MessageSquare className="h-4 w-4 text-primary-foreground" />
+                    </div>
+                  )}
+
+                  <div className={`max-w-2xl ${message.type === 'user' ? 'order-first' : ''}`}>
+                    <div className={`p-4 rounded-lg ${
+                      message.type === 'user'
+                        ? 'bg-primary text-primary-foreground ml-auto'
+                        : 'bg-muted'
+                    }`}>
+                      {message.image && (
+                        <div className="mb-3">
+                          <img
+                            src={message.image}
+                            alt="Input"
+                            className="max-w-xs rounded-lg"
+                          />
+                        </div>
+                      )}
+                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                      {message.video && (
+                        <div className="mt-3">
+                          <video
+                            className="w-full max-w-md rounded-lg"
+                            controls
+                            src={message.video}
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 px-4">
+                      {message.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+
+                  {message.type === 'user' && (
+                    <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-medium">U</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {isGenerating && (
+                <div className="flex gap-4 justify-start">
+                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                    <MessageSquare className="h-4 w-4 text-primary-foreground" />
+                  </div>
+                  <div className="max-w-2xl">
+                    <div className="p-4 rounded-lg bg-muted">
+                      <div className="space-y-3">
+                        <p className="text-sm">Generating your video...</p>
+                        <div className="flex items-center justify-between text-sm">
+                          <span>Progress</span>
+                          <span>{progress}%</span>
+                        </div>
+                        <Progress value={progress} className="w-full" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div ref={messagesEndRef} />
+            </>
+          )}
+        </div>
+
+        {/* Input Area */}
+        <div className="border-t border-border p-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="relative bg-background border-2 border-primary rounded-2xl p-4 focus-within:border-primary/80 transition-colors">
+              {/* Image Preview */}
+              {imagePreview && (
+                <div className="mb-3 flex items-center gap-2">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                  <button
+                    onClick={() => {
+                      setSelectedImage(null)
+                      setImagePreview(null)
+                      if (fileInputRef.current) {
+                        fileInputRef.current.value = ""
+                      }
+                    }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+
+              {/* Error Display */}
+              {error && (
+                <div className="mb-3 flex items-center gap-2 text-destructive text-sm">
+                  <AlertCircle className="h-4 w-4" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <div className="flex items-end gap-3">
+                <div className="flex-1">
+                  <Textarea
+                    placeholder="Describe the video animation you want to create..."
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault()
+                        handleGenerate()
+                      }
+                    }}
+                    rows={3}
+                    className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ImageIcon className="h-4 w-4" />
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    onClick={handleGenerate}
+                    disabled={isGenerating || !prompt.trim() || !selectedImage}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground mt-2 text-center">
+              Upload an image and describe the animation. Press Enter to generate or Shift+Enter for new line.
             </p>
           </div>
         </div>
       </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Video Generation Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-5 w-5 text-primary" />
-                Generate Your Video
-              </CardTitle>
-              <CardDescription>
-                Describe the spray foam video you want to create. Be specific about the scene, actions, and style.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <label htmlFor="image" className="block text-sm font-medium mb-2">
-                  Input Image
-                </label>
-                <div className="space-y-4">
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="block w-full text-sm text-muted-foreground
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-md file:border-0
-                      file:text-sm file:font-medium
-                      file:bg-primary file:text-primary-foreground
-                      hover:file:bg-primary/90"
-                  />
-                  {imagePreview && (
-                    <div className="aspect-video max-w-xs bg-muted rounded-lg overflow-hidden">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="prompt" className="block text-sm font-medium mb-2">
-                  Animation Prompt
-                </label>
-                <Textarea
-                  id="prompt"
-                  placeholder="Example: The spray foam starts expanding and filling the cavity, camera slowly zooms in on the application process..."
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  rows={4}
-                  className="resize-none"
-                />
-              </div>
-
-              {error && (
-                <div className="flex items-center gap-2 text-destructive bg-destructive/10 p-3 rounded-lg">
-                  <AlertCircle className="h-4 w-4" />
-                  <span className="text-sm">{error}</span>
-                </div>
-              )}
-
-              {isGenerating && (
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>Generating video...</span>
-                    <span>{progress}%</span>
-                  </div>
-                  <Progress value={progress} className="w-full" />
-                </div>
-              )}
-
-              <Button
-                onClick={handleGenerate}
-                disabled={isGenerating || !prompt.trim()}
-                className="w-full"
-                size="lg"
-              >
-                {isGenerating ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Play className="h-4 w-4 mr-2" />
-                    Generate Video
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Video Preview/Result */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Generated Video</CardTitle>
-              <CardDescription>
-                Your AI-generated video will appear here when ready.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {generatedVideo ? (
-                <div className="space-y-4">
-                  <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                    <video
-                      className="w-full h-full object-cover"
-                      controls
-                      src={generatedVideo}
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" className="flex-1">
-                      <Play className="h-4 w-4 mr-2" />
-                      Preview
-                    </Button>
-                    <Button variant="outline" className="flex-1">
-                      <Download className="h-4 w-4 mr-2" />
-                      Download
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <Sparkles className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Your generated video will appear here</p>
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Example Prompts */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Example Prompts</CardTitle>
-            <CardDescription>
-              Get inspired with these sample video prompts
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                "Professional contractor applying spray foam insulation in a residential attic, high-quality equipment, safety gear, detailed application process",
-                "Time-lapse of spray foam expansion in wall cavity, showing complete coverage and thermal barrier formation",
-                "Before and after comparison of home insulation, energy efficiency demonstration, cost savings visualization",
-                "Commercial spray foam application on large building roof, professional crew, industrial equipment, aerial view"
-              ].map((example, index) => (
-                <button
-                  key={index}
-                  onClick={() => setPrompt(example)}
-                  className="text-left p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <p className="text-sm">{example}</p>
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Features */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Professional Quality</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Generate high-quality videos suitable for professional use in marketing and training.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Industry Specific</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Trained specifically on spray foam insulation processes and industry standards.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Fast Generation</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
-                Generate professional videos in minutes, not hours or days.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      <Footer />
     </div>
   )
 }
