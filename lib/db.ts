@@ -65,6 +65,20 @@ export async function initDatabase() {
       )
     `)
 
+    // Create video generation jobs table
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS video_jobs (
+        id VARCHAR(255) PRIMARY KEY,
+        prompt TEXT NOT NULL,
+        status VARCHAR(50) DEFAULT 'pending',
+        progress INTEGER DEFAULT 0,
+        result TEXT,
+        error TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+
     console.log('Database initialized')
   } catch (error) {
     console.error('Failed to initialize database:', error)
@@ -290,5 +304,102 @@ export async function getTopViewedVideos(limit: number = 10): Promise<Array<{ vi
   } catch (error) {
     console.error('Failed to get top viewed videos:', error)
     return []
+  }
+}
+
+// Video Jobs functions
+
+export interface VideoJob {
+  id: string
+  prompt: string
+  status: 'pending' | 'processing' | 'completed' | 'failed'
+  progress: number
+  result?: string
+  error?: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+// Create video job
+export async function createVideoJob(id: string, prompt: string): Promise<boolean> {
+  try {
+    await pool.query(
+      `INSERT INTO video_jobs (id, prompt, status, progress)
+       VALUES ($1, $2, 'pending', 0)`,
+      [id, prompt]
+    )
+    return true
+  } catch (error) {
+    console.error('Failed to create video job:', error)
+    return false
+  }
+}
+
+// Get video job by ID
+export async function getVideoJob(id: string): Promise<VideoJob | null> {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM video_jobs WHERE id = $1',
+      [id]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id,
+      prompt: row.prompt,
+      status: row.status,
+      progress: row.progress,
+      result: row.result,
+      error: row.error,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
+    }
+  } catch (error) {
+    console.error('Failed to get video job:', error)
+    return null
+  }
+}
+
+// Update video job status
+export async function updateVideoJob(
+  id: string,
+  status: 'pending' | 'processing' | 'completed' | 'failed',
+  progress?: number,
+  result?: string,
+  error?: string
+): Promise<boolean> {
+  try {
+    let query = 'UPDATE video_jobs SET status = $1, updated_at = CURRENT_TIMESTAMP'
+    const params: any[] = [status]
+    let paramIndex = 2
+
+    if (progress !== undefined) {
+      query += `, progress = $${paramIndex}`
+      params.push(progress)
+      paramIndex++
+    }
+
+    if (result !== undefined) {
+      query += `, result = $${paramIndex}`
+      params.push(result)
+      paramIndex++
+    }
+
+    if (error !== undefined) {
+      query += `, error = $${paramIndex}`
+      params.push(error)
+      paramIndex++
+    }
+
+    query += ` WHERE id = $${paramIndex}`
+    params.push(id)
+
+    await pool.query(query, params)
+    return true
+  } catch (error) {
+    console.error('Failed to update video job:', error)
+    return false
   }
 }

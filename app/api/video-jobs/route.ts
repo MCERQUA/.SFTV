@@ -1,15 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-// In-memory job storage (in production, use Redis or database)
-const jobs = new Map<string, {
-  id: string
-  status: 'pending' | 'processing' | 'completed' | 'failed'
-  progress: number
-  result?: string
-  error?: string
-  createdAt: Date
-  updatedAt: Date
-}>()
+import { getVideoJob, createVideoJob, updateVideoJob, initDatabase } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -22,19 +12,30 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const job = jobs.get(jobId)
-  if (!job) {
+  try {
+    const job = await getVideoJob(jobId)
+    if (!job) {
+      return NextResponse.json(
+        { error: 'Job not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json(job)
+  } catch (error) {
+    console.error('Error getting video job:', error)
     return NextResponse.json(
-      { error: 'Job not found' },
-      { status: 404 }
+      { error: 'Failed to get job status' },
+      { status: 500 }
     )
   }
-
-  return NextResponse.json(job)
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // Initialize database on first use
+    await initDatabase()
+
     const formData = await request.formData()
     const prompt = formData.get('prompt') as string
     const imageFile = formData.get('image') as File | null
@@ -55,15 +56,14 @@ export async function POST(request: NextRequest) {
 
     // Create a new job
     const jobId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
-    const job = {
-      id: jobId,
-      status: 'pending' as const,
-      progress: 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
 
-    jobs.set(jobId, job)
+    const created = await createVideoJob(jobId, prompt)
+    if (!created) {
+      return NextResponse.json(
+        { error: 'Failed to create job' },
+        { status: 500 }
+      )
+    }
 
     // Start video generation asynchronously (don't await)
     processVideoGeneration(jobId, prompt, imageFile)
@@ -85,24 +85,15 @@ export async function POST(request: NextRequest) {
 }
 
 async function processVideoGeneration(jobId: string, prompt: string, imageFile: File) {
-  const job = jobs.get(jobId)
-  if (!job) return
-
   try {
     // Update job status to processing
-    job.status = 'processing'
-    job.progress = 10
-    job.updatedAt = new Date()
-    jobs.set(jobId, job)
+    await updateVideoJob(jobId, 'processing', 10)
 
     const { HfInference } = await import('@huggingface/inference')
     const apiKey = process.env.HF_TOKEN
 
     if (!apiKey) {
-      job.status = 'failed'
-      job.error = 'Hugging Face API key not configured'
-      job.updatedAt = new Date()
-      jobs.set(jobId, job)
+      await updateVideoJob(jobId, 'failed', undefined, undefined, 'Hugging Face API key not configured')
       return
     }
 
@@ -112,9 +103,7 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
     const imageBuffer = await imageFile.arrayBuffer()
     const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
 
-    job.progress = 30
-    job.updatedAt = new Date()
-    jobs.set(jobId, job)
+    await updateVideoJob(jobId, 'processing', 30)
 
     console.log(`Processing video generation for job ${jobId}`)
 
@@ -127,9 +116,7 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
       }
     })
 
-    job.progress = 80
-    job.updatedAt = new Date()
-    jobs.set(jobId, job)
+    await updateVideoJob(jobId, 'processing', 80)
 
     // Convert video to base64
     const videoBuffer = await (video as any).arrayBuffer()
@@ -137,23 +124,12 @@ async function processVideoGeneration(jobId: string, prompt: string, imageFile: 
     const videoDataUrl = `data:video/mp4;base64,${base64Video}`
 
     // Job completed successfully
-    job.status = 'completed'
-    job.progress = 100
-    job.result = videoDataUrl
-    job.updatedAt = new Date()
-    jobs.set(jobId, job)
+    await updateVideoJob(jobId, 'completed', 100, videoDataUrl)
 
     console.log(`Video generation completed for job ${jobId}`)
 
   } catch (error: any) {
     console.error(`Video generation failed for job ${jobId}:`, error)
-
-    const job = jobs.get(jobId)
-    if (job) {
-      job.status = 'failed'
-      job.error = error.message || 'Unknown error occurred'
-      job.updatedAt = new Date()
-      jobs.set(jobId, job)
-    }
+    await updateVideoJob(jobId, 'failed', undefined, undefined, error.message || 'Unknown error occurred')
   }
 }
