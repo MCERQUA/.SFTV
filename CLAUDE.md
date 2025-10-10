@@ -205,7 +205,38 @@ Create a new directory under `app/` with a `page.tsx` file following the App Rou
 ### Modifying UI Components
 The `components/ui/` directory contains base primitives. Modify carefully as they're used across the application.
 
+## Company Assets Directory Structure
+
+### Organization
+Company assets are organized in `/public/companies/` with the following structure:
+
+```
+public/companies/
+├── allstate-spray-foam/
+├── cortez-industries/
+├── insulation-contractors-of-arizona/
+├── kool-foam/
+├── mad-dog-sprayfoam/
+├── noble-insulation/
+└── on-the-mark-spray-foam/
+```
+
+### Each Company Directory Contains:
+- **`/hero/`** - Background images/videos for hero sections (`hero-image.jpg`, `hero-video.mp4`)
+- **`/logo/`** - Company logos and branding (`logo.png`, `logo.svg`, `logo-white.png`)
+- **`/videos/`** - Company-specific video content (`promo.mp4`, `testimonial.mp4`)
+- **`/thumbnails/`** - Generated thumbnails for videos (`promo-thumb.jpg`)
+
+### Usage Pattern:
+```typescript
+const heroImage = `/companies/${companySlug}/hero/hero-image.jpg`
+const logo = `/companies/${companySlug}/logo/logo.png`
+```
+
 ## Recent Updates
+- Company channel pages with hero sections and square cards
+- Organized directory structure for company assets
+- Real company data integration (7 spray foam contractors)
 - Mobile menu functionality with toggle
 - Video view tracking system with PostgreSQL
 - Sponsor modal form implementation

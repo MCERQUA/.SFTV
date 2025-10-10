@@ -58,24 +58,41 @@ export default function CompaniesPage() {
         {/* Company Grid - Square Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 8 },
-            { name: "On The Mark Spray Foam", location: "Regional", videos: 12 },
-            { name: "Kool Foam", location: "Southwest", videos: 15 },
-            { name: "Cortez Industries", location: "Arizona", videos: 6 },
-            { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 9 },
-            { name: "Noble Insulation", location: "Regional", videos: 7 },
-            { name: "Mad Dog SprayFoam", location: "Regional", videos: 5 }
+            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 8, slug: "allstate-spray-foam" },
+            { name: "On The Mark Spray Foam", location: "Regional", videos: 12, slug: "on-the-mark-spray-foam" },
+            { name: "Kool Foam", location: "Southwest", videos: 15, slug: "kool-foam" },
+            { name: "Cortez Industries", location: "Arizona", videos: 6, slug: "cortez-industries" },
+            { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 9, slug: "insulation-contractors-of-arizona" },
+            { name: "Noble Insulation", location: "Regional", videos: 7, slug: "noble-insulation" },
+            { name: "Mad Dog SprayFoam", location: "Regional", videos: 5, slug: "mad-dog-sprayfoam" }
           ].map((company, i) => (
             <div key={i} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 group cursor-pointer">
               {/* Square Hero Area */}
               <div className="relative aspect-square overflow-hidden">
-                {/* Background - can be replaced with actual company image/video */}
-                <div className="w-full h-full bg-gradient-to-br from-primary/30 via-muted to-secondary/30 group-hover:scale-105 transition-transform duration-300"></div>
+                {/* Background Image - fallback to gradient */}
+                <div
+                  className="w-full h-full bg-gradient-to-br from-primary/30 via-muted to-secondary/30 group-hover:scale-105 transition-transform duration-300"
+                  style={{
+                    backgroundImage: `url(/companies/${company.slug}/hero/hero-image.jpg)`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                ></div>
 
-                {/* Company Logo/Avatar */}
+                {/* Company Logo */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-card/90 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center">
-                    <span className="text-lg font-bold text-foreground">{company.name.charAt(0)}</span>
+                  <div className="w-16 h-16 bg-card/90 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center overflow-hidden">
+                    <img
+                      src={`/companies/${company.slug}/logo/logo.png`}
+                      alt={`${company.name} Logo`}
+                      className="w-12 h-12 object-contain"
+                      onError={(e) => {
+                        // Fallback to first letter if logo doesn't exist
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling!.style.display = 'block';
+                      }}
+                    />
+                    <span className="text-lg font-bold text-foreground hidden">{company.name.charAt(0)}</span>
                   </div>
                 </div>
 
