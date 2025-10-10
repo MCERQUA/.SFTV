@@ -149,6 +149,61 @@ export default function AIVideoPage() {
     }
   }
 
+  const pollJobStatus = async (jobId: string, prompt: string): Promise<void> => {
+    const pollInterval = 2000 // Poll every 2 seconds
+    const maxPolls = 150 // Maximum 5 minutes of polling
+
+    let pollCount = 0
+
+    return new Promise((resolve, reject) => {
+      const poll = async () => {
+        try {
+          pollCount++
+
+          const response = await fetch(`/api/video-jobs?id=${jobId}`)
+          if (!response.ok) {
+            throw new Error('Failed to check job status')
+          }
+
+          const jobData = await response.json()
+
+          // Update progress
+          setProgress(jobData.progress || 0)
+
+          if (jobData.status === 'completed') {
+            setProgress(100)
+
+            // Add assistant message with video
+            const assistantMessage: ChatMessage = {
+              id: (Date.now() + 1).toString(),
+              type: 'assistant',
+              content: `Generated video for: "${prompt}"`,
+              video: jobData.result,
+              timestamp: new Date()
+            }
+            addMessage(assistantMessage)
+            resolve()
+
+          } else if (jobData.status === 'failed') {
+            throw new Error(jobData.error || 'Video generation failed')
+
+          } else if (pollCount >= maxPolls) {
+            throw new Error('Video generation timed out after 5 minutes')
+
+          } else {
+            // Continue polling
+            setTimeout(poll, pollInterval)
+          }
+
+        } catch (error) {
+          reject(error)
+        }
+      }
+
+      poll()
+    })
+  }
+
   const handleGenerate = async () => {
     if (!prompt.trim()) {
       setError("Please enter a video prompt")
@@ -189,40 +244,24 @@ export default function AIVideoPage() {
     setProgress(0)
 
     try {
-      // Simulate progress
-      const progressInterval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(progressInterval)
-            return 90
-          }
-          return prev + 15
-        })
-      }, 2000)
-
       const formData = new FormData()
       formData.append('prompt', currentPrompt)
       formData.append('image', selectedImage!)
 
+      // Start the job
       const response = await fetch('/api/generate-video', {
         method: 'POST',
         body: formData,
       })
 
-      clearInterval(progressInterval)
-      setProgress(100)
-
       if (!response.ok) {
-        let errorMessage = 'Failed to generate video'
+        let errorMessage = 'Failed to start video generation'
         try {
           const errorData = await response.json()
           errorMessage = errorData.error || errorMessage
         } catch (parseError) {
-          // Handle cases where response is not valid JSON (like 504 timeouts)
           if (response.status === 504) {
-            errorMessage = 'Request timed out. Video generation is taking longer than expected. Please try again.'
-          } else if (response.status === 408) {
-            errorMessage = 'Video generation timed out. The model might be busy - please try again in a few minutes.'
+            errorMessage = 'Request timed out. Please try again.'
           }
         }
         throw new Error(errorMessage)
@@ -230,15 +269,20 @@ export default function AIVideoPage() {
 
       const data = await response.json()
 
-      // Add assistant message with video
-      const assistantMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        type: 'assistant',
-        content: `Generated video for: "${currentPrompt}"`,
-        video: data.videoUrl,
-        timestamp: new Date()
+      if (data.async && data.jobId) {
+        // Poll for job completion
+        await pollJobStatus(data.jobId, currentPrompt)
+      } else {
+        // Fallback to old sync response format
+        const assistantMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          type: 'assistant',
+          content: `Generated video for: "${currentPrompt}"`,
+          video: data.videoUrl,
+          timestamp: new Date()
+        }
+        addMessage(assistantMessage)
       }
-      addMessage(assistantMessage)
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate video')
