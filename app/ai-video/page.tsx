@@ -213,8 +213,19 @@ export default function AIVideoPage() {
       setProgress(100)
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to generate video')
+        let errorMessage = 'Failed to generate video'
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorMessage
+        } catch (parseError) {
+          // Handle cases where response is not valid JSON (like 504 timeouts)
+          if (response.status === 504) {
+            errorMessage = 'Request timed out. Video generation is taking longer than expected. Please try again.'
+          } else if (response.status === 408) {
+            errorMessage = 'Video generation timed out. The model might be busy - please try again in a few minutes.'
+          }
+        }
+        throw new Error(errorMessage)
       }
 
       const data = await response.json()

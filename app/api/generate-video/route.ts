@@ -47,7 +47,13 @@ export async function POST(request: NextRequest) {
     try {
       // Use the Ovi model for image-to-video generation via fal-ai provider
       console.log('Calling HuggingFace API...')
-      const video = await client.imageToVideo({
+
+      // Set a timeout for the API call (4 minutes max)
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Request timed out - video generation is taking longer than expected')), 240000)
+      })
+
+      const apiCallPromise = client.imageToVideo({
         inputs: imageBlob,
         model: "chetwinlow1/Ovi",
         parameters: {
@@ -55,11 +61,14 @@ export async function POST(request: NextRequest) {
         }
       })
 
+      const video = await Promise.race([apiCallPromise, timeoutPromise])
+
       // Convert video blob to base64 for response
-      const videoBuffer = await video.arrayBuffer()
+      const videoBuffer = await (video as any).arrayBuffer()
       const base64Video = Buffer.from(videoBuffer).toString('base64')
       const videoDataUrl = `data:video/mp4;base64,${base64Video}`
 
+      console.log('Video generated successfully')
       return NextResponse.json({
         success: true,
         videoUrl: videoDataUrl,
@@ -68,6 +77,14 @@ export async function POST(request: NextRequest) {
 
     } catch (inferenceError: any) {
       console.error('Hugging Face inference error:', inferenceError)
+
+      // Handle timeout specifically
+      if (inferenceError.message?.includes('timed out')) {
+        return NextResponse.json(
+          { error: 'Video generation is taking longer than expected. The model might be busy - please try again in a few minutes.' },
+          { status: 408 }
+        )
+      }
 
       // Handle common error states
       if (inferenceError.message?.includes('503') || inferenceError.message?.includes('loading')) {
