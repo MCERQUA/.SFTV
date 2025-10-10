@@ -13,7 +13,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-SprayFoam TV is a Next.js 15 video platform for spray foam insulation professionals. It's built with React 19, TypeScript, and Tailwind CSS, featuring a component library based on shadcn/ui primitives. The platform hosts various video content including commercial shorts, longer commercials, music video commercials, funny clips, and upcoming shows/cartoons.
+**SprayFoam TV** is a Next.js 15 video platform for spray foam insulation professionals deployed at **https://sprayfoamtv.com**. It's built with React 19, TypeScript, and Tailwind CSS, featuring a component library based on shadcn/ui primitives. The platform hosts various video content including commercial shorts, longer commercials, music video commercials, funny clips, and upcoming shows/cartoons.
+
+### Site Design & Styling
+- **Theme:** Dark broadcast theme with neon accents (SprayFoam TV branded)
+- **Background:** `bg-background` (very dark: `oklch(0.12 0.01 270)`) - almost black
+- **Cards:** `bg-card` (dark gray: `oklch(0.18 0.015 270)`) with rounded corners
+- **Text:** `text-foreground` (light/white: `oklch(0.98 0.01 90)`)
+- **Primary Accent:** Orange (`oklch(0.68 0.19 45)`) - used for buttons and highlights
+- **Secondary Accent:** Green (`oklch(0.75 0.18 130)`)
+- **Typography:** Geist Sans/Mono fonts
+- **Layout:** Grid-based with responsive columns, card-based sections
+- **Key Pattern:** All pages should use `bg-background` (dark) instead of `bg-gray-50` (light)
 
 ## Development Commands
 
