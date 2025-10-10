@@ -3,11 +3,16 @@ import { HfInference } from '@huggingface/inference'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('API route called - processing request...')
     const formData = await request.formData()
     const prompt = formData.get('prompt') as string
     const imageFile = formData.get('image') as File | null
 
+    console.log('Received prompt:', prompt)
+    console.log('Received image file:', imageFile ? 'Yes' : 'No')
+
     if (!prompt) {
+      console.log('Error: No prompt provided')
       return NextResponse.json(
         { error: 'Prompt is required' },
         { status: 400 }
@@ -15,6 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!imageFile) {
+      console.log('Error: No image file provided')
       return NextResponse.json(
         { error: 'Input image is required' },
         { status: 400 }
