@@ -205,6 +205,13 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
           })
 
           console.log(`Video generation completed for job ${jobId} (downloaded remote URL)`) // eslint-disable-line no-console
+          updateJob(jobId, {
+            status: 'completed',
+            progress: 100,
+            result: resolvedUrl,
+            error: undefined,
+          })
+          console.log(`Video generation completed for job ${jobId} (resolved remote URL)`) // eslint-disable-line no-console
           return
         }
 
@@ -212,6 +219,7 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
         throw new Error('Video provider returned an unexpected response format')
       } catch (parseError) {
         console.error(`Failed to process JSON video payload for job ${jobId}:`, parseError)
+        console.error(`Failed to parse JSON video payload for job ${jobId}:`, parseError)
         throw new Error('Unable to parse video response from provider')
       }
     }
