@@ -71,6 +71,7 @@ model: "chetwinlow1/Ovi" (removed provider field)
 - **500 Internal Server Error** on job creation
 - **Database connection** failures in serverless
 - **Netlify routing** conflicts (fixed netlify.toml)
+- **Compatibility check (Oct 2025)**: Latest generate-video handler works within Netlify's ~26s lambda limit by queueing the job immediately and running the Hugging Face call in the same invocation. Netlify's Node 18 runtime exposes the Web Fetch APIs (`fetch`, `Blob`, `File`, `Response`) we rely on, and the in-memory `tempJobs` map survives warm invocations so the polling route can read completed jobs. The trade-offs are the usual serverless caveats: cold starts or redeploys will wipe the queue, and very large video downloads might hit Netlify's 125 MB response cap—so long-term we still want durable storage.
 
 ### **3. Provider Payloads**
 - **Observation**: Still verifying whether fal always sets a `Content-Type` header; fallback defaults to `video/mp4`
