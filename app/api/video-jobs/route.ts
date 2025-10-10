@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       result: job.result,
       error: job.error,
       createdAt: job.createdAt,
-      updatedAt: new Date() // Since we don't track this in temp storage
+      updatedAt: job.updatedAt,
     })
   } catch (error) {
     console.error('Error getting video job:', error)

@@ -1,21 +1,53 @@
+import { randomUUID } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Temporary in-memory storage as fallback
-const tempJobs = new Map<string, {
+type JobStatus = 'pending' | 'processing' | 'completed' | 'failed'
+
+interface TempJob {
   id: string
-  status: 'pending' | 'processing' | 'completed' | 'failed'
+  status: JobStatus
   progress: number
   result?: string
   error?: string
   createdAt: Date
-}>()
+  updatedAt: Date
+}
+
+// Temporary in-memory storage as fallback for queued jobs when database access
+// is unavailable in the serverless environment
+const tempJobs = new Map<string, TempJob>()
+
+function generateJobId(): string {
+  try {
+    return randomUUID()
+  } catch (error) {
+    // Fallback for runtimes where randomUUID is unavailable
+    return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
+  }
+}
+
+function updateJob(jobId: string, updates: Partial<Omit<TempJob, 'id' | 'createdAt'>>): TempJob | undefined {
+  const job = tempJobs.get(jobId)
+  if (!job) {
+    return undefined
+  }
+
+  const updatedJob: TempJob = {
+    ...job,
+    ...updates,
+    updatedAt: new Date(),
+  }
+
+  tempJobs.set(jobId, updatedJob)
+  return updatedJob
+}
 
 export async function POST(request: NextRequest) {
   try {
     console.log('Starting video generation...')
 
     const formData = await request.formData()
-    const prompt = formData.get('prompt') as string
+    const prompt = (formData.get('prompt') as string | null)?.trim() ?? ''
     const imageFile = formData.get('image') as File | null
 
     console.log('Received prompt:', prompt)
@@ -35,87 +67,41 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // For now, try direct generation instead of async to avoid database issues
-    console.log('Starting direct video generation...')
+    const imageArrayBuffer = await imageFile.arrayBuffer()
+    const imageMimeType = imageFile.type || 'image/png'
 
-    try {
-      const { InferenceClient } = await import('@huggingface/inference')
-      const apiKey = process.env.HF_TOKEN
-
-      if (!apiKey) {
-        return NextResponse.json(
-          { error: 'Hugging Face API key not configured' },
-          { status: 500 }
-        )
-      }
-
-      const client = new InferenceClient(apiKey)
-
-      // Convert image file to proper format for HuggingFace API
-      const imageArrayBuffer = await imageFile.arrayBuffer()
-
-      console.log('Calling HuggingFace API with Ovi model...')
-      console.log('Image size:', imageArrayBuffer.byteLength, 'bytes')
-
-      // Call HuggingFace API with timeout
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Generation timeout - taking too long')), 30000) // 30 second timeout for testing
-      })
-
-      const apiCallPromise = client.imageToVideo({
-        model: "chetwinlow1/Ovi",
-        inputs: imageArrayBuffer,
-        parameters: {
-          prompt: prompt,
-        }
-      })
-
-      const video = await Promise.race([apiCallPromise, timeoutPromise])
-
-      // Convert video to base64
-      const videoBuffer = await (video as any).arrayBuffer()
-      const base64Video = Buffer.from(videoBuffer).toString('base64')
-      const videoDataUrl = `data:video/mp4;base64,${base64Video}`
-
-      console.log('Video generated successfully')
-
-      return NextResponse.json({
-        success: true,
-        videoUrl: videoDataUrl,
-        message: 'Video generated successfully'
-      })
-
-    } catch (hfError: any) {
-      console.error('HuggingFace error:', hfError)
-
-      if (hfError.message?.includes('timeout')) {
-        // If timeout, create async job
-        const jobId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
-        console.log('Creating async job due to timeout:', jobId)
-
-        tempJobs.set(jobId, {
-          id: jobId,
-          status: 'pending',
-          progress: 0,
-          createdAt: new Date()
-        })
-
-        // Start background processing
-        processVideoGenerationAsync(jobId, prompt, imageFile)
-
-        return NextResponse.json({
-          async: true,
-          jobId: jobId,
-          status: 'pending',
-          message: 'Video generation is taking longer - processing in background'
-        })
-      }
-
+    if (imageArrayBuffer.byteLength === 0) {
       return NextResponse.json(
-        { error: `Failed to generate video: ${hfError.message}` },
-        { status: 500 }
+        { error: 'Uploaded image is empty' },
+        { status: 400 }
       )
     }
+
+    // Create a background job immediately so we can return to the client before
+    // the expensive Hugging Face request completes (Netlify has a ~26s limit).
+    const jobId = generateJobId()
+    const now = new Date()
+
+    tempJobs.set(jobId, {
+      id: jobId,
+      status: 'pending',
+      progress: 0,
+      createdAt: now,
+      updatedAt: now,
+    })
+
+    console.log('Queued video generation job:', jobId)
+
+    // Fire and forget the background processing – any errors will be persisted
+    // to the in-memory job map and surfaced through the polling endpoint.
+    void processVideoGenerationAsync(jobId, prompt, imageArrayBuffer, imageMimeType)
+
+    return NextResponse.json({
+      async: true,
+      jobId,
+      status: 'pending' as JobStatus,
+      message: 'Video generation job queued. Check status for progress updates.'
+    })
 
   } catch (error) {
     console.error('Video generation error:', error)
@@ -126,81 +112,69 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function processVideoGenerationAsync(jobId: string, prompt: string, imageFile: File) {
+async function processVideoGenerationAsync(jobId: string, prompt: string, imageArrayBuffer: ArrayBuffer, mimeType: string) {
   try {
-    // Update job status to processing
-    const job = tempJobs.get(jobId)
-    if (job) {
-      job.status = 'processing'
-      job.progress = 10
-      tempJobs.set(jobId, job)
-    }
+    updateJob(jobId, { status: 'processing', progress: 10 })
 
     const { InferenceClient } = await import('@huggingface/inference')
     const apiKey = process.env.HF_TOKEN
 
     if (!apiKey) {
-      const job = tempJobs.get(jobId)
-      if (job) {
-        job.status = 'failed'
-        job.error = 'Hugging Face API key not configured'
-        tempJobs.set(jobId, job)
-      }
+      updateJob(jobId, {
+        status: 'failed',
+        progress: 0,
+        error: 'Hugging Face API key not configured',
+        result: undefined,
+      })
       return
     }
 
-    const client = new InferenceClient(apiKey)
+    const client = new InferenceClient(apiKey, { provider: 'fal-ai' })
 
-    // Convert image file to proper format for HuggingFace API
-    const imageArrayBuffer = await imageFile.arrayBuffer()
-
-    const job2 = tempJobs.get(jobId)
-    if (job2) {
-      job2.progress = 30
-      tempJobs.set(jobId, job2)
-    }
+    updateJob(jobId, { progress: 30 })
 
     console.log(`Processing video generation for job ${jobId}`)
 
+    // Convert the ArrayBuffer to a Blob so the provider keeps the correct MIME type
+    const imageInput = new Blob([imageArrayBuffer], { type: mimeType })
+
     // Call HuggingFace API
-    const video = await client.imageToVideo({
-      model: "chetwinlow1/Ovi",
-      inputs: imageArrayBuffer,
+    const videoBlob = await client.imageToVideo({
+      model: 'chetwinlow1/Ovi',
+      provider: 'fal-ai',
+      inputs: imageInput,
       parameters: {
-        prompt: prompt,
-      }
+        prompt,
+        // The Ovi model expects combined text/audio tags for richer prompts.
+        // If the prompt already contains custom formatting we leave it as-is.
+      },
     })
 
-    const job3 = tempJobs.get(jobId)
-    if (job3) {
-      job3.progress = 80
-      tempJobs.set(jobId, job3)
-    }
+    updateJob(jobId, { progress: 80 })
 
-    // Convert video to base64
-    const videoBuffer = await (video as any).arrayBuffer()
-    const base64Video = Buffer.from(videoBuffer).toString('base64')
-    const videoDataUrl = `data:video/mp4;base64,${base64Video}`
+    // Convert video to base64 for inline playback on the client
+    const videoArrayBuffer = await videoBlob.arrayBuffer()
+    const base64Video = Buffer.from(videoArrayBuffer).toString('base64')
+    const videoMimeType = videoBlob.type || 'video/mp4'
+    const videoDataUrl = `data:${videoMimeType};base64,${base64Video}`
 
-    // Job completed successfully
-    const finalJob = tempJobs.get(jobId)
-    if (finalJob) {
-      finalJob.status = 'completed'
-      finalJob.progress = 100
-      finalJob.result = videoDataUrl
-      tempJobs.set(jobId, finalJob)
-    }
+    updateJob(jobId, {
+      status: 'completed',
+      progress: 100,
+      result: videoDataUrl,
+      error: undefined,
+    })
 
     console.log(`Video generation completed for job ${jobId}`)
 
   } catch (error: any) {
     console.error(`Video generation failed for job ${jobId}:`, error)
-    const job = tempJobs.get(jobId)
-    if (job) {
-      job.status = 'failed'
-      job.error = error.message || 'Unknown error occurred'
-      tempJobs.set(jobId, job)
-    }
+    updateJob(jobId, {
+      status: 'failed',
+      progress: 0,
+      error: error?.message || 'Unknown error occurred during video generation',
+      result: undefined,
+    })
   }
 }
 
