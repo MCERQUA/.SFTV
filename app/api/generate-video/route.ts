@@ -39,14 +39,16 @@ export async function POST(request: NextRequest) {
     // Initialize InferenceClient with fal-ai provider
     const client = new HfInference(apiKey)
 
-    // Convert image file to buffer
+    // Convert image file to blob/buffer for HuggingFace
+    console.log('Converting image file...')
     const imageBuffer = await imageFile.arrayBuffer()
-    const inputImage = new Uint8Array(imageBuffer)
+    const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
 
     try {
       // Use the Ovi model for image-to-video generation via fal-ai provider
+      console.log('Calling HuggingFace API...')
       const video = await client.imageToVideo({
-        inputs: inputImage,
+        inputs: imageBlob,
         model: "chetwinlow1/Ovi",
         parameters: {
           prompt: prompt,
