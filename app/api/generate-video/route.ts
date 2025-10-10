@@ -181,6 +181,30 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
         const resolvedUrl = candidateUrls.find((value): value is string => typeof value === 'string' && value.startsWith('http'))
 
         if (resolvedUrl) {
+          const remoteResponse = await fetch(resolvedUrl)
+
+          if (!remoteResponse.ok) {
+            throw new Error(`Failed to download video from provider (status ${remoteResponse.status})`)
+          }
+
+          const remoteArrayBuffer = await remoteResponse.arrayBuffer()
+
+          if (remoteArrayBuffer.byteLength === 0) {
+            throw new Error('Downloaded video data from provider was empty')
+          }
+
+          const remoteMimeType = remoteResponse.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase() || 'video/mp4'
+          const remoteBase64Video = Buffer.from(remoteArrayBuffer).toString('base64')
+          const remoteVideoDataUrl = `data:${remoteMimeType};base64,${remoteBase64Video}`
+
+          updateJob(jobId, {
+            status: 'completed',
+            progress: 100,
+            result: remoteVideoDataUrl,
+            error: undefined,
+          })
+
+          console.log(`Video generation completed for job ${jobId} (downloaded remote URL)`) // eslint-disable-line no-console
           updateJob(jobId, {
             status: 'completed',
             progress: 100,
@@ -194,6 +218,7 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
         console.error(`Video provider returned unexpected JSON payload for job ${jobId}:`, payload)
         throw new Error('Video provider returned an unexpected response format')
       } catch (parseError) {
+        console.error(`Failed to process JSON video payload for job ${jobId}:`, parseError)
         console.error(`Failed to parse JSON video payload for job ${jobId}:`, parseError)
         throw new Error('Unable to parse video response from provider')
       }
