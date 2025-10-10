@@ -51,9 +51,9 @@ export async function POST(request: NextRequest) {
 
       const client = new InferenceClient(apiKey)
 
-      // Convert image file to buffer for Ovi
+      // Convert image file to buffer for Ovi (raw buffer like fs.readFileSync)
       const imageBuffer = await imageFile.arrayBuffer()
-      const imageData = new Uint8Array(imageBuffer)
+      const imageData = Buffer.from(imageBuffer)
 
       console.log('Calling HuggingFace API with Ovi model...')
 
@@ -152,9 +152,9 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
 
     const client = new InferenceClient(apiKey)
 
-    // Convert image file to buffer for Ovi
+    // Convert image file to buffer for Ovi (raw buffer like fs.readFileSync)
     const imageBuffer = await imageFile.arrayBuffer()
-    const imageData = new Uint8Array(imageBuffer)
+    const imageData = Buffer.from(imageBuffer)
 
     const job2 = tempJobs.get(jobId)
     if (job2) {
