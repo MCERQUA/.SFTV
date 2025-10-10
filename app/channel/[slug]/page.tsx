@@ -163,7 +163,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
         </div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
@@ -173,7 +173,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
               <div className="w-24 h-24 md:w-32 md:h-32 bg-card/80 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center overflow-hidden">
                 <img
                   src={company.slug === 'allstate-spray-foam'
-                    ? `/companies/${company.slug}/logo/Asset 1.png`
+                    ? `/companies/${company.slug}/logo/Asset%201.png`
                     : `/companies/${company.slug}/logo/logo.png`}
                   alt={`${company.name} Logo`}
                   className="w-20 h-20 md:w-28 md:h-28 object-contain"

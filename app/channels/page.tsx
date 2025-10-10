@@ -86,7 +86,7 @@ export default function ChannelsPage() {
                   <div className="w-16 h-16 bg-card/90 backdrop-blur-sm border border-border rounded-xl flex items-center justify-center overflow-hidden">
                     <img
                       src={company.slug === 'allstate-spray-foam'
-                        ? `/companies/${company.slug}/logo/Asset 1.png`
+                        ? `/companies/${company.slug}/logo/Asset%201.png`
                         : `/companies/${company.slug}/logo/logo.png`}
                       alt={`${company.name} Logo`}
                       className="w-12 h-12 object-contain"
