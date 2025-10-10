@@ -33,14 +33,22 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('Starting job creation...')
+
     // Initialize database on first use
+    console.log('Initializing database...')
     await initDatabase()
+    console.log('Database initialized successfully')
 
     const formData = await request.formData()
     const prompt = formData.get('prompt') as string
     const imageFile = formData.get('image') as File | null
 
+    console.log('Received prompt:', prompt)
+    console.log('Received image file:', imageFile ? `Yes (${imageFile.name}, ${imageFile.size} bytes)` : 'No')
+
     if (!prompt) {
+      console.log('Error: No prompt provided')
       return NextResponse.json(
         { error: 'Prompt is required' },
         { status: 400 }
@@ -48,6 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!imageFile) {
+      console.log('Error: No image file provided')
       return NextResponse.json(
         { error: 'Input image is required' },
         { status: 400 }
@@ -56,19 +65,26 @@ export async function POST(request: NextRequest) {
 
     // Create a new job
     const jobId = Date.now().toString() + Math.random().toString(36).substr(2, 9)
+    console.log('Generated job ID:', jobId)
 
+    console.log('Creating job in database...')
     const created = await createVideoJob(jobId, prompt)
+    console.log('Job creation result:', created)
+
     if (!created) {
+      console.log('Failed to create job in database')
       return NextResponse.json(
         { error: 'Failed to create job' },
         { status: 500 }
       )
     }
 
+    console.log('Starting background video generation...')
     // Start video generation asynchronously (don't await)
     processVideoGeneration(jobId, prompt, imageFile)
 
     // Return job ID immediately
+    console.log('Returning job ID to client:', jobId)
     return NextResponse.json({
       jobId,
       status: 'pending',
@@ -77,6 +93,10 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Job creation error:', error)
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    })
     return NextResponse.json(
       { error: 'Failed to create video generation job' },
       { status: 500 }
