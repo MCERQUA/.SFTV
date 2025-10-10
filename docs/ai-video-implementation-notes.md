@@ -29,11 +29,15 @@
 // ❌ Failed Attempts:
 new HfInference() + Blob input
 new HfInference() + Uint8Array input
+new InferenceClient() + Buffer.from(arrayBuffer) input + provider: "fal-ai"
 
-// ✅ Current Format:
-new InferenceClient() + Buffer.from(arrayBuffer) input
-provider: "fal-ai"
-model: "chetwinlow1/Ovi"
+// 🔄 Latest Attempt (Oct 10, 2025):
+new InferenceClient() + ArrayBuffer directly as inputs
+model: "chetwinlow1/Ovi" (removed provider field)
+
+// Error that led to this attempt:
+// "e.inputs.arrayBuffer is not a function" - indicates API was trying to call
+// .arrayBuffer() on a Buffer object, which doesn't have that method
 ```
 
 ### **2. Async Pattern (Due to Timeouts)**
@@ -50,10 +54,12 @@ model: "chetwinlow1/Ovi"
 
 ## 🚨 **Critical Issues Still Unresolved**
 
-### **1. API Format Still Wrong**
-- **Error**: `"e.inputs.arrayBuffer is not a function"`
-- **Tried**: Blob, Uint8Array, Buffer
-- **Need**: Exact format matching working examples
+### **1. API Format - Current Attempt**
+- **Previous Error**: `"e.inputs.arrayBuffer is not a function"`
+- **Tried**: Blob, Uint8Array, Buffer.from(arrayBuffer)
+- **Latest Attempt (Oct 10)**: Using ArrayBuffer directly + removed provider field
+- **Status**: Needs testing - may still have format issues
+- **Need**: Verification that Ovi model is accessible and correct parameter format
 
 ### **2. Infrastructure Problems**
 - **500 Internal Server Error** on job creation
@@ -95,4 +101,4 @@ model: "chetwinlow1/Ovi"
 - `lib/db.ts` - Database schema
 - `netlify.toml` - Fixed routing conflicts
 
-**Status**: Ready for next debugging cycle with systematic approach rather than random attempts.
+**Status**: Latest attempt deployed (Oct 10, 2025) - ArrayBuffer format change. Needs testing to verify if this resolves API format issues. Still in active debugging cycle.

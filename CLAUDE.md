@@ -11,6 +11,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **DO NOT DEPLOY TO LOCAL HOST!!!** # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!# DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!
 - **PUSH TO GITHUB AFTER CHANGES!!!**
 
+## Documentation and Problem-Solving Requirements
+
+### **CRITICAL: Failed Attempts and Solution Tracking**
+- **ALWAYS UPDATE `/docs/` when making changes** - Documentation must reflect current reality, not outdated aspirations
+- **DOCUMENT ALL FAILED ATTEMPTS** - Track every attempted solution that didn't work in the relevant docs
+- **DO NOT CLAIM SOLUTIONS ARE "FIXED"** - Use language like "attempted fix", "trying approach", "this may resolve"
+- **ASSUME SOLUTIONS MIGHT NOT WORK** - Most solutions are attempts, not guarantees
+- **TRACK PROBLEM PATTERNS** - Note recurring issues and what approaches have been tried before
+- **UPDATE IMPLEMENTATION NOTES** - Keep `/docs/ai-video-implementation-notes.md` and similar files current with latest attempts
+- **BE HONEST ABOUT STATUS** - Use "Status: Still debugging" not "Status: Fixed" until actually verified working
+
+### **Documentation Update Rules**
+1. **Before working**: Read relevant `/docs/` files to understand current state and previous attempts
+2. **During work**: Track what you're trying and why in real-time
+3. **After attempts**: Update docs with results (successful or failed) immediately
+4. **Never assume**: Each "fix" is an attempt until proven to work in production
+
+### **Problem-Solving Language**
+- ❌ "This fixes the issue"
+- ✅ "This attempts to fix the issue"
+- ❌ "Problem resolved"
+- ✅ "Attempted solution - needs testing"
+- ❌ "I've fixed the API format"
+- ✅ "I've tried a different API format approach"
+
 ## Project Overview
 
 **SprayFoam TV** is a Next.js 15 video platform for spray foam insulation professionals deployed at **https://sprayfoamtv.com**. It's built with React 19, TypeScript, and Tailwind CSS, featuring a component library based on shadcn/ui primitives. The platform hosts various video content including commercial shorts, longer commercials, music video commercials, funny clips, and upcoming shows/cartoons.
