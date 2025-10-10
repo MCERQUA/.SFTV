@@ -58,13 +58,13 @@ export default function ChannelsPage() {
         {/* Company Grid - Square Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 8, slug: "allstate-spray-foam" },
-            { name: "On The Mark Spray Foam", location: "Regional", videos: 12, slug: "on-the-mark-spray-foam" },
-            { name: "Kool Foam", location: "Southwest", videos: 15, slug: "kool-foam" },
-            { name: "Cortez Industries", location: "Arizona", videos: 6, slug: "cortez-industries" },
-            { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 9, slug: "insulation-contractors-of-arizona" },
-            { name: "Noble Insulation", location: "Regional", videos: 7, slug: "noble-insulation" },
-            { name: "Mad Dog SprayFoam", location: "Regional", videos: 5, slug: "mad-dog-sprayfoam" }
+            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 1, slug: "allstate-spray-foam" },
+            { name: "On The Mark Spray Foam", location: "Regional", videos: 0, slug: "on-the-mark-spray-foam" },
+            { name: "Kool Foam", location: "Southwest", videos: 2, slug: "kool-foam" },
+            { name: "Cortez Industries", location: "Arizona", videos: 5, slug: "cortez-industries" },
+            { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 2, slug: "insulation-contractors-of-arizona" },
+            { name: "Noble Insulation", location: "Regional", videos: 1, slug: "noble-insulation" },
+            { name: "Mad Dog SprayFoam", location: "Regional", videos: 1, slug: "mad-dog-sprayfoam" }
           ].map((company, i) => (
             <a key={i} href={`/channel/${company.slug}`} className="bg-card rounded-lg border border-border overflow-hidden hover:border-primary/50 transition-all duration-300 group cursor-pointer block">
               {/* Square Hero Area */}

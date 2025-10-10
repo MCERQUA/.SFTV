@@ -10,19 +10,133 @@ interface ChannelPageProps {
   };
 }
 
+// Company video data
+const companyVideos = {
+  "allstate-spray-foam": [
+    {
+      id: 20,
+      title: "Allstate Cozy Royalites",
+      thumbnail: "/thumbnails/funny-clips/Allstate-Cozy-royalites.jpg",
+      videoPath: "/videos/funny-clips/Allstate-Cozy-royalites.mp4",
+      category: "Comedy",
+      duration: "0:17"
+    }
+  ],
+  "cortez-industries": [
+    {
+      id: 1,
+      title: "Rex O-Ring Game",
+      thumbnail: "/thumbnails/commercial-shorts/cortex-rex.jpg",
+      videoPath: "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
+      category: "Commercial Short",
+      duration: "0:17"
+    },
+    {
+      id: 15,
+      title: "Cortex Rex: Day Off Camping",
+      thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
+      videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
+      category: "Animation",
+      duration: "0:56"
+    },
+    {
+      id: 16,
+      title: "Rex Camping Recap",
+      thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
+      videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
+      category: "Animation",
+      duration: "1:18"
+    },
+    {
+      id: 17,
+      title: "Cortex Rex: Density Check",
+      thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
+      videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
+      category: "Animation",
+      duration: "0:08"
+    },
+    {
+      id: 18,
+      title: "Cortex Rex: Jobsite Emergency",
+      thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
+      videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
+      category: "Animation",
+      duration: "0:08"
+    }
+  ],
+  "kool-foam": [
+    {
+      id: 4,
+      title: "KoolFoam - Fly South",
+      thumbnail: "/thumbnails/commercial-shorts/koolfoam.jpg",
+      videoPath: "/videos/commercial-shorts/koolfoam-fly-south.mp4",
+      category: "Commercial Short",
+      duration: "0:16"
+    },
+    {
+      id: 21,
+      title: "Kool Foam - Keep Kool",
+      thumbnail: "/thumbnails/funny-clips/Kook-Foam-keep-Kool.jpg",
+      videoPath: "/videos/funny-clips/Kook-Foam-keep-Kool.mp4",
+      category: "Comedy",
+      duration: "0:17"
+    }
+  ],
+  "noble-insulation": [
+    {
+      id: 5,
+      title: "Noble Insulation Commercial",
+      thumbnail: "/thumbnails/commercial-shorts/noble-insulation.jpg",
+      videoPath: "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
+      category: "Commercial Short",
+      duration: "0:10"
+    }
+  ],
+  "insulation-contractors-of-arizona": [
+    {
+      id: 7,
+      title: "ICA Duct Clean Bodywash",
+      thumbnail: "/thumbnails/commercials-longer/ica-bodywash.jpg",
+      videoPath: "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
+      category: "Commercial",
+      duration: "0:23"
+    },
+    {
+      id: 8,
+      title: "ICA Getting Ducts Clean",
+      thumbnail: "/thumbnails/commercials-longer/ica-ducts.jpg",
+      videoPath: "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
+      category: "Commercial",
+      duration: "0:33"
+    }
+  ],
+  "mad-dog-sprayfoam": [
+    {
+      id: 19,
+      title: "Mad Dog SprayFoam",
+      thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
+      videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
+      category: "Comedy",
+      duration: "0:10"
+    }
+  ],
+  "on-the-mark-spray-foam": []
+};
+
 // Company data
 const companies = [
-  { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 8, slug: "allstate-spray-foam" },
-  { name: "On The Mark Spray Foam", location: "Regional", videos: 12, slug: "on-the-mark-spray-foam" },
-  { name: "Kool Foam", location: "Southwest", videos: 15, slug: "kool-foam" },
-  { name: "Cortez Industries", location: "Arizona", videos: 6, slug: "cortez-industries" },
-  { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 9, slug: "insulation-contractors-of-arizona" },
-  { name: "Noble Insulation", location: "Regional", videos: 7, slug: "noble-insulation" },
-  { name: "Mad Dog SprayFoam", location: "Regional", videos: 5, slug: "mad-dog-sprayfoam" }
+  { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 1, slug: "allstate-spray-foam" },
+  { name: "On The Mark Spray Foam", location: "Regional", videos: 0, slug: "on-the-mark-spray-foam" },
+  { name: "Kool Foam", location: "Southwest", videos: 2, slug: "kool-foam" },
+  { name: "Cortez Industries", location: "Arizona", videos: 5, slug: "cortez-industries" },
+  { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 2, slug: "insulation-contractors-of-arizona" },
+  { name: "Noble Insulation", location: "Regional", videos: 1, slug: "noble-insulation" },
+  { name: "Mad Dog SprayFoam", location: "Regional", videos: 1, slug: "mad-dog-sprayfoam" }
 ];
 
 export default function ChannelPage({ params }: ChannelPageProps) {
   const company = companies.find(c => c.slug === params.slug);
+  const videos = companyVideos[params.slug as keyof typeof companyVideos] || [];
 
   if (!company) {
     notFound();
@@ -104,31 +218,78 @@ export default function ChannelPage({ params }: ChannelPageProps) {
           {/* Main Content - Videos */}
           <div className="lg:col-span-2">
             {/* Featured Video */}
-            <section className="mb-8">
-              <h2 className="text-xl font-bold text-foreground mb-4">Featured Video</h2>
-              <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                <span className="text-muted-foreground">Featured video content for {company.name}</span>
-              </div>
-            </section>
+            {videos.length > 0 && (
+              <section className="mb-8">
+                <h2 className="text-xl font-bold text-foreground mb-4">Featured Video</h2>
+                <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                  <video
+                    className="w-full h-full object-cover"
+                    controls
+                    poster={videos[0].thumbnail}
+                    preload="metadata"
+                  >
+                    <source src={videos[0].videoPath} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+                <div className="mt-4">
+                  <h3 className="text-lg font-semibold text-foreground">{videos[0].title}</h3>
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                    <span>🎬 {videos[0].category}</span>
+                    <span>⏱️ {videos[0].duration}</span>
+                    <span>👁️ {(Math.floor(Math.random() * 5000) + 1000).toLocaleString()} Views</span>
+                  </div>
+                </div>
+              </section>
+            )}
 
             {/* Company Videos Grid */}
             <section>
-              <h2 className="text-xl font-bold text-foreground mb-4">All Videos ({company.videos})</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {Array.from({ length: company.videos }, (_, i) => (
-                  <div key={i} className="bg-card rounded-lg border border-border overflow-hidden">
-                    <div className="aspect-video bg-muted"></div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-foreground mb-1">Video {i + 1}</h3>
-                      <p className="text-sm text-muted-foreground">Video description for {company.name}</p>
-                      <div className="flex justify-between items-center mt-3 text-xs text-muted-foreground">
-                        <span>👁️ {(Math.floor(Math.random() * 1000) + 100).toLocaleString()} Views</span>
-                        <span>📅 {Math.floor(Math.random() * 30) + 1} days ago</span>
+              <h2 className="text-xl font-bold text-foreground mb-4">
+                All Videos ({videos.length})
+                {videos.length === 0 && " - Coming Soon"}
+              </h2>
+              {videos.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {videos.map((video, i) => (
+                    <div key={video.id} className="bg-card rounded-lg border border-border overflow-hidden group hover:border-primary/50 transition-colors">
+                      <div className="relative aspect-video overflow-hidden">
+                        <img
+                          src={video.thumbnail}
+                          alt={video.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                          <div className="w-12 h-12 bg-primary/80 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-white text-xl">▶</span>
+                          </div>
+                        </div>
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                          {video.duration}
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-semibold text-foreground mb-1 line-clamp-1">{video.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-3">{video.category}</p>
+                        <div className="flex justify-between items-center text-xs text-muted-foreground">
+                          <span>👁️ {(Math.floor(Math.random() * 1000) + 100).toLocaleString()} Views</span>
+                          <span>📅 {Math.floor(Math.random() * 30) + 1} days ago</span>
+                        </div>
                       </div>
                     </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="text-muted-foreground mb-4">
+                    <span className="text-4xl">🎬</span>
                   </div>
-                ))}
-              </div>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">No Videos Yet</h3>
+                  <p className="text-muted-foreground">
+                    {company.name} hasn't uploaded any videos yet. Check back soon!
+                  </p>
+                </div>
+              )}
             </section>
           </div>
 
