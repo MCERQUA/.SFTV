@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
 
       const client = new HfInference(apiKey)
 
-      // Convert image file to blob
+      // Convert image file to buffer for Ovi
       const imageBuffer = await imageFile.arrayBuffer()
-      const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
+      const imageData = new Uint8Array(imageBuffer)
 
-      console.log('Calling HuggingFace API...')
+      console.log('Calling HuggingFace API with Ovi model...')
 
       // Call HuggingFace API with timeout
       const timeoutPromise = new Promise((_, reject) => {
@@ -63,8 +63,9 @@ export async function POST(request: NextRequest) {
       })
 
       const apiCallPromise = client.imageToVideo({
-        inputs: imageBlob,
+        provider: "fal-ai",
         model: "chetwinlow1/Ovi",
+        inputs: imageData,
         parameters: {
           prompt: prompt,
         }
@@ -151,9 +152,9 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
 
     const client = new HfInference(apiKey)
 
-    // Convert image file to blob
+    // Convert image file to buffer for Ovi
     const imageBuffer = await imageFile.arrayBuffer()
-    const imageBlob = new Blob([imageBuffer], { type: imageFile.type })
+    const imageData = new Uint8Array(imageBuffer)
 
     const job2 = tempJobs.get(jobId)
     if (job2) {
@@ -165,8 +166,9 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
 
     // Call HuggingFace API
     const video = await client.imageToVideo({
-      inputs: imageBlob,
+      provider: "fal-ai",
       model: "chetwinlow1/Ovi",
+      inputs: imageData,
       parameters: {
         prompt: prompt,
       }
