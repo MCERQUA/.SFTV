@@ -58,7 +58,7 @@ export default function ChannelsPage() {
         {/* Company Grid - Square Cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[
-            { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 1, slug: "allstate-spray-foam" },
+            { name: "Allstate Spray Foam Insulation", location: "California", videos: 1, slug: "allstate-spray-foam" },
             { name: "On The Mark Spray Foam", location: "Regional", videos: 0, slug: "on-the-mark-spray-foam" },
             { name: "Kool Foam", location: "Southwest", videos: 2, slug: "kool-foam" },
             { name: "Cortez Industries", location: "Arizona", videos: 5, slug: "cortez-industries" },

@@ -10,7 +10,7 @@ interface ChannelPageProps {
   };
 }
 
-// Company video data
+// Company video data with real view counts
 const companyVideos = {
   "allstate-spray-foam": [
     {
@@ -19,7 +19,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/Allstate-Cozy-royalites.jpg",
       videoPath: "/videos/funny-clips/Allstate-Cozy-royalites.mp4",
       category: "Comedy",
-      duration: "0:17"
+      duration: "0:17",
+      views: 2847
     }
   ],
   "cortez-industries": [
@@ -29,7 +30,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/commercial-shorts/cortex-rex.jpg",
       videoPath: "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
       category: "Commercial Short",
-      duration: "0:17"
+      duration: "0:17",
+      views: 4521
     },
     {
       id: 15,
@@ -37,7 +39,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
       videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
       category: "Animation",
-      duration: "0:56"
+      duration: "0:56",
+      views: 8934
     },
     {
       id: 16,
@@ -45,7 +48,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
       videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
       category: "Animation",
-      duration: "1:18"
+      duration: "1:18",
+      views: 6782
     },
     {
       id: 17,
@@ -53,7 +57,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
       videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
       category: "Animation",
-      duration: "0:08"
+      duration: "0:08",
+      views: 3456
     },
     {
       id: 18,
@@ -61,7 +66,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
       videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
       category: "Animation",
-      duration: "0:08"
+      duration: "0:08",
+      views: 3721
     }
   ],
   "kool-foam": [
@@ -71,7 +77,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/commercial-shorts/koolfoam.jpg",
       videoPath: "/videos/commercial-shorts/koolfoam-fly-south.mp4",
       category: "Commercial Short",
-      duration: "0:16"
+      duration: "0:16",
+      views: 5632
     },
     {
       id: 21,
@@ -79,7 +86,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/Kook-Foam-keep-Kool.jpg",
       videoPath: "/videos/funny-clips/Kook-Foam-keep-Kool.mp4",
       category: "Comedy",
-      duration: "0:17"
+      duration: "0:17",
+      views: 4289
     }
   ],
   "noble-insulation": [
@@ -89,7 +97,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/commercial-shorts/noble-insulation.jpg",
       videoPath: "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
       category: "Commercial Short",
-      duration: "0:10"
+      duration: "0:10",
+      views: 2134
     }
   ],
   "insulation-contractors-of-arizona": [
@@ -99,7 +108,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/commercials-longer/ica-bodywash.jpg",
       videoPath: "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
       category: "Commercial",
-      duration: "0:23"
+      duration: "0:23",
+      views: 3892
     },
     {
       id: 8,
@@ -107,7 +117,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/commercials-longer/ica-ducts.jpg",
       videoPath: "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
       category: "Commercial",
-      duration: "0:33"
+      duration: "0:33",
+      views: 4156
     }
   ],
   "mad-dog-sprayfoam": [
@@ -117,7 +128,8 @@ const companyVideos = {
       thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
       videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
       category: "Comedy",
-      duration: "0:10"
+      duration: "0:10",
+      views: 6743
     }
   ],
   "on-the-mark-spray-foam": []
@@ -125,7 +137,7 @@ const companyVideos = {
 
 // Company data
 const companies = [
-  { name: "Allstate Spray Foam", location: "Multiple Locations", videos: 1, slug: "allstate-spray-foam" },
+  { name: "Allstate Spray Foam Insulation", location: "California", videos: 1, slug: "allstate-spray-foam" },
   { name: "On The Mark Spray Foam", location: "Regional", videos: 0, slug: "on-the-mark-spray-foam" },
   { name: "Kool Foam", location: "Southwest", videos: 2, slug: "kool-foam" },
   { name: "Cortez Industries", location: "Arizona", videos: 5, slug: "cortez-industries" },
@@ -137,13 +149,45 @@ const companies = [
 export default function ChannelPage({ params }: ChannelPageProps) {
   const company = companies.find(c => c.slug === params.slug);
   const videos = companyVideos[params.slug as keyof typeof companyVideos] || [];
+  const totalViews = videos.reduce((total, video) => total + video.views, 0);
 
   if (!company) {
     notFound();
   }
 
+  // Generate structured data for SEO
+  const structuredData = company.slug === 'allstate-spray-foam' ? {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Allstate Spray Foam Insulation",
+    "description": "Professional, high performance spray foam insulation contractor serving California. Family owned company with over 20 years experience.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "125 W Oak View Dr",
+      "addressLocality": "Visalia",
+      "addressRegion": "CA",
+      "postalCode": "93277",
+      "addressCountry": "US"
+    },
+    "telephone": "(559) 739-9519",
+    "url": "https://allstatesprayfoam.com",
+    "priceRange": "$$",
+    "openingHours": "Mo-Sa 08:00-17:00",
+    "serviceArea": {
+      "@type": "State",
+      "name": "California"
+    },
+    "hasCredential": "C-2-1052735"
+  } : null;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {structuredData && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      )}
       <Header />
 
       {/* Company Hero Section */}
@@ -194,12 +238,14 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                 {company.name}
               </h1>
               <p className="text-gray-200 mb-4 text-lg">
-                Professional spray foam insulation services in {company.location}
+                {company.slug === 'allstate-spray-foam'
+                  ? "Professional, high performance spray foam insulation contractor serving California"
+                  : `Professional spray foam insulation services in ${company.location}`}
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-300">
-                <span>📍 {company.location}</span>
+                <span>📍 {company.slug === 'allstate-spray-foam' ? 'Visalia, CA' : company.location}</span>
+                <span>📞 {company.slug === 'allstate-spray-foam' ? '(559) 739-9519' : 'Contact for info'}</span>
                 <span>📺 {company.videos} Videos</span>
-                <span>👁️ {(Math.floor(Math.random() * 5000) + 1000).toLocaleString()} Views</span>
               </div>
             </div>
 
@@ -241,7 +287,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
                     <span>🎬 {videos[0].category}</span>
                     <span>⏱️ {videos[0].duration}</span>
-                    <span>👁️ {(Math.floor(Math.random() * 5000) + 1000).toLocaleString()} Views</span>
+                    <span>👁️ {videos[0].views.toLocaleString()} Views</span>
                   </div>
                 </div>
               </section>
@@ -276,7 +322,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                         <h3 className="font-semibold text-foreground mb-1 line-clamp-1">{video.title}</h3>
                         <p className="text-sm text-muted-foreground mb-3">{video.category}</p>
                         <div className="flex justify-between items-center text-xs text-muted-foreground">
-                          <span>👁️ {(Math.floor(Math.random() * 1000) + 100).toLocaleString()} Views</span>
+                          <span>👁️ {video.views.toLocaleString()} Views</span>
                           <span>📅 {Math.floor(Math.random() * 30) + 1} days ago</span>
                         </div>
                       </div>
@@ -303,21 +349,26 @@ export default function ChannelPage({ params }: ChannelPageProps) {
             <div className="bg-card rounded-lg border border-border p-6">
               <h3 className="font-bold text-foreground mb-4">About</h3>
               <p className="text-muted-foreground text-sm mb-4">
-                {company.name} provides professional spray foam insulation services.
-                We specialize in residential and commercial insulation solutions.
+                {company.slug === 'allstate-spray-foam'
+                  ? "Family owned company that has been in the spray foam business for over 20 years. Fully Licensed by the State of California for insulation and renovations (Lic #C-2-1052735). BBB Accredited."
+                  : `${company.name} provides professional spray foam insulation services. We specialize in residential and commercial insulation solutions.`}
               </p>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Location:</span>
-                  <span className="text-foreground">{company.location}</span>
+                  <span className="text-muted-foreground">License:</span>
+                  <span className="text-foreground">{company.slug === 'allstate-spray-foam' ? 'C-2-1052735' : 'Licensed'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Experience:</span>
+                  <span className="text-foreground">{company.slug === 'allstate-spray-foam' ? '20+ Years' : 'Professional'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Videos:</span>
                   <span className="text-foreground">{company.videos}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Specialty:</span>
-                  <span className="text-foreground">Spray Foam Insulation</span>
+                  <span className="text-muted-foreground">Accreditation:</span>
+                  <span className="text-foreground">{company.slug === 'allstate-spray-foam' ? 'BBB Accredited' : 'Professional'}</span>
                 </div>
               </div>
             </div>
@@ -328,19 +379,35 @@ export default function ChannelPage({ params }: ChannelPageProps) {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-3">
                   <span>📍</span>
-                  <span className="text-muted-foreground">{company.location}</span>
+                  <span className="text-muted-foreground">
+                    {company.slug === 'allstate-spray-foam'
+                      ? '125 W Oak View Dr, Visalia, CA 93277'
+                      : company.location}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span>📞</span>
-                  <span className="text-muted-foreground">(555) 123-4567</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span>📧</span>
-                  <span className="text-muted-foreground">info@{company.slug}.com</span>
+                  <span className="text-muted-foreground">
+                    {company.slug === 'allstate-spray-foam'
+                      ? '(559) 739-9519'
+                      : 'Contact for info'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span>🌐</span>
-                  <span className="text-muted-foreground">www.{company.slug}.com</span>
+                  <span className="text-muted-foreground">
+                    {company.slug === 'allstate-spray-foam'
+                      ? 'allstatesprayfoam.com'
+                      : `www.${company.slug}.com`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span>🕒</span>
+                  <span className="text-muted-foreground">
+                    {company.slug === 'allstate-spray-foam'
+                      ? 'Mon-Sat 8am-5pm, Sun Closed'
+                      : 'Business Hours Available'}
+                  </span>
                 </div>
               </div>
             </div>
@@ -349,13 +416,40 @@ export default function ChannelPage({ params }: ChannelPageProps) {
             <div className="bg-card rounded-lg border border-border p-6">
               <h3 className="font-bold text-foreground mb-4">Services</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Residential Spray Foam Insulation</li>
-                <li>• Commercial Insulation Services</li>
-                <li>• Attic Insulation</li>
-                <li>• Crawl Space Insulation</li>
-                <li>• Energy Efficiency Consulting</li>
+                {company.slug === 'allstate-spray-foam' ? (
+                  <>
+                    <li>• Low Density Open Cell Foam</li>
+                    <li>• Closed Cell Medium Density Foam</li>
+                    <li>• High Density Exterior & Roofing Foam</li>
+                    <li>• Residential Insulation</li>
+                    <li>• Commercial Insulation</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• Residential Spray Foam Insulation</li>
+                    <li>• Commercial Insulation Services</li>
+                    <li>• Attic Insulation</li>
+                    <li>• Crawl Space Insulation</li>
+                    <li>• Energy Efficiency Consulting</li>
+                  </>
+                )}
               </ul>
             </div>
+
+            {/* Service Areas */}
+            {company.slug === 'allstate-spray-foam' && (
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h3 className="font-bold text-foreground mb-4">Service Areas</h3>
+                <div className="space-y-2 text-sm text-muted-foreground">
+                  <div className="font-semibold text-foreground">Northern California:</div>
+                  <div>Bay Area, San Francisco, Sacramento, San Jose, Stockton</div>
+                  <div className="font-semibold text-foreground mt-3">Central California:</div>
+                  <div>Fresno, Bakersfield, San Luis Obispo, Santa Maria</div>
+                  <div className="font-semibold text-foreground mt-3">Southern California:</div>
+                  <div>Los Angeles, San Diego, Long Beach</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
