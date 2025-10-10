@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
 
       const client = new InferenceClient(apiKey)
 
-      // Convert image file to buffer for Ovi (raw buffer like fs.readFileSync)
-      const imageBuffer = await imageFile.arrayBuffer()
-      const imageData = Buffer.from(imageBuffer)
+      // Convert image file to proper format for HuggingFace API
+      const imageArrayBuffer = await imageFile.arrayBuffer()
 
       console.log('Calling HuggingFace API with Ovi model...')
+      console.log('Image size:', imageArrayBuffer.byteLength, 'bytes')
 
       // Call HuggingFace API with timeout
       const timeoutPromise = new Promise((_, reject) => {
@@ -63,9 +63,8 @@ export async function POST(request: NextRequest) {
       })
 
       const apiCallPromise = client.imageToVideo({
-        provider: "fal-ai",
         model: "chetwinlow1/Ovi",
-        inputs: imageData,
+        inputs: imageArrayBuffer,
         parameters: {
           prompt: prompt,
         }
@@ -152,9 +151,8 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
 
     const client = new InferenceClient(apiKey)
 
-    // Convert image file to buffer for Ovi (raw buffer like fs.readFileSync)
-    const imageBuffer = await imageFile.arrayBuffer()
-    const imageData = Buffer.from(imageBuffer)
+    // Convert image file to proper format for HuggingFace API
+    const imageArrayBuffer = await imageFile.arrayBuffer()
 
     const job2 = tempJobs.get(jobId)
     if (job2) {
@@ -166,9 +164,8 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageF
 
     // Call HuggingFace API
     const video = await client.imageToVideo({
-      provider: "fal-ai",
       model: "chetwinlow1/Ovi",
-      inputs: imageData,
+      inputs: imageArrayBuffer,
       parameters: {
         prompt: prompt,
       }
