@@ -152,10 +152,72 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
 
     updateJob(jobId, { progress: 80 })
 
-    // Convert video to base64 for inline playback on the client
+    // Convert video for inline playback. Some providers (like fal.ai) first
+    // return a JSON payload containing a temporary download URL while others
+    // stream the binary video directly. We handle both cases so the client
+    // always receives a usable source.
     const videoArrayBuffer = await videoBlob.arrayBuffer()
+    const detectedMimeType = (videoBlob.type || '').toLowerCase()
+
+    if (videoArrayBuffer.byteLength === 0) {
+      throw new Error('Received empty video data from provider')
+    }
+
+    const isJsonPayload = detectedMimeType.includes('application/json') || detectedMimeType.includes('text/plain')
+
+    if (isJsonPayload) {
+      const payloadText = new TextDecoder().decode(videoArrayBuffer)
+
+      try {
+        const payload = JSON.parse(payloadText)
+        const candidateUrls: unknown[] = [
+          payload?.video?.url,
+          payload?.data?.video?.url,
+          payload?.output?.video?.url,
+          payload?.result?.video?.url,
+          Array.isArray(payload?.results) ? payload.results[0]?.video?.url : undefined,
+        ]
+
+        const resolvedUrl = candidateUrls.find((value): value is string => typeof value === 'string' && value.startsWith('http'))
+
+        if (resolvedUrl) {
+          const remoteResponse = await fetch(resolvedUrl)
+
+          if (!remoteResponse.ok) {
+            throw new Error(`Failed to download video from provider (status ${remoteResponse.status})`)
+          }
+
+          const remoteArrayBuffer = await remoteResponse.arrayBuffer()
+
+          if (remoteArrayBuffer.byteLength === 0) {
+            throw new Error('Downloaded video data from provider was empty')
+          }
+
+          const remoteMimeType = remoteResponse.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase() || 'video/mp4'
+          const remoteBase64Video = Buffer.from(remoteArrayBuffer).toString('base64')
+          const remoteVideoDataUrl = `data:${remoteMimeType};base64,${remoteBase64Video}`
+
+          updateJob(jobId, {
+            status: 'completed',
+            progress: 100,
+            result: remoteVideoDataUrl,
+            error: undefined,
+          })
+
+          console.log(`Video generation completed for job ${jobId} (downloaded remote URL)`) // eslint-disable-line no-console
+          return
+        }
+
+        console.error(`Video provider returned unexpected JSON payload for job ${jobId}:`, payload)
+        throw new Error('Video provider returned an unexpected response format')
+      } catch (parseError) {
+        console.error(`Failed to process JSON video payload for job ${jobId}:`, parseError)
+        throw new Error('Unable to parse video response from provider')
+      }
+    }
+
     const base64Video = Buffer.from(videoArrayBuffer).toString('base64')
-    const videoMimeType = videoBlob.type || 'video/mp4'
+    const videoMimeType = detectedMimeType || 'video/mp4'
     const videoDataUrl = `data:${videoMimeType};base64,${base64Video}`
 
     updateJob(jobId, {

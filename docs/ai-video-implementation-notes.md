@@ -46,6 +46,12 @@ model: "chetwinlow1/Ovi" (removed provider field)
 - **Polling**: Every 2 seconds, max 5 minutes
 - **Progress**: 0% → 10% → 30% → 80% → 100%
 
+### **3. Provider Response Handling**
+- **Issue**: Fal queue sometimes returns JSON with a temporary download URL
+- **Previous Behavior**: UI tried to play the temporary URL directly which expired / lacked CORS controls
+- **Latest Attempt (Oct 2025)**: API now fetches the remote file server-side, converts it to a base64 data URI, and stores that in the job result so the chat player always receives an inline `video/*` source
+- **Status**: Needs validation in production that resulting base64 video is non-empty and plays correctly
+
 ### **3. Database vs In-Memory**
 - **Tried**: PostgreSQL persistence for serverless
 - **Problem**: 500 errors, connection issues
@@ -66,7 +72,11 @@ model: "chetwinlow1/Ovi" (removed provider field)
 - **Database connection** failures in serverless
 - **Netlify routing** conflicts (fixed netlify.toml)
 
-### **3. Model Configuration**
+### **3. Provider Payloads**
+- **Observation**: Still verifying whether fal always sets a `Content-Type` header; fallback defaults to `video/mp4`
+- **Risk**: If the provider switches to signed URLs again, we may need to persist the binary ourselves
+
+### **4. Model Configuration**
 - **Missing**: Proper Ovi prompt formatting (`<S>speech<E>`, `<AUDCAP>audio<ENDAUDCAP>`)
 - **Unknown**: If fal-ai provider accessible via HF Inference
 - **Need**: Verify Ovi model availability/access
