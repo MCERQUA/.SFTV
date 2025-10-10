@@ -45,6 +45,12 @@ export function Header() {
             >
               Events
             </Link>
+            <Link
+              href="/ai-video"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              AI Video
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -102,6 +108,13 @@ export function Header() {
               className="block py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               Events
+            </Link>
+            <Link
+              href="/ai-video"
+              onClick={() => setIsMenuOpen(false)}
+              className="block py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            >
+              AI Video
             </Link>
             <button
               onClick={() => {
