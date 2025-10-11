@@ -779,7 +779,7 @@ export default function AIVideoPage() {
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -789,20 +789,20 @@ export default function AIVideoPage() {
                   />
                   <Button
                     size="sm"
-                    variant="ghost"
+                    variant="outline"
                     onClick={() => fileInputRef.current?.click()}
-                    className="h-8 w-8 p-0"
+                    className="h-16 w-16 p-0 border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 shadow-orange-500/20 shadow-lg hover:shadow-orange-500/30 hover:shadow-xl transition-all duration-200"
                   >
-                    <ImageIcon className="h-4 w-4" />
+                    <ImageIcon className="h-8 w-8 text-orange-500" />
                   </Button>
 
                   <Button
                     size="sm"
                     onClick={handleGenerate}
                     disabled={isGenerating || !actions.trim() || !selectedImage}
-                    className="h-8 w-8 p-0"
+                    className="h-16 w-16 p-0 bg-orange-500 hover:bg-orange-600 disabled:bg-muted disabled:text-muted-foreground shadow-orange-500/30 shadow-lg hover:shadow-orange-500/40 hover:shadow-xl transition-all duration-200 disabled:shadow-none"
                   >
-                    <Send className="h-4 w-4" />
+                    <Send className="h-8 w-8" />
                   </Button>
                 </div>
               </div>
