@@ -7,7 +7,9 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/cortex-rex.jpg",
     videoPath: "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
     category: "Commercial Short",
-    duration: "0:17"
+    duration: "0:17",
+    company: "Cortez Industries",
+    companySlug: "cortez-industries"
   },
   {
     id: 2,
@@ -15,7 +17,9 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/duck-cleaning.jpg",
     videoPath: "/videos/commercial-shorts/duckcleaning-commerical.mp4",
     category: "Commercial Short",
-    duration: "0:15"
+    duration: "0:15",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 3,
@@ -23,7 +27,9 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/graco-fusion.jpg",
     videoPath: "/videos/commercial-shorts/Graco Fusion AP.mp4",
     category: "Commercial Short",
-    duration: "0:16"
+    duration: "0:16",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 4,
@@ -31,7 +37,9 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/koolfoam.jpg",
     videoPath: "/videos/commercial-shorts/koolfoam-fly-south.mp4",
     category: "Commercial Short",
-    duration: "0:16"
+    duration: "0:16",
+    company: "Kool Foam",
+    companySlug: "kool-foam"
   },
   {
     id: 5,
@@ -39,7 +47,9 @@ export const commercialShorts = [
     thumbnail: "/thumbnails/commercial-shorts/noble-insulation.jpg",
     videoPath: "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
     category: "Commercial Short",
-    duration: "0:10"
+    duration: "0:10",
+    company: "Noble Insulation",
+    companySlug: "noble-insulation"
   }
 ]
 
@@ -50,7 +60,9 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/edi.jpg",
     videoPath: "/videos/commercials-longer/EDI-Commerical.mp4",
     category: "Commercial",
-    duration: "1:47"
+    duration: "1:47",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 7,
@@ -58,7 +70,9 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/ica-bodywash.jpg",
     videoPath: "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
     category: "Commercial",
-    duration: "0:23"
+    duration: "0:23",
+    company: "Insulation Contractors of Arizona",
+    companySlug: "insulation-contractors-of-arizona"
   },
   {
     id: 8,
@@ -66,7 +80,9 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/ica-ducts.jpg",
     videoPath: "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
     category: "Commercial",
-    duration: "0:33"
+    duration: "0:33",
+    company: "Insulation Contractors of Arizona",
+    companySlug: "insulation-contractors-of-arizona"
   },
   {
     id: 9,
@@ -74,7 +90,9 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/foam-party.jpg",
     videoPath: "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
     category: "Commercial",
-    duration: "1:13"
+    duration: "1:13",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 23,
@@ -82,7 +100,9 @@ export const commercialsLonger = [
     thumbnail: "/thumbnails/commercials-longer/On-The-Mark-The-Marksman.jpg",
     videoPath: "/videos/commercials-longer/On-The-Mark-The-Marksman.mp4",
     category: "Commercial",
-    duration: "0:45"
+    duration: "0:45",
+    company: "On The Mark Spray Foam",
+    companySlug: "on-the-mark-spray-foam"
   }
 ]
 
@@ -93,7 +113,9 @@ export const musicVideoCommercials = [
     thumbnail: "/thumbnails/music-video-commercials/call-me-maybe.jpg",
     videoPath: "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",
     artist: "Mrs. SprayFoam",
-    duration: "1:28"
+    duration: "1:28",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 11,
@@ -101,7 +123,9 @@ export const musicVideoCommercials = [
     thumbnail: "/thumbnails/music-video-commercials/let-it-foam.jpg",
     videoPath: "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4",
     artist: "Mrs. SprayFoam",
-    duration: "1:32"
+    duration: "1:32",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   }
 ]
 
@@ -112,7 +136,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/Pickle-Juice-Energy-Drink.jpg",
     videoPath: "/videos/funny-clips/Pickle-Juice-Energy-Drink.mp4",
     category: "Comedy",
-    duration: "0:24"
+    duration: "0:24",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 21,
@@ -120,7 +146,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/Kook-Foam-keep-Kool.jpg",
     videoPath: "/videos/funny-clips/Kook-Foam-keep-Kool.mp4",
     category: "Comedy",
-    duration: "0:17"
+    duration: "0:17",
+    company: "Kool Foam",
+    companySlug: "kool-foam"
   },
   {
     id: 20,
@@ -128,7 +156,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/Allstate-Cozy-royalites.jpg",
     videoPath: "/videos/funny-clips/Allstate-Cozy-royalites.mp4",
     category: "Comedy",
-    duration: "0:17"
+    duration: "0:17",
+    company: "Allstate Spray Foam",
+    companySlug: "allstate-spray-foam"
   },
   {
     id: 12,
@@ -136,7 +166,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/breaking-batts.jpg",
     videoPath: "/videos/funny-clips/Breaking-Batts.mp4",
     category: "Comedy",
-    duration: "0:09"
+    duration: "0:09",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 13,
@@ -144,7 +176,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/chicken-brothers-1.jpg",
     videoPath: "/videos/funny-clips/Insulated-chicken-brothers-cartoon.mp4",
     category: "Animation",
-    duration: "0:10"
+    duration: "0:10",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 14,
@@ -152,7 +186,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/chicken-brothers-2.jpg",
     videoPath: "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4",
     category: "Animation",
-    duration: "0:10"
+    duration: "0:10",
+    company: "JamSocial",
+    companySlug: "jamsocial"
   },
   {
     id: 15,
@@ -160,7 +196,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-rex-camping.jpg",
     videoPath: "/videos/funny-clips/Cortez-Rex-Day-Off-Camping.mp4",
     category: "Animation",
-    duration: "0:56"
+    duration: "0:56",
+    company: "Cortez Industries",
+    companySlug: "cortez-industries"
   },
   {
     id: 16,
@@ -168,7 +206,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/rex-camping-recap.jpg",
     videoPath: "/videos/funny-clips/Rex-Camping-Recap.mp4",
     category: "Animation",
-    duration: "1:18"
+    duration: "1:18",
+    company: "Cortez Industries",
+    companySlug: "cortez-industries"
   },
   {
     id: 17,
@@ -176,7 +216,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-density-check.jpg",
     videoPath: "/videos/funny-clips/Cortex-Rex-Density-Check.mp4",
     category: "Animation",
-    duration: "0:08"
+    duration: "0:08",
+    company: "Cortez Industries",
+    companySlug: "cortez-industries"
   },
   {
     id: 18,
@@ -184,7 +226,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/cortex-jobsite-emergency.jpg",
     videoPath: "/videos/funny-clips/Cortez-Rex-Jobsite-Emergency.mp4",
     category: "Animation",
-    duration: "0:08"
+    duration: "0:08",
+    company: "Cortez Industries",
+    companySlug: "cortez-industries"
   },
   {
     id: 19,
@@ -192,7 +236,9 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/mad-dog-sprayfoam.jpg",
     videoPath: "/videos/funny-clips/Mad-Dog-Sprayfoam.mp4",
     category: "Comedy",
-    duration: "0:10"
+    duration: "0:10",
+    company: "Mad Dog SprayFoam",
+    companySlug: "mad-dog-sprayfoam"
   }
 ]
 

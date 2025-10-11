@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Clock, Calendar, MapPin, Volume2, VolumeX, M
 import { useState, useRef, useEffect } from "react"
 import { VideoModal } from "./video-modal"
 import { PlaceholderThumbnail } from "./create-placeholder-thumbnail"
+import Link from "next/link"
 
 interface CarouselItem {
   id: number
@@ -21,6 +22,8 @@ interface CarouselItem {
   date?: string
   location?: string
   status?: string
+  company?: string
+  companySlug?: string
 }
 
 interface ContentCarouselProps {
@@ -329,7 +332,13 @@ export function ContentCarousel({ title, items, comingSoon = false }: ContentCar
               </div>
               <div className="p-4 space-y-2">
                 {item.show && <p className="text-xs font-medium text-primary">{item.show}</p>}
-                {item.category && <p className="text-xs font-medium text-primary">{item.category}</p>}
+                {item.company && item.companySlug ? (
+                  <Link href={`/company/${item.companySlug}`} className="text-xs font-medium text-orange-500 hover:text-orange-400 transition-colors">
+                    {item.company}
+                  </Link>
+                ) : item.category && (
+                  <p className="text-xs font-medium text-primary">{item.category}</p>
+                )}
                 {item.artist && <p className="text-xs font-medium text-muted-foreground">by {item.artist}</p>}
                 <h3 className="font-semibold leading-tight text-pretty">{item.title}</h3>
                 {item.description && <p className="text-sm text-muted-foreground text-pretty">{item.description}</p>}
