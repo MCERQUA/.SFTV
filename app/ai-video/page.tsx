@@ -43,16 +43,18 @@ export default function AIVideoPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Convert user input to proper Ovi-formatted prompt
+  // Convert user input to working Ovi format (based on successful example)
   const formatOviPrompt = (actions: string, speech: string): string => {
     const parts = []
 
-    // Add ambient audio description based on scene context
-    const ambientAudio = getAudioEnvironmentContext(actions)
-    parts.push(`<AUDCAP>${ambientAudio}<ENDAUDCAP>`)
+    // Start with enhanced visual description that worked
+    const enhancedActions = enhanceVisualDescription(actions.trim())
+    parts.push(`Use input image as subject. 5s video. ${enhancedActions}.`)
 
-    // Add speech with proper Ovi tags if provided
+    // Add speech with proper Ovi tags if provided (this format worked)
     if (speech.trim()) {
+      parts.push('') // Empty line for separation
+
       // Split speech into segments of ~10 words for better lip sync
       const speechSegments = splitSpeechIntoSegments(speech.trim())
       speechSegments.forEach(segment => {
@@ -60,11 +62,7 @@ export default function AIVideoPage() {
       })
     }
 
-    // Add enhanced visual description
-    const enhancedActions = enhanceVisualDescription(actions.trim())
-    parts.push(enhancedActions)
-
-    return parts.join('\n\n')
+    return parts.join('\n')
   }
 
   // Split speech into optimal segments for lip sync
@@ -100,27 +98,22 @@ export default function AIVideoPage() {
     return segments.filter(s => s.length > 0)
   }
 
-  // Enhance visual descriptions for better video quality
+  // Enhance visual descriptions for better video quality (based on working format)
   const enhanceVisualDescription = (actions: string): string => {
     let enhanced = actions
 
-    // Add cinematic quality descriptors
-    if (!enhanced.toLowerCase().includes('camera') && !enhanced.toLowerCase().includes('shot')) {
-      enhanced = `${enhanced}, professional camera work`
+    // Add camera movement that worked in successful example
+    if (!enhanced.toLowerCase().includes('push') && !enhanced.toLowerCase().includes('zoom') && !enhanced.toLowerCase().includes('camera')) {
+      enhanced = `Slow push-in. ${enhanced}`
     }
 
-    // Add lighting context
-    if (!enhanced.toLowerCase().includes('light')) {
-      if (enhanced.toLowerCase().includes('outdoor') || enhanced.toLowerCase().includes('outside')) {
-        enhanced += ', natural lighting'
-      } else {
-        enhanced += ', well-lit scene'
-      }
-    }
-
-    // Add motion clarity for gestures
-    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture') || enhanced.toLowerCase().includes('point')) {
-      enhanced += ', clear hand movements'
+    // Add specific action cues for better animation
+    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture')) {
+      enhanced += ' and gives a small nod'
+    } else if (enhanced.toLowerCase().includes('gift') || enhanced.toLowerCase().includes('present')) {
+      enhanced += ' and lifts the gifts slightly'
+    } else if (enhanced.toLowerCase().includes('point') || enhanced.toLowerCase().includes('show')) {
+      enhanced += ' with a welcoming gesture'
     }
 
     return enhanced
