@@ -497,15 +497,75 @@ export default function AIVideoPage() {
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Image Assets</h3>
                 <div className="grid grid-cols-2 gap-2">
-                  {/* Placeholder for future image gallery */}
-                  <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
-                    <Images className="h-6 w-6 text-muted-foreground" />
-                  </div>
-                  <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
-                    <Images className="h-6 w-6 text-muted-foreground" />
-                  </div>
+                  {(() => {
+                    // Extract all unique images from all sessions
+                    const allImages = new Set<string>()
+                    sessions.forEach(session => {
+                      session.messages.forEach(message => {
+                        if (message.image) {
+                          allImages.add(message.image)
+                        }
+                      })
+                    })
+                    const uniqueImages = Array.from(allImages)
+
+                    if (uniqueImages.length === 0) {
+                      return (
+                        <>
+                          <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
+                            <Images className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                          <div className="aspect-square bg-muted/30 rounded-lg flex items-center justify-center">
+                            <Images className="h-6 w-6 text-muted-foreground" />
+                          </div>
+                        </>
+                      )
+                    }
+
+                    return uniqueImages.map((imageSrc, index) => (
+                      <div
+                        key={index}
+                        className="aspect-square bg-muted/30 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-orange-500 transition-all"
+                        onClick={() => {
+                          if (fileInputRef.current) {
+                            // Create a temporary image element to convert to file
+                            const img = new Image()
+                            img.crossOrigin = 'anonymous'
+                            img.onload = () => {
+                              const canvas = document.createElement('canvas')
+                              canvas.width = img.width
+                              canvas.height = img.height
+                              const ctx = canvas.getContext('2d')
+                              if (ctx) {
+                                ctx.drawImage(img, 0, 0)
+                                canvas.toBlob((blob) => {
+                                  if (blob) {
+                                    const file = new File([blob], `image-${index}.jpg`, { type: 'image/jpeg' })
+                                    setSelectedImage(file)
+                                    setImagePreview(imageSrc)
+                                  }
+                                }, 'image/jpeg', 0.9)
+                              }
+                            }
+                            img.src = imageSrc
+                          }
+                        }}
+                      >
+                        <img
+                          src={imageSrc}
+                          alt={`Asset ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))
+                  })()}
                 </div>
-                <p className="text-xs text-muted-foreground">Uploaded images will appear here</p>
+                <p className="text-xs text-muted-foreground">
+                  {(() => {
+                    const imageCount = new Set(sessions.flatMap(s => s.messages.filter(m => m.image).map(m => m.image!))).size
+                    return imageCount === 0 ? 'Uploaded images will appear here' : `${imageCount} image${imageCount === 1 ? '' : 's'} available - click to reuse`
+                  })()}
+                </p>
               </div>
             )}
 
@@ -513,12 +573,78 @@ export default function AIVideoPage() {
               <div className="space-y-2">
                 <h3 className="text-sm font-medium text-muted-foreground">Video Assets</h3>
                 <div className="space-y-2">
-                  {/* Placeholder for future video gallery */}
-                  <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center">
-                    <Video className="h-6 w-6 text-muted-foreground" />
-                  </div>
+                  {(() => {
+                    // Extract all unique videos from all sessions
+                    const allVideos = new Set<string>()
+                    sessions.forEach(session => {
+                      session.messages.forEach(message => {
+                        if (message.video) {
+                          allVideos.add(message.video)
+                        }
+                      })
+                    })
+                    const uniqueVideos = Array.from(allVideos)
+
+                    if (uniqueVideos.length === 0) {
+                      return (
+                        <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center">
+                          <Video className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                      )
+                    }
+
+                    return uniqueVideos.map((videoSrc, index) => (
+                      <div
+                        key={index}
+                        className="aspect-video bg-muted/30 rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-orange-500 transition-all relative group"
+                        onClick={() => {
+                          // Find the message with this video to get its content
+                          let messageContent = ''
+                          sessions.forEach(session => {
+                            session.messages.forEach(message => {
+                              if (message.video === videoSrc) {
+                                messageContent = message.content
+                              }
+                            })
+                          })
+
+                          // Add this video to current session as a reference
+                          const referenceMessage: ChatMessage = {
+                            id: Date.now().toString(),
+                            type: 'assistant',
+                            content: `Referenced video: ${messageContent}`,
+                            video: videoSrc,
+                            timestamp: new Date()
+                          }
+                          addMessage(referenceMessage)
+                        }}
+                      >
+                        <video
+                          className="w-full h-full object-cover"
+                          src={videoSrc}
+                          muted
+                          loop
+                          onMouseEnter={(e) => e.currentTarget.play()}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.pause()
+                            e.currentTarget.currentTime = 0
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <div className="bg-white/90 rounded-full p-2">
+                            <Play className="h-4 w-4 text-gray-900" />
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  })()}
                 </div>
-                <p className="text-xs text-muted-foreground">Generated videos will appear here</p>
+                <p className="text-xs text-muted-foreground">
+                  {(() => {
+                    const videoCount = new Set(sessions.flatMap(s => s.messages.filter(m => m.video).map(m => m.video!))).size
+                    return videoCount === 0 ? 'Generated videos will appear here' : `${videoCount} video${videoCount === 1 ? '' : 's'} available - click to reference`
+                  })()}
+                </p>
               </div>
             )}
           </div>
