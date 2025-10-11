@@ -62,7 +62,17 @@ export default function AIVideoPage() {
       })
     }
 
-    return parts.join('\n')
+    // Debug: Log the exact formatted prompt
+    const formattedPrompt = parts.join('\n')
+    console.log('=== FORMATTED PROMPT DEBUG ===')
+    console.log('Raw actions:', actions)
+    console.log('Raw speech:', speech)
+    console.log('Enhanced actions:', enhancedActions)
+    console.log('Final formatted prompt:')
+    console.log(formattedPrompt)
+    console.log('=== END DEBUG ===')
+
+    return formattedPrompt
   }
 
   // Split speech into segments at commas for better lip sync
@@ -273,7 +283,7 @@ export default function AIVideoPage() {
             const assistantMessage: ChatMessage = {
               id: (Date.now() + 1).toString(),
               type: 'assistant',
-              content: `Generated video for: "${prompt}"`,
+              content: `Generated video from: ${currentActions}${currentSpeech ? ` | Speech: ${currentSpeech}` : ''}`,
               video: jobData.result,
               timestamp: new Date()
             }
@@ -318,6 +328,7 @@ export default function AIVideoPage() {
 
     // Generate the properly formatted Ovi prompt
     const formattedPrompt = formatOviPrompt(actions, speech)
+    console.log('Formatted prompt being sent:', formattedPrompt)
 
     // Add user message showing what they entered
     const userMessage: ChatMessage = {
@@ -378,7 +389,7 @@ export default function AIVideoPage() {
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           type: 'assistant',
-          content: `Generated video for: "${currentPrompt}"`,
+          content: `Generated video from: ${currentActions}${currentSpeech ? ` | Speech: ${currentSpeech}` : ''}`,
           video: data.videoUrl,
           timestamp: new Date()
         }
