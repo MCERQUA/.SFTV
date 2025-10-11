@@ -58,7 +58,7 @@ export default function AIVideoPage() {
       // Split speech into segments of ~10 words for better lip sync
       const speechSegments = splitSpeechIntoSegments(speech.trim())
       speechSegments.forEach(segment => {
-        parts.push(`<S>${segment.trim()}<E>`)
+        parts.push(`<S>"${segment.trim()}"<E>`)
       })
     }
 
