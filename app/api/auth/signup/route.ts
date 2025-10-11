@@ -5,8 +5,12 @@ import { createUser, getUserByEmail, createSession, initDatabase } from '@/lib/d
 
 export async function POST(request: NextRequest) {
   try {
-    // Initialize database
-    await initDatabase()
+    // Try to initialize database (non-blocking)
+    try {
+      await initDatabase()
+    } catch (dbError) {
+      console.error('Database initialization failed, continuing anyway:', dbError)
+    }
 
     const { email, password, name } = await request.json()
 
