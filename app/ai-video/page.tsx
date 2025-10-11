@@ -43,78 +43,56 @@ export default function AIVideoPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Convert user input to working Ovi format (based on successful example)
+  // Convert user input to working Ovi format (fix speech format)
   const formatOviPrompt = (actions: string, speech: string): string => {
     const parts = []
 
-    // Start with enhanced visual description that worked
+    // Enhanced visual description without instructional text
     const enhancedActions = enhanceVisualDescription(actions.trim())
-    parts.push(`Use input image as subject. 5s video. ${enhancedActions}.`)
+    parts.push(enhancedActions)
 
-    // Add speech with proper Ovi tags if provided (this format worked)
+    // Add speech with proper Ovi tags if provided
     if (speech.trim()) {
       parts.push('') // Empty line for separation
 
       // Split speech into segments of ~10 words for better lip sync
       const speechSegments = splitSpeechIntoSegments(speech.trim())
       speechSegments.forEach(segment => {
-        parts.push(`<S>${segment}<E>`)
+        parts.push(`<S>${segment.trim()}<E>`)
       })
     }
 
     return parts.join('\n')
   }
 
-  // Split speech into optimal segments for lip sync
+  // Split speech into segments at commas for better lip sync
   const splitSpeechIntoSegments = (speech: string): string[] => {
-    const sentences = speech.split(/[.!?]+/).filter(s => s.trim())
-    const segments = []
+    // Split only on commas for natural speech breaks
+    const segments = speech.split(',').map(s => s.trim()).filter(s => s.length > 0)
 
-    for (const sentence of sentences) {
-      const words = sentence.trim().split(/\s+/)
-      if (words.length <= 10) {
-        segments.push(sentence.trim())
-      } else {
-        // Split longer sentences at natural breaks
-        const chunks = []
-        let currentChunk = []
-
-        for (const word of words) {
-          currentChunk.push(word)
-          if (currentChunk.length >= 8 && (word.endsWith(',') || word.endsWith(';'))) {
-            chunks.push(currentChunk.join(' ').replace(/,$|;$/, ''))
-            currentChunk = []
-          }
-        }
-
-        if (currentChunk.length > 0) {
-          chunks.push(currentChunk.join(' '))
-        }
-
-        segments.push(...chunks)
-      }
+    // If no commas, return the whole speech as one segment
+    if (segments.length === 1) {
+      return [speech.trim()]
     }
 
-    return segments.filter(s => s.length > 0)
+    return segments
   }
 
-  // Enhance visual descriptions for better video quality (based on working format)
+  // Enhance visual descriptions for better video quality (no commas)
   const enhanceVisualDescription = (actions: string): string => {
     let enhanced = actions
 
-    // Add camera movement that worked in successful example
-    if (!enhanced.toLowerCase().includes('push') && !enhanced.toLowerCase().includes('zoom') && !enhanced.toLowerCase().includes('camera')) {
-      enhanced = `Slow push-in. ${enhanced}`
-    }
-
-    // Add specific action cues for better animation
+    // Add specific action cues for better animation without commas
     if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture')) {
       enhanced += ' and gives a small nod'
-    } else if (enhanced.toLowerCase().includes('gift') || enhanced.toLowerCase().includes('present')) {
-      enhanced += ' and lifts the gifts slightly'
+    } else if (enhanced.toLowerCase().includes('gift') || enhanced.toLowerCase().includes('present') || enhanced.toLowerCase().includes('holiday')) {
+      enhanced += ' and gives a small nod'
     } else if (enhanced.toLowerCase().includes('point') || enhanced.toLowerCase().includes('show')) {
       enhanced += ' with a welcoming gesture'
     }
+
+    // Remove any commas from the description to avoid speech conflicts
+    enhanced = enhanced.replace(/,/g, ' ')
 
     return enhanced
   }
