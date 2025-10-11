@@ -43,16 +43,70 @@ export default function AIVideoPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Convert user input to a simple natural prompt
+  // Convert user input to enhanced prompt for better video generation
   const formatOviPrompt = (actions: string, speech: string): string => {
-    let prompt = actions.trim()
+    const parts = []
 
-    // Add speech naturally if provided
+    // Enhanced visual description with cinematic details
+    const enhancedActions = enhanceVisualDescription(actions.trim())
+
+    // Add speech with proper context if provided
     if (speech.trim()) {
-      prompt += `. The person says: "${speech.trim()}"`
+      parts.push(`${enhancedActions}. The person speaks clearly: "${speech.trim()}". Ensure good lip sync and clear audio.`)
+    } else {
+      parts.push(enhancedActions)
     }
 
-    return prompt
+    return parts.join(' ')
+  }
+
+  // Enhance visual descriptions for better video quality
+  const enhanceVisualDescription = (actions: string): string => {
+    let enhanced = actions
+
+    // Add cinematic quality descriptors
+    if (!enhanced.toLowerCase().includes('camera')) {
+      enhanced = `Professional quality video of ${enhanced.toLowerCase()}`
+    }
+
+    // Add lighting context
+    if (!enhanced.toLowerCase().includes('light')) {
+      if (enhanced.toLowerCase().includes('outdoor') || enhanced.toLowerCase().includes('outside')) {
+        enhanced += ', natural outdoor lighting'
+      } else {
+        enhanced += ', well-lit indoor environment'
+      }
+    }
+
+    // Add motion clarity
+    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture') || enhanced.toLowerCase().includes('move')) {
+      enhanced += ', smooth natural movements'
+    }
+
+    // Add audio environment cues
+    const audioContext = getAudioEnvironmentContext(actions)
+    if (audioContext) {
+      enhanced += `, ${audioContext}`
+    }
+
+    return enhanced
+  }
+
+  // Get audio environment context
+  const getAudioEnvironmentContext = (actions: string): string => {
+    const lowerActions = actions.toLowerCase()
+
+    if (lowerActions.includes('outdoor') || lowerActions.includes('outside') || lowerActions.includes('street')) {
+      return 'ambient outdoor sounds'
+    } else if (lowerActions.includes('office') || lowerActions.includes('work')) {
+      return 'quiet office ambiance'
+    } else if (lowerActions.includes('store') || lowerActions.includes('shop') || lowerActions.includes('business')) {
+      return 'professional business environment'
+    } else if (lowerActions.includes('car') || lowerActions.includes('vehicle')) {
+      return 'vehicle interior acoustics'
+    }
+
+    return 'clear audio environment'
   }
 
 
