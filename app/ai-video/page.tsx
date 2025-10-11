@@ -225,7 +225,7 @@ export default function AIVideoPage() {
     }
   }
 
-  const pollJobStatus = async (jobId: string, prompt: string, userActions: string, userSpeech: string): Promise<void> => {
+  const pollJobStatus = async (jobId: string, formattedPrompt: string, userActions: string, userSpeech: string): Promise<void> => {
     const pollInterval = 2000 // Poll every 2 seconds
     const maxPolls = 150 // Maximum 5 minutes of polling
 
@@ -253,7 +253,7 @@ export default function AIVideoPage() {
             const assistantMessage: ChatMessage = {
               id: (Date.now() + 1).toString(),
               type: 'assistant',
-              content: `Generated video from: ${userActions}${userSpeech ? ` | Speech: ${userSpeech}` : ''}`,
+              content: `Generated video with prompt:\n${formattedPrompt}`,
               video: jobData.result,
               timestamp: new Date()
             }
@@ -359,7 +359,7 @@ export default function AIVideoPage() {
         const assistantMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           type: 'assistant',
-          content: `Generated video from: ${currentActions}${currentSpeech ? ` | Speech: ${currentSpeech}` : ''}`,
+          content: `Generated video with prompt:\n${formattedPrompt}`,
           video: data.videoUrl,
           timestamp: new Date()
         }
