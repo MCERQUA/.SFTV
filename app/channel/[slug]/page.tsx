@@ -132,13 +132,23 @@ const companyVideos = {
       views: 6743
     }
   ],
-  "on-the-mark-spray-foam": []
+  "on-the-mark-spray-foam": [
+    {
+      id: 23,
+      title: "On The Mark - The Marksman",
+      thumbnail: "/thumbnails/commercials-longer/On-The-Mark-The-Marksman.jpg",
+      videoPath: "/videos/commercials-longer/On-The-Mark-The-Marksman.mp4",
+      category: "Commercial",
+      duration: "0:45",
+      views: 1234
+    }
+  ]
 };
 
 // Company data
 const companies = [
   { name: "Allstate Spray Foam Insulation", location: "California", videos: 1, slug: "allstate-spray-foam" },
-  { name: "On The Mark Spray Foam", location: "Regional", videos: 0, slug: "on-the-mark-spray-foam" },
+  { name: "On The Mark Spray Foam", location: "Regional", videos: 1, slug: "on-the-mark-spray-foam" },
   { name: "Kool Foam", location: "Southwest", videos: 2, slug: "kool-foam" },
   { name: "Cortez Industries", location: "Arizona", videos: 5, slug: "cortez-industries" },
   { name: "Insulation Contractors Of Arizona", location: "Arizona", videos: 2, slug: "insulation-contractors-of-arizona" },

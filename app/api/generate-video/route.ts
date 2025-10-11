@@ -8,6 +8,9 @@ interface TempJob {
   status: JobStatus
   progress: number
   result?: string
+  blobKey?: string
+  videoData?: string
+  mimeType?: string
   error?: string
   createdAt: Date
   updatedAt: Date
@@ -193,30 +196,53 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
             throw new Error('Downloaded video data from provider was empty')
           }
 
-          // Save video to public directory and return file path instead of base64
-          const { writeFile } = await import('fs/promises')
-          const { join } = await import('path')
+          // Try to store video in Netlify Blobs, fallback to in-memory
+          let storeSuccess = false
+          const videoUrl = `/api/video-blob/${jobId}`
 
-          const videoFileName = `ai-video-${jobId}.webm`
-          const videoPath = join(process.cwd(), 'public', 'generated-videos', videoFileName)
-          const publicVideoUrl = `/generated-videos/${videoFileName}`
+          // First try Netlify Blobs storage
+          try {
+            // Check if we're in Netlify environment before importing
+            if (process.env.NETLIFY) {
+              const { getStore } = await import('@netlify/blobs')
+              const videoStore = getStore('ai-videos')
+              const videoKey = `video-${jobId}.webm`
 
-          // Ensure directory exists
-          const { mkdir } = await import('fs/promises')
-          const videoDir = join(process.cwd(), 'public', 'generated-videos')
-          await mkdir(videoDir, { recursive: true })
+              await videoStore.set(videoKey, remoteArrayBuffer)
 
-          // Write video file
-          await writeFile(videoPath, Buffer.from(remoteArrayBuffer))
+              updateJob(jobId, {
+                status: 'completed',
+                progress: 100,
+                result: videoUrl,
+                blobKey: videoKey,
+                error: undefined,
+              })
 
-          updateJob(jobId, {
-            status: 'completed',
-            progress: 100,
-            result: publicVideoUrl,
-            error: undefined,
-          })
+              storeSuccess = true
+              console.log(`Video stored in Netlify Blobs for job ${jobId}`)
+            }
+          } catch (blobError) {
+            console.warn('Failed to store in Netlify Blobs, using fallback:', blobError.message)
+          }
 
-          console.log(`Video generation completed for job ${jobId} (saved to ${publicVideoUrl})`)
+          // Fallback to in-memory storage if Netlify Blobs failed
+          if (!storeSuccess) {
+            const base64Video = Buffer.from(remoteArrayBuffer).toString('base64')
+            const remoteMimeType = remoteResponse.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase() || 'video/mp4'
+
+            updateJob(jobId, {
+              status: 'completed',
+              progress: 100,
+              result: videoUrl,
+              videoData: base64Video,
+              mimeType: remoteMimeType,
+              error: undefined,
+            })
+
+            console.log(`Video stored in memory for job ${jobId}`)
+          }
+
+          console.log(`Video generation completed for job ${jobId} (saved to blob endpoint)`)
           return
         }
 
@@ -229,30 +255,53 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
     }
 
     // Handle direct video binary response
-    // Save video to public directory and return file path instead of base64
-    const { writeFile } = await import('fs/promises')
-    const { join } = await import('path')
+    // Try to store video in Netlify Blobs, fallback to in-memory
+    let storeSuccess = false
+    const videoUrl = `/api/video-blob/${jobId}`
 
-    const videoFileName = `ai-video-${jobId}.webm`
-    const videoPath = join(process.cwd(), 'public', 'generated-videos', videoFileName)
-    const publicVideoUrl = `/generated-videos/${videoFileName}`
+    // First try Netlify Blobs storage
+    try {
+      // Check if we're in Netlify environment before importing
+      if (process.env.NETLIFY) {
+        const { getStore } = await import('@netlify/blobs')
+        const videoStore = getStore('ai-videos')
+        const videoKey = `video-${jobId}.webm`
 
-    // Ensure directory exists
-    const { mkdir } = await import('fs/promises')
-    const videoDir = join(process.cwd(), 'public', 'generated-videos')
-    await mkdir(videoDir, { recursive: true })
+        await videoStore.set(videoKey, videoArrayBuffer)
 
-    // Write video file
-    await writeFile(videoPath, Buffer.from(videoArrayBuffer))
+        updateJob(jobId, {
+          status: 'completed',
+          progress: 100,
+          result: videoUrl,
+          blobKey: videoKey,
+          error: undefined,
+        })
 
-    updateJob(jobId, {
-      status: 'completed',
-      progress: 100,
-      result: publicVideoUrl,
-      error: undefined,
-    })
+        storeSuccess = true
+        console.log(`Video stored in Netlify Blobs for job ${jobId}`)
+      }
+    } catch (blobError) {
+      console.warn('Failed to store in Netlify Blobs, using fallback:', blobError.message)
+    }
 
-    console.log(`Video generation completed for job ${jobId} (saved to ${publicVideoUrl})`)
+    // Fallback to in-memory storage if Netlify Blobs failed
+    if (!storeSuccess) {
+      const base64Video = Buffer.from(videoArrayBuffer).toString('base64')
+      const videoMimeType = detectedMimeType || 'video/mp4'
+
+      updateJob(jobId, {
+        status: 'completed',
+        progress: 100,
+        result: videoUrl,
+        videoData: base64Video,
+        mimeType: videoMimeType,
+        error: undefined,
+      })
+
+      console.log(`Video stored in memory for job ${jobId}`)
+    }
+
+    console.log(`Video generation completed for job ${jobId} (saved to blob endpoint)`)
 
   } catch (error: any) {
     console.error(`Video generation failed for job ${jobId}:`, error)

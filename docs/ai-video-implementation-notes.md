@@ -258,3 +258,27 @@ When users report "video component shows but doesn't work":
 **Expected Result**: Video components receive standard video URLs that browsers can stream efficiently
 
 **Status**: Needs testing - may resolve large video playback issues
+
+### **Updated Solution (Oct 11, 2025) - Netlify Blobs + Blob Endpoint**
+**Problem**: Serverless functions can't write to file system (`ENOENT: no such file or directory, mkdir '/var/task/public'`)
+
+**New Approach**: Netlify Blobs storage + dedicated blob serving endpoint
+**Implementation**:
+1. Store generated videos in Netlify Blobs (`ai-videos` store) when available
+2. Fallback to in-memory base64 storage for development/non-Netlify environments
+3. Created `/api/video-blob/[jobId]` endpoint to serve videos as binary responses
+4. Return blob endpoint URLs (`/api/video-blob/{jobId}`) instead of data URLs
+5. Proper video streaming with `Content-Type`, `Content-Length`, and caching headers
+
+**Files Modified**:
+- `app/api/generate-video/route.ts:199-302` - Netlify Blobs integration with fallback
+- `app/api/video-blob/[jobId]/route.ts` - New blob serving endpoint (created)
+- `package.json:16` - Added `@netlify/blobs` dependency
+
+**Technical Details**:
+- Uses `process.env.NETLIFY` to detect environment before importing Netlify Blobs
+- Graceful fallback to base64 in-memory storage if blobs unavailable
+- Video endpoint supports proper browser streaming (Accept-Ranges, caching)
+- No file system dependencies - fully serverless compatible
+
+**Expected Result**: Videos served as efficient binary streams instead of massive data URLs, with persistent storage in production

@@ -75,6 +75,14 @@ export const commercialsLonger = [
     videoPath: "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
     category: "Commercial",
     duration: "1:13"
+  },
+  {
+    id: 23,
+    title: "On The Mark - The Marksman",
+    thumbnail: "/thumbnails/commercials-longer/On-The-Mark-The-Marksman.jpg",
+    videoPath: "/videos/commercials-longer/On-The-Mark-The-Marksman.mp4",
+    category: "Commercial",
+    duration: "0:45"
   }
 ]
 
@@ -98,6 +106,14 @@ export const musicVideoCommercials = [
 ]
 
 export const funnyClips = [
+  {
+    id: 22,
+    title: "Pickle Juice Energy Drink",
+    thumbnail: "/thumbnails/funny-clips/Pickle-Juice-Energy-Drink.jpg",
+    videoPath: "/videos/funny-clips/Pickle-Juice-Energy-Drink.mp4",
+    category: "Comedy",
+    duration: "0:24"
+  },
   {
     id: 21,
     title: "Kool Foam - Keep Kool",
