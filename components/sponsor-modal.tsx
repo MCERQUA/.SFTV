@@ -89,7 +89,7 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
             <div>
               <h2 className="text-2xl font-bold">Become a Sponsor</h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Partner with SprayFoam TV and reach industry professionals
+                Affordable 1-year partnerships to reach spray foam professionals
               </p>
             </div>
             <Button
@@ -208,12 +208,12 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
                           <SelectValue placeholder="Select sponsorship type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="title">Title Sponsor</SelectItem>
-                          <SelectItem value="platinum">Platinum Partner</SelectItem>
-                          <SelectItem value="gold">Gold Partner</SelectItem>
-                          <SelectItem value="silver">Silver Partner</SelectItem>
-                          <SelectItem value="episode">Episode Sponsor</SelectItem>
-                          <SelectItem value="segment">Segment Sponsor</SelectItem>
+                          <SelectItem value="title">Title Sponsor (1 Year)</SelectItem>
+                          <SelectItem value="platinum">Platinum Partner (1 Year)</SelectItem>
+                          <SelectItem value="gold">Gold Partner (1 Year)</SelectItem>
+                          <SelectItem value="silver">Silver Partner (1 Year)</SelectItem>
+                          <SelectItem value="episode">Episode Sponsor (Per Episode)</SelectItem>
+                          <SelectItem value="segment">Segment Sponsor (Per Segment)</SelectItem>
                           <SelectItem value="custom">Custom Package</SelectItem>
                         </SelectContent>
                       </Select>
@@ -229,12 +229,12 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
                           <SelectValue placeholder="Select budget range" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="5k">Under $5,000</SelectItem>
+                          <SelectItem value="500">Under $500</SelectItem>
+                          <SelectItem value="1k">$500 - $1,000</SelectItem>
+                          <SelectItem value="2.5k">$1,000 - $2,500</SelectItem>
+                          <SelectItem value="5k">$2,500 - $5,000</SelectItem>
                           <SelectItem value="10k">$5,000 - $10,000</SelectItem>
-                          <SelectItem value="25k">$10,000 - $25,000</SelectItem>
-                          <SelectItem value="50k">$25,000 - $50,000</SelectItem>
-                          <SelectItem value="100k">$50,000 - $100,000</SelectItem>
-                          <SelectItem value="100k+">Over $100,000</SelectItem>
+                          <SelectItem value="10k+">Over $10,000</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -258,11 +258,12 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
                 <div className="rounded-lg bg-primary/5 p-4 space-y-2">
                   <h4 className="font-semibold">Sponsorship Benefits Include:</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Brand exposure to thousands of industry professionals</li>
-                    <li>• Custom commercial production and placement</li>
-                    <li>• Logo placement and brand mentions</li>
-                    <li>• Event sponsorship opportunities</li>
+                    <li>• Brand exposure to thousands of spray foam professionals</li>
+                    <li>• Custom commercial production and 1-year placement</li>
+                    <li>• Logo placement and brand mentions throughout content</li>
+                    <li>• Industry event sponsorship opportunities</li>
                     <li>• Social media promotion across all channels</li>
+                    <li>• Featured placement in contractor directory</li>
                   </ul>
                 </div>
 
