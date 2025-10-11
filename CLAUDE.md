@@ -123,7 +123,7 @@ node scripts/regenerate-thumbnails.sh   # Regenerate video thumbnails
 
 ### Pages Available
 - `/` - Homepage with video carousels
-- `/ai-video` - ✅ **AI Video Generation** - ChatGPT-style interface for creating videos
+- `/ai-video` - ✅ **AI Video Generation** - ChatGPT-style interface for creating videos (**Authentication Required**)
 - `/about` - About page
 - `/schedule` - Schedule page
 - `/shows` - Shows listing
@@ -294,12 +294,33 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 
 ## AI Video Generation System
 - **URL**: https://sprayfoamtv.com/ai-video
-- **Status**: ✅ Fully operational production system
+- **Status**: ✅ Fully operational production system with authentication
 - **Architecture**: ChatGPT-style interface with Netlify Blobs storage
 - **Model**: HuggingFace `chetwinlow1/Ovi` via `fal-ai` provider
 - **Flow**: Upload image + prompt → Generate video (~40s) → Stream via blob endpoint
 - **Storage**: Netlify Blobs (`ai-videos` store) with graceful fallback
+- **Security**: ⚠️ **AUTHENTICATION REQUIRED** - All AI video features require user login
 - **Documentation**: `/docs/ai-video-implementation-notes.md`
+
+## Authentication System
+- **Type**: Custom session-based authentication (no OAuth/third-party)
+- **Access**: Required for `/ai-video` and all AI generation endpoints
+- **Registration**: Users create accounts with email/password directly on `/ai-video` page
+- **Session**: 7-day persistent login via secure HttpOnly cookies
+- **Security**: bcryptjs password hashing, automatic session cleanup
+- **Database**: User accounts and sessions stored in PostgreSQL
+- **Environment**: Uses `NETLIFY_DATABASE_URL` (production) or `DATABASE_URL` (local)
+
+### Authentication Endpoints
+- `POST /api/auth/signup` - Create new user account
+- `POST /api/auth/login` - Authenticate and create session
+- `POST /api/auth/logout` - Destroy session
+- `GET /api/auth/me` - Get current user info
+
+### Protected Endpoints (Require Login)
+- `POST /api/generate-video` - AI video generation
+- `GET /api/video-jobs` - Check generation status
+- `GET /api/video-blob/[jobId]` - Stream generated videos
 
 ## Future Integration Points
 - Real streaming player integration in LiveHero component
