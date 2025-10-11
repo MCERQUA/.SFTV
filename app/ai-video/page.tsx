@@ -225,7 +225,7 @@ export default function AIVideoPage() {
     }
   }
 
-  const pollJobStatus = async (jobId: string, prompt: string): Promise<void> => {
+  const pollJobStatus = async (jobId: string, prompt: string, userActions: string, userSpeech: string): Promise<void> => {
     const pollInterval = 2000 // Poll every 2 seconds
     const maxPolls = 150 // Maximum 5 minutes of polling
 
@@ -253,7 +253,7 @@ export default function AIVideoPage() {
             const assistantMessage: ChatMessage = {
               id: (Date.now() + 1).toString(),
               type: 'assistant',
-              content: `Generated video from: ${currentActions}${currentSpeech ? ` | Speech: ${currentSpeech}` : ''}`,
+              content: `Generated video from: ${userActions}${userSpeech ? ` | Speech: ${userSpeech}` : ''}`,
               video: jobData.result,
               timestamp: new Date()
             }
@@ -353,7 +353,7 @@ export default function AIVideoPage() {
 
       if (data.async && data.jobId) {
         // Poll for job completion
-        await pollJobStatus(data.jobId, formattedPrompt)
+        await pollJobStatus(data.jobId, formattedPrompt, currentActions, currentSpeech)
       } else {
         // Fallback to old sync response format
         const assistantMessage: ChatMessage = {
