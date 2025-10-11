@@ -106,6 +106,7 @@ export async function initDatabase() {
     console.log('Database initialized')
   } catch (error) {
     console.error('Failed to initialize database:', error)
+    throw error
   }
 }
 
