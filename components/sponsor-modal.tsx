@@ -37,26 +37,47 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-
-    setIsSubmitting(false)
-    setShowSuccess(true)
-
-    // Reset form and close after showing success
-    setTimeout(() => {
-      setFormData({
-        companyName: "",
-        contactName: "",
-        email: "",
-        phone: "",
-        sponsorshipType: "",
-        budget: "",
-        message: "",
+    try {
+      const response = await fetch('/api/sponsor-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       })
-      setShowSuccess(false)
-      onClose()
-    }, 3000)
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to submit sponsor inquiry')
+      }
+
+      const result = await response.json()
+      console.log('Sponsor inquiry submitted:', result.id)
+
+      setShowSuccess(true)
+
+      // Reset form and close after showing success
+      setTimeout(() => {
+        setFormData({
+          companyName: "",
+          contactName: "",
+          email: "",
+          phone: "",
+          sponsorshipType: "",
+          budget: "",
+          message: "",
+        })
+        setShowSuccess(false)
+        onClose()
+      }, 3000)
+
+    } catch (error) {
+      console.error('Error submitting sponsor inquiry:', error)
+      // You could add error state handling here
+      alert('Failed to submit sponsor inquiry. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
