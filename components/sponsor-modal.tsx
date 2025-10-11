@@ -97,19 +97,19 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 min-h-screen">
       <div
         className="absolute inset-0 bg-background/80 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto my-4">
         <div className="bg-card rounded-lg shadow-2xl border border-border">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-border p-6">
-            <div>
-              <h2 className="text-2xl font-bold">Become a Sponsor</h2>
-              <p className="text-sm text-muted-foreground mt-1">
+          <div className="flex items-center justify-between border-b border-border p-4 md:p-6">
+            <div className="flex-1 min-w-0 pr-4">
+              <h2 className="text-xl md:text-2xl font-bold">Become a Sponsor</h2>
+              <p className="text-xs md:text-sm text-muted-foreground mt-1">
                 Affordable 1-year partnerships to reach spray foam professionals
               </p>
             </div>
@@ -119,13 +119,13 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
               onClick={onClose}
               className="rounded-full"
             >
-              <X className="h-5 w-5" />
+              <X className="h-5 w-5 text-orange-500" />
               <span className="sr-only">Close</span>
             </Button>
           </div>
 
           {/* Form Content */}
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4 md:space-y-6">
             {showSuccess ? (
               <div className="py-12 text-center">
                 <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4">
