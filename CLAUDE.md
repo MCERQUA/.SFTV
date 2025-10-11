@@ -121,6 +121,7 @@ node scripts/regenerate-thumbnails.sh   # Regenerate video thumbnails
 
 ### Pages Available
 - `/` - Homepage with video carousels
+- `/ai-video` - ✅ **AI Video Generation** - ChatGPT-style interface for creating videos
 - `/about` - About page
 - `/schedule` - Schedule page
 - `/shows` - Shows listing
@@ -259,6 +260,8 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 ```
 
 ## Recent Updates
+- ✅ **AI Video Generation System** - ChatGPT-style interface at `/ai-video` using HuggingFace Ovi model
+- ✅ **Netlify Blobs Storage** - Efficient video storage with streaming endpoints (`/api/video-blob/[jobId]`)
 - Company channel pages with hero sections and square cards
 - Organized directory structure for company assets
 - Real company data integration (7 spray foam contractors)
@@ -275,6 +278,8 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 - ffmpeg installed at `~/.local/bin/ffmpeg` for video processing
 - PostgreSQL database configured via Netlify DB
 - Session cookies for view tracking
+- **AI Video Generation**: HuggingFace API token (`HF_TOKEN`) + Netlify Blobs storage
+- **Dependencies**: `@huggingface/inference`, `@netlify/blobs`, `@netlify/functions`
 
 ## Important Build Notes
 
@@ -284,6 +289,15 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 - Using `data-netlify="true"` will cause build failures with error: "Failed assembling prerendered content for upload"
 - Forms should use API routes or edge functions instead
 - Hidden forms for Netlify form detection are NOT compatible with the current runtime
+
+## AI Video Generation System
+- **URL**: https://sprayfoamtv.com/ai-video
+- **Status**: ✅ Fully operational production system
+- **Architecture**: ChatGPT-style interface with Netlify Blobs storage
+- **Model**: HuggingFace `chetwinlow1/Ovi` via `fal-ai` provider
+- **Flow**: Upload image + prompt → Generate video (~40s) → Stream via blob endpoint
+- **Storage**: Netlify Blobs (`ai-videos` store) with graceful fallback
+- **Documentation**: `/docs/ai-video-implementation-notes.md`
 
 ## Future Integration Points
 - Real streaming player integration in LiveHero component
