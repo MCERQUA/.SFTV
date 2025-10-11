@@ -97,7 +97,7 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
                 className="h-10 w-10 rounded-full bg-background/80 backdrop-blur hover:bg-background/90"
                 onClick={onClose}
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 text-orange-500" />
                 <span className="sr-only">Close</span>
               </Button>
             </div>
