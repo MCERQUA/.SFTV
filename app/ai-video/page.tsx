@@ -45,24 +45,21 @@ export default function AIVideoPage() {
 
   // Convert user input to working Ovi format (fix speech format)
   const formatOviPrompt = (actions: string, speech: string): string => {
-    const parts = []
-
     // Enhanced visual description without instructional text
     const enhancedActions = enhanceVisualDescription(actions.trim())
-    parts.push(enhancedActions)
 
-    // Add speech with proper Ovi tags if provided
+    // If speech is provided, embed it within the description like the working examples
     if (speech.trim()) {
-      parts.push('') // Empty line for separation
-
       // Split speech into segments of ~10 words for better lip sync
       const speechSegments = splitSpeechIntoSegments(speech.trim())
-      speechSegments.forEach(segment => {
-        parts.push(`<S>"${segment.trim()}"<E>`)
-      })
+
+      // Create embedded format: "description, <S>speech<E>. continues..."
+      const speechTags = speechSegments.map(segment => `<S>${segment.trim()}<E>`).join('. ')
+      return `${enhancedActions}, ${speechTags}.`
     }
 
-    return parts.join('\n')
+    // If no speech, just return the enhanced actions
+    return enhancedActions
   }
 
   // Split speech into segments at commas for better lip sync
