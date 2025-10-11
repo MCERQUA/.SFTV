@@ -741,8 +741,8 @@ export default function AIVideoPage() {
 
               <div className="flex items-end gap-3">
                 <div className="flex-1 space-y-2">
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  <div className="border border-orange-500/20 rounded-lg p-3 bg-orange-500/5">
+                    <label className="text-xs font-bold text-orange-500 mb-2 block">
                       Actions/Scene
                     </label>
                     <Textarea
@@ -756,11 +756,11 @@ export default function AIVideoPage() {
                         }
                       }}
                       rows={2}
-                      className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                      className="resize-none border border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-orange-500/50 focus-visible:ring-offset-0 text-sm rounded-md px-3 py-2"
                     />
                   </div>
-                  <div>
-                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                  <div className="border border-orange-500/20 rounded-lg p-3 bg-orange-500/5">
+                    <label className="text-xs font-bold text-orange-500 mb-2 block">
                       Speech (Optional)
                     </label>
                     <Textarea
@@ -774,7 +774,7 @@ export default function AIVideoPage() {
                         }
                       }}
                       rows={2}
-                      className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                      className="resize-none border border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-orange-500/50 focus-visible:ring-offset-0 text-sm rounded-md px-3 py-2"
                     />
                   </div>
                 </div>
