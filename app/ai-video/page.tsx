@@ -412,8 +412,8 @@ export default function AIVideoPage() {
       <div className="flex h-[calc(100vh-64px)] bg-background text-foreground relative">
         {/* Sidebar */}
         <div className={`${
-          sidebarOpen ? 'w-80' : 'w-0'
-        } bg-card border-r border-border flex flex-col transition-all duration-300 overflow-hidden relative`}>
+          sidebarOpen ? 'w-80 md:w-80 w-full md:relative absolute z-20' : 'w-0'
+        } bg-card border-r border-border flex flex-col transition-all duration-300 overflow-hidden relative md:relative`}>
 
           {/* Tab Icons Header */}
           <div className="p-4 border-b border-border">
@@ -530,7 +530,7 @@ export default function AIVideoPage() {
         </div>
 
         {/* Collapsible Tab */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 md:block hidden">
           <Button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             size="sm"
@@ -547,16 +547,38 @@ export default function AIVideoPage() {
         </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col relative">
+        {/* Mobile overlay when sidebar is open */}
+        {sidebarOpen && (
+          <div
+            className="absolute inset-0 bg-black/50 z-10 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
         {/* Top Header */}
-        <div className="border-b border-border p-4 flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-semibold">AI Video Generator</h1>
-            <p className="text-sm text-muted-foreground">Create spray foam videos with AI</p>
+        <div className="border-b border-border p-2 md:p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {/* Mobile hamburger menu */}
+            <Button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              size="sm"
+              variant="ghost"
+              className="md:hidden h-8 w-8 p-0"
+            >
+              {sidebarOpen ? (
+                <ChevronLeft className="h-4 w-4" />
+              ) : (
+                <History className="h-4 w-4" />
+              )}
+            </Button>
+            <div>
+              <h1 className="text-base md:text-lg font-semibold">AI Video Generator</h1>
+              <p className="text-xs md:text-sm text-muted-foreground hidden sm:block">Create spray foam videos with AI</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             {user && (
-              <div className="text-sm text-muted-foreground">
+              <div className="text-xs md:text-sm text-muted-foreground hidden md:block">
                 Welcome, {user.name || user.email}
               </div>
             )}
@@ -564,10 +586,10 @@ export default function AIVideoPage() {
               variant="outline"
               size="sm"
               onClick={logout}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1 md:gap-2 h-8 px-2 md:px-3"
             >
-              <LogOut className="h-4 w-4" />
-              Logout
+              <LogOut className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </div>
@@ -629,7 +651,7 @@ export default function AIVideoPage() {
                       {message.video && (
                         <div className="mt-3">
                           <video
-                            className="w-full max-w-md rounded-lg"
+                            className="w-full max-w-sm md:max-w-md rounded-lg"
                             controls
                             src={message.video}
                           >
@@ -677,7 +699,7 @@ export default function AIVideoPage() {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-border p-4">
+        <div className="border-t border-border p-2 md:p-4">
           <div className="max-w-4xl mx-auto">
             <div className="relative bg-background border-2 border-primary rounded-2xl p-4 focus-within:border-primary/80 transition-colors">
               {/* Image Preview */}
@@ -711,9 +733,9 @@ export default function AIVideoPage() {
                 </div>
               )}
 
-              <div className="flex items-end gap-3">
+              <div className="flex items-end gap-2 md:gap-3">
                 <div className="flex-1 space-y-2">
-                  <div className="border border-orange-500/20 rounded-lg p-3 bg-orange-500/5">
+                  <div className="border border-orange-500/20 rounded-lg p-2 md:p-3 bg-orange-500/5">
                     <label className="text-xs font-bold text-orange-500 mb-2 block">
                       Actions/Scene
                     </label>
@@ -731,7 +753,7 @@ export default function AIVideoPage() {
                       className="resize-none border border-border/40 bg-background/50 focus-visible:ring-1 focus-visible:ring-orange-500/50 focus-visible:ring-offset-0 text-sm rounded-md px-3 py-2"
                     />
                   </div>
-                  <div className="border border-orange-500/20 rounded-lg p-3 bg-orange-500/5">
+                  <div className="border border-orange-500/20 rounded-lg p-2 md:p-3 bg-orange-500/5">
                     <label className="text-xs font-bold text-orange-500 mb-2 block">
                       Speech (Optional)
                     </label>
@@ -751,7 +773,7 @@ export default function AIVideoPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1 md:gap-2">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -763,18 +785,18 @@ export default function AIVideoPage() {
                     size="sm"
                     variant="outline"
                     onClick={() => fileInputRef.current?.click()}
-                    className="h-16 w-16 p-0 border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 shadow-orange-500/20 shadow-lg hover:shadow-orange-500/30 hover:shadow-xl transition-all duration-200"
+                    className="h-12 w-12 md:h-16 md:w-16 p-0 border-orange-500/30 bg-orange-500/5 hover:bg-orange-500/10 hover:border-orange-500/50 shadow-orange-500/20 shadow-lg hover:shadow-orange-500/30 hover:shadow-xl transition-all duration-200"
                   >
-                    <ImageIcon className="h-8 w-8 text-orange-500" />
+                    <ImageIcon className="h-5 w-5 md:h-8 md:w-8 text-orange-500" />
                   </Button>
 
                   <Button
                     size="sm"
                     onClick={handleGenerate}
                     disabled={isGenerating || !actions.trim() || !selectedImage}
-                    className="h-16 w-16 p-0 bg-orange-500 hover:bg-orange-600 disabled:bg-muted disabled:text-muted-foreground shadow-orange-500/30 shadow-lg hover:shadow-orange-500/40 hover:shadow-xl transition-all duration-200 disabled:shadow-none"
+                    className="h-12 w-12 md:h-16 md:w-16 p-0 bg-orange-500 hover:bg-orange-600 disabled:bg-muted disabled:text-muted-foreground shadow-orange-500/30 shadow-lg hover:shadow-orange-500/40 hover:shadow-xl transition-all duration-200 disabled:shadow-none"
                   >
-                    <Send className="h-8 w-8" />
+                    <Send className="h-5 w-5 md:h-8 md:w-8" />
                   </Button>
                 </div>
               </div>
