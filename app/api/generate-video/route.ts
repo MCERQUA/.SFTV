@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
+import { getAuthenticatedUser } from '@/lib/auth'
 
 type JobStatus = 'pending' | 'processing' | 'completed' | 'failed'
 
@@ -47,6 +48,15 @@ function updateJob(jobId: string, updates: Partial<Omit<TempJob, 'id' | 'created
 
 export async function POST(request: NextRequest) {
   try {
+    // Check authentication
+    const user = await getAuthenticatedUser(request)
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     console.log('Starting video generation...')
 
     const formData = await request.formData()

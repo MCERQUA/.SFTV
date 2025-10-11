@@ -5,7 +5,9 @@ import { Header } from "@/components/header"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
-import { AlertCircle, Plus, Send, Image as ImageIcon, Trash2, MessageSquare, History, Images, Video, ChevronLeft, ChevronRight } from "lucide-react"
+import { AlertCircle, Plus, Send, Image as ImageIcon, Trash2, MessageSquare, History, Images, Video, ChevronLeft, ChevronRight, LogOut } from "lucide-react"
+import { AuthForm } from "@/components/auth-form"
+import { useAuth } from "@/hooks/use-auth"
 
 interface ChatMessage {
   id: string
@@ -25,6 +27,7 @@ interface ChatSession {
 }
 
 export default function AIVideoPage() {
+  const { user, loading, login, logout, isAuthenticated } = useAuth()
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null)
   const [sessions, setSessions] = useState<ChatSession[]>([])
   const [messages, setMessages] = useState<ChatMessage[]>([])
@@ -300,6 +303,33 @@ export default function AIVideoPage() {
     }
   }
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Header />
+        <div className="flex items-center justify-center h-[calc(100vh-64px)]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Header />
+        <div className="flex items-center justify-center h-[calc(100vh-64px)] p-4">
+          <AuthForm onSuccess={login} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Header />
@@ -443,9 +473,27 @@ export default function AIVideoPage() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Top Header */}
-        <div className="border-b border-border p-4">
-          <h1 className="text-lg font-semibold">AI Video Generator</h1>
-          <p className="text-sm text-muted-foreground">Create spray foam videos with AI</p>
+        <div className="border-b border-border p-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-lg font-semibold">AI Video Generator</h1>
+            <p className="text-sm text-muted-foreground">Create spray foam videos with AI</p>
+          </div>
+          <div className="flex items-center gap-4">
+            {user && (
+              <div className="text-sm text-muted-foreground">
+                Welcome, {user.name || user.email}
+              </div>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={logout}
+              className="flex items-center gap-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Logout
+            </Button>
+          </div>
         </div>
 
         {/* Messages Area */}

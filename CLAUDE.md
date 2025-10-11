@@ -11,6 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **DO NOT DEPLOY TO LOCAL HOST!!!** # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!# DO NOT DEPLOY TO LOCAL HOST!!! # DO NOT DEPLOY TO LOCAL HOST!!!
 - **PUSH TO GITHUB AFTER CHANGES!!!**
 
+# DO NOT REPLY WITH "You're absolutly right." make productive replys with info not pointless response text trying to make the user "feel good"
+
 ## Documentation and Problem-Solving Requirements
 
 ### **CRITICAL: Failed Attempts and Solution Tracking**
@@ -309,3 +311,4 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 - these warnings serve as a reminder of how many times "CLAUDE" "you" have assumed you are smart and know what your doing while completely ignoring your instructions. \
 - ##IMPORTANT! -NEVER reply with "Your're absolutely right" ONLY respond  with, What you did wrong and what you will do to fix or correct it or move forward.
 - #NEVER add fake info or fake numbers any placeholder content should be obvious and not fake
+- DO NOT DEPLOY TO LOCAL HOST!

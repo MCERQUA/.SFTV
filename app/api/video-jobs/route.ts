@@ -1,17 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAuthenticatedUser } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const jobId = searchParams.get('id')
-
-  if (!jobId) {
-    return NextResponse.json(
-      { error: 'Job ID is required' },
-      { status: 400 }
-    )
-  }
-
   try {
+    // Check authentication
+    const user = await getAuthenticatedUser(request)
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
+    const { searchParams } = new URL(request.url)
+    const jobId = searchParams.get('id')
+
+    if (!jobId) {
+      return NextResponse.json(
+        { error: 'Job ID is required' },
+        { status: 400 }
+      )
+    }
+
     // Try to import temp jobs from generate-video route
     const { tempJobs } = await import('../generate-video/route')
 

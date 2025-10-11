@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getAuthenticatedUser } from '@/lib/auth'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { jobId: string } }
 ) {
   try {
+    // Check authentication
+    const user = await getAuthenticatedUser(request)
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      )
+    }
+
     const { jobId } = params
 
     if (!jobId) {

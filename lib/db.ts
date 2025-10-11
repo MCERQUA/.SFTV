@@ -9,9 +9,33 @@ const pool = new Pool({
   }
 })
 
-// Initialize database table
+// Initialize database tables
 export async function initDatabase() {
   try {
+    // Create users table for authentication
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        name VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        is_active BOOLEAN DEFAULT true
+      )
+    `)
+
+    // Create sessions table for session management
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS user_sessions (
+        id VARCHAR(255) PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        expires_at TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+
+    // Create submissions table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS submissions (
         id VARCHAR(255) PRIMARY KEY,
@@ -400,6 +424,161 @@ export async function updateVideoJob(
     return true
   } catch (error) {
     console.error('Failed to update video job:', error)
+    return false
+  }
+}
+
+// User authentication functions
+export interface User {
+  id: number
+  email: string
+  name?: string
+  created_at: Date
+  updated_at: Date
+  is_active: boolean
+}
+
+export interface UserSession {
+  id: string
+  user_id: number
+  expires_at: Date
+  created_at: Date
+}
+
+// Create new user
+export async function createUser(email: string, passwordHash: string, name?: string): Promise<User | null> {
+  try {
+    const result = await pool.query(
+      `INSERT INTO users (email, password_hash, name)
+       VALUES ($1, $2, $3)
+       RETURNING id, email, name, created_at, updated_at, is_active`,
+      [email, passwordHash, name]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id,
+      email: row.email,
+      name: row.name,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      is_active: row.is_active
+    }
+  } catch (error) {
+    console.error('Failed to create user:', error)
+    return null
+  }
+}
+
+// Get user by email
+export async function getUserByEmail(email: string): Promise<(User & { password_hash: string }) | null> {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM users WHERE email = $1 AND is_active = true',
+      [email]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id,
+      email: row.email,
+      password_hash: row.password_hash,
+      name: row.name,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      is_active: row.is_active
+    }
+  } catch (error) {
+    console.error('Failed to get user by email:', error)
+    return null
+  }
+}
+
+// Get user by ID
+export async function getUserById(id: number): Promise<User | null> {
+  try {
+    const result = await pool.query(
+      'SELECT id, email, name, created_at, updated_at, is_active FROM users WHERE id = $1 AND is_active = true',
+      [id]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id,
+      email: row.email,
+      name: row.name,
+      created_at: row.created_at,
+      updated_at: row.updated_at,
+      is_active: row.is_active
+    }
+  } catch (error) {
+    console.error('Failed to get user by ID:', error)
+    return null
+  }
+}
+
+// Create user session
+export async function createSession(userId: number, sessionId: string, expiresAt: Date): Promise<boolean> {
+  try {
+    await pool.query(
+      `INSERT INTO user_sessions (id, user_id, expires_at)
+       VALUES ($1, $2, $3)`,
+      [sessionId, userId, expiresAt]
+    )
+    return true
+  } catch (error) {
+    console.error('Failed to create session:', error)
+    return false
+  }
+}
+
+// Get session by ID
+export async function getSession(sessionId: string): Promise<UserSession | null> {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM user_sessions WHERE id = $1 AND expires_at > CURRENT_TIMESTAMP',
+      [sessionId]
+    )
+
+    if (result.rows.length === 0) return null
+
+    const row = result.rows[0]
+    return {
+      id: row.id,
+      user_id: row.user_id,
+      expires_at: row.expires_at,
+      created_at: row.created_at
+    }
+  } catch (error) {
+    console.error('Failed to get session:', error)
+    return null
+  }
+}
+
+// Delete session
+export async function deleteSession(sessionId: string): Promise<boolean> {
+  try {
+    await pool.query('DELETE FROM user_sessions WHERE id = $1', [sessionId])
+    return true
+  } catch (error) {
+    console.error('Failed to delete session:', error)
+    return false
+  }
+}
+
+// Clean up expired sessions
+export async function cleanupExpiredSessions(): Promise<boolean> {
+  try {
+    await pool.query('DELETE FROM user_sessions WHERE expires_at <= CURRENT_TIMESTAMP')
+    return true
+  } catch (error) {
+    console.error('Failed to cleanup expired sessions:', error)
     return false
   }
 }
