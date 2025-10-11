@@ -43,78 +43,18 @@ export default function AIVideoPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Convert user input to Ovi-formatted prompt
+  // Convert user input to a simple natural prompt
   const formatOviPrompt = (actions: string, speech: string): string => {
-    const parts = []
+    let prompt = actions.trim()
 
-    // Add ambient audio description based on actions
-    const ambientAudio = generateAmbientAudio(actions)
-    parts.push(`<AUDCAP>${ambientAudio}<ENDAUDCAP>`)
-
-    // Add speech if provided
+    // Add speech naturally if provided
     if (speech.trim()) {
-      // Split speech into segments of ~10 words for better lip sync
-      const speechSegments = splitSpeechIntoSegments(speech.trim())
-      speechSegments.forEach(segment => {
-        parts.push(`<S>${segment}<E>`)
-      })
+      prompt += `. The person says: "${speech.trim()}"`
     }
 
-    // Add visual description
-    parts.push(actions.trim())
-
-    return parts.join('\n\n')
+    return prompt
   }
 
-  // Generate ambient audio description based on action context
-  const generateAmbientAudio = (actions: string): string => {
-    const lowerActions = actions.toLowerCase()
-
-    if (lowerActions.includes('outdoor') || lowerActions.includes('outside') || lowerActions.includes('street')) {
-      return "Outdoor ambiance with gentle wind and distant city sounds"
-    } else if (lowerActions.includes('office') || lowerActions.includes('work') || lowerActions.includes('desk')) {
-      return "Quiet office environment with subtle keyboard sounds"
-    } else if (lowerActions.includes('kitchen') || lowerActions.includes('cooking')) {
-      return "Kitchen ambiance with soft background sounds"
-    } else if (lowerActions.includes('car') || lowerActions.includes('driving')) {
-      return "Car interior with engine hum and road sounds"
-    } else {
-      return "Clean room tone with subtle ambient sounds"
-    }
-  }
-
-  // Split speech into optimal segments for lip sync
-  const splitSpeechIntoSegments = (speech: string): string[] => {
-    const sentences = speech.split(/[.!?]+/).filter(s => s.trim())
-    const segments = []
-
-    for (const sentence of sentences) {
-      const words = sentence.trim().split(/\s+/)
-      if (words.length <= 10) {
-        segments.push(sentence.trim())
-      } else {
-        // Split longer sentences at natural breaks
-        const chunks = []
-        let currentChunk = []
-
-        for (const word of words) {
-          currentChunk.push(word)
-          if (currentChunk.length >= 8 && (word.endsWith(',') || word.endsWith(';'))) {
-            chunks.push(currentChunk.join(' ').replace(/,$|;$/, ''))
-            currentChunk = []
-          }
-        }
-
-        if (currentChunk.length > 0) {
-          chunks.push(currentChunk.join(' '))
-        }
-
-        segments.push(...chunks)
-      }
-    }
-
-    return segments.filter(s => s.length > 0)
-  }
 
   // Load sessions from localStorage on mount and set initial sidebar state
   useEffect(() => {
