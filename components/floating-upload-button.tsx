@@ -16,7 +16,7 @@ export function FloatingUploadButton() {
             onClick={() => setIsExpanded(false)}
             className="absolute -right-2 -top-2 rounded-full bg-background p-1 shadow-md hover:bg-accent"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4 text-orange-500" />
           </button>
           <h3 className="mb-2 font-semibold">Upload Your Video</h3>
           <p className="mb-4 text-sm text-muted-foreground">
