@@ -261,6 +261,38 @@ const heroImage = `/companies/${companySlug}/hero/hero-image.jpg`
 const logo = `/companies/${companySlug}/logo/logo.png`
 ```
 
+## Video Thumbnail System - CRITICAL IMPLEMENTATION NOTES
+
+**NEVER USE PLACEHOLDER THUMBNAILS AS PRIMARY DISPLAY**
+
+The video carousel system MUST display actual video frame thumbnails that are processed from video files using ffmpeg. These thumbnails are stored in `/public/thumbnails/` and mapped in `lib/video-data.ts`.
+
+### Correct Implementation:
+1. **Primary Display**: Always show the actual thumbnail image from `item.thumbnail` path
+2. **Fallback Only**: PlaceholderThumbnail component should ONLY be used when thumbnail fails to load
+3. **Never**: Make placeholder the primary display with thumbnail as overlay
+
+### Thumbnail Generation Process:
+- Thumbnails are generated using ffmpeg at 3-second mark from video files
+- Stored in `/public/thumbnails/[category]/[filename].jpg`
+- All thumbnails are real video frames, not text with colored backgrounds
+
+### Code Pattern (CORRECT):
+```typescript
+{(item.thumbnail && !thumbnailError) ? (
+  <img src={item.thumbnail} onError={() => setThumbnailError(true)} />
+) : (
+  <PlaceholderThumbnail title={item.title} />
+)}
+```
+
+### Code Pattern (INCORRECT - NEVER DO THIS):
+```typescript
+// WRONG - Don't make placeholder primary display
+<PlaceholderThumbnail />
+{thumbnail && <img className="opacity-0" />}
+```
+
 ## Recent Updates
 - ✅ **AI Video Generation System** - ChatGPT-style interface at `/ai-video` using HuggingFace Ovi model
 - ✅ **Netlify Blobs Storage** - Efficient video storage with streaming endpoints (`/api/video-blob/[jobId]`)
@@ -272,7 +304,7 @@ const logo = `/companies/${companySlug}/logo/logo.png`
 - Sponsor modal form implementation
 - Navigation buttons at bottom for mobile carousels
 - Orange highlighting for carousel navigation when more content exists
-- Proper video thumbnails generated with ffmpeg
+- **Proper video thumbnails generated with ffmpeg - ALWAYS DISPLAY THESE FIRST**
 - Actual video durations from file metadata
 - View count display on video cards
 

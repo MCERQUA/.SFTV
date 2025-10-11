@@ -157,22 +157,21 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Always show placeholder first, then thumbnail when loaded */}
-      <div className="absolute inset-0">
-        <PlaceholderThumbnail title={item.title} category={item.category} />
-      </div>
-
-      {/* Thumbnail overlay (shows when loaded) */}
-      {(videoThumbnail || item.thumbnail) && (
+      {/* Show actual thumbnail first, placeholder only as fallback */}
+      {(videoThumbnail || (item.thumbnail && !thumbnailError)) ? (
         <img
           src={videoThumbnail || item.thumbnail}
           alt={item.title}
           className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${
-            isPlaying ? 'opacity-0' : thumbnailLoaded && !thumbnailError ? 'opacity-100' : 'opacity-0'
+            isPlaying ? 'opacity-0' : 'opacity-100'
           }`}
           onLoad={() => setThumbnailLoaded(true)}
           onError={() => setThumbnailError(true)}
         />
+      ) : (
+        <div className="absolute inset-0">
+          <PlaceholderThumbnail title={item.title} category={item.category} />
+        </div>
       )}
 
       {/* Video element (hidden until hover) */}
