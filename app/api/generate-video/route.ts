@@ -193,18 +193,30 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
             throw new Error('Downloaded video data from provider was empty')
           }
 
-          const remoteMimeType = remoteResponse.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase() || 'video/mp4'
-          const remoteBase64Video = Buffer.from(remoteArrayBuffer).toString('base64')
-          const remoteVideoDataUrl = `data:${remoteMimeType};base64,${remoteBase64Video}`
+          // Save video to public directory and return file path instead of base64
+          const { writeFile } = await import('fs/promises')
+          const { join } = await import('path')
+
+          const videoFileName = `ai-video-${jobId}.webm`
+          const videoPath = join(process.cwd(), 'public', 'generated-videos', videoFileName)
+          const publicVideoUrl = `/generated-videos/${videoFileName}`
+
+          // Ensure directory exists
+          const { mkdir } = await import('fs/promises')
+          const videoDir = join(process.cwd(), 'public', 'generated-videos')
+          await mkdir(videoDir, { recursive: true })
+
+          // Write video file
+          await writeFile(videoPath, Buffer.from(remoteArrayBuffer))
 
           updateJob(jobId, {
             status: 'completed',
             progress: 100,
-            result: remoteVideoDataUrl,
+            result: publicVideoUrl,
             error: undefined,
           })
 
-          console.log(`Video generation completed for job ${jobId} (downloaded and encoded as base64)`)
+          console.log(`Video generation completed for job ${jobId} (saved to ${publicVideoUrl})`)
           return
         }
 
@@ -216,18 +228,31 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
       }
     }
 
-    const base64Video = Buffer.from(videoArrayBuffer).toString('base64')
-    const videoMimeType = detectedMimeType || 'video/mp4'
-    const videoDataUrl = `data:${videoMimeType};base64,${base64Video}`
+    // Handle direct video binary response
+    // Save video to public directory and return file path instead of base64
+    const { writeFile } = await import('fs/promises')
+    const { join } = await import('path')
+
+    const videoFileName = `ai-video-${jobId}.webm`
+    const videoPath = join(process.cwd(), 'public', 'generated-videos', videoFileName)
+    const publicVideoUrl = `/generated-videos/${videoFileName}`
+
+    // Ensure directory exists
+    const { mkdir } = await import('fs/promises')
+    const videoDir = join(process.cwd(), 'public', 'generated-videos')
+    await mkdir(videoDir, { recursive: true })
+
+    // Write video file
+    await writeFile(videoPath, Buffer.from(videoArrayBuffer))
 
     updateJob(jobId, {
       status: 'completed',
       progress: 100,
-      result: videoDataUrl,
+      result: publicVideoUrl,
       error: undefined,
     })
 
-    console.log(`Video generation completed for job ${jobId}`)
+    console.log(`Video generation completed for job ${jobId} (saved to ${publicVideoUrl})`)
 
   } catch (error: any) {
     console.error(`Video generation failed for job ${jobId}:`, error)

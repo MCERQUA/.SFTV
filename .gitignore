@@ -18,3 +18,9 @@ coverage
 # Environment variables
 .env.local
 .env
+
+# Test directory with sensitive data
+test/
+
+# Generated AI videos
+public/generated-videos/
