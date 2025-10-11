@@ -43,21 +43,61 @@ export default function AIVideoPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Convert user input to enhanced prompt for better video generation
+  // Convert user input to proper Ovi-formatted prompt
   const formatOviPrompt = (actions: string, speech: string): string => {
     const parts = []
 
-    // Enhanced visual description with cinematic details
-    const enhancedActions = enhanceVisualDescription(actions.trim())
+    // Add ambient audio description based on scene context
+    const ambientAudio = getAudioEnvironmentContext(actions)
+    parts.push(`<AUDCAP>${ambientAudio}<ENDAUDCAP>`)
 
-    // Add speech with proper context if provided
+    // Add speech with proper Ovi tags if provided
     if (speech.trim()) {
-      parts.push(`${enhancedActions}. The person speaks clearly: "${speech.trim()}". Ensure good lip sync and clear audio.`)
-    } else {
-      parts.push(enhancedActions)
+      // Split speech into segments of ~10 words for better lip sync
+      const speechSegments = splitSpeechIntoSegments(speech.trim())
+      speechSegments.forEach(segment => {
+        parts.push(`<S>${segment}<E>`)
+      })
     }
 
-    return parts.join(' ')
+    // Add enhanced visual description
+    const enhancedActions = enhanceVisualDescription(actions.trim())
+    parts.push(enhancedActions)
+
+    return parts.join('\n\n')
+  }
+
+  // Split speech into optimal segments for lip sync
+  const splitSpeechIntoSegments = (speech: string): string[] => {
+    const sentences = speech.split(/[.!?]+/).filter(s => s.trim())
+    const segments = []
+
+    for (const sentence of sentences) {
+      const words = sentence.trim().split(/\s+/)
+      if (words.length <= 10) {
+        segments.push(sentence.trim())
+      } else {
+        // Split longer sentences at natural breaks
+        const chunks = []
+        let currentChunk = []
+
+        for (const word of words) {
+          currentChunk.push(word)
+          if (currentChunk.length >= 8 && (word.endsWith(',') || word.endsWith(';'))) {
+            chunks.push(currentChunk.join(' ').replace(/,$|;$/, ''))
+            currentChunk = []
+          }
+        }
+
+        if (currentChunk.length > 0) {
+          chunks.push(currentChunk.join(' '))
+        }
+
+        segments.push(...chunks)
+      }
+    }
+
+    return segments.filter(s => s.length > 0)
   }
 
   // Enhance visual descriptions for better video quality
@@ -65,48 +105,46 @@ export default function AIVideoPage() {
     let enhanced = actions
 
     // Add cinematic quality descriptors
-    if (!enhanced.toLowerCase().includes('camera')) {
-      enhanced = `Professional quality video of ${enhanced.toLowerCase()}`
+    if (!enhanced.toLowerCase().includes('camera') && !enhanced.toLowerCase().includes('shot')) {
+      enhanced = `${enhanced}, professional camera work`
     }
 
     // Add lighting context
     if (!enhanced.toLowerCase().includes('light')) {
       if (enhanced.toLowerCase().includes('outdoor') || enhanced.toLowerCase().includes('outside')) {
-        enhanced += ', natural outdoor lighting'
+        enhanced += ', natural lighting'
       } else {
-        enhanced += ', well-lit indoor environment'
+        enhanced += ', well-lit scene'
       }
     }
 
-    // Add motion clarity
-    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture') || enhanced.toLowerCase().includes('move')) {
-      enhanced += ', smooth natural movements'
-    }
-
-    // Add audio environment cues
-    const audioContext = getAudioEnvironmentContext(actions)
-    if (audioContext) {
-      enhanced += `, ${audioContext}`
+    // Add motion clarity for gestures
+    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture') || enhanced.toLowerCase().includes('point')) {
+      enhanced += ', clear hand movements'
     }
 
     return enhanced
   }
 
-  // Get audio environment context
+  // Get audio environment context for AUDCAP tag
   const getAudioEnvironmentContext = (actions: string): string => {
     const lowerActions = actions.toLowerCase()
 
     if (lowerActions.includes('outdoor') || lowerActions.includes('outside') || lowerActions.includes('street')) {
-      return 'ambient outdoor sounds'
+      return 'Gentle outdoor ambiance with soft wind and distant environmental sounds'
     } else if (lowerActions.includes('office') || lowerActions.includes('work')) {
-      return 'quiet office ambiance'
-    } else if (lowerActions.includes('store') || lowerActions.includes('shop') || lowerActions.includes('business')) {
-      return 'professional business environment'
-    } else if (lowerActions.includes('car') || lowerActions.includes('vehicle')) {
-      return 'vehicle interior acoustics'
+      return 'Quiet office environment with subtle background hum'
+    } else if (lowerActions.includes('store') || lowerActions.includes('shop') || lowerActions.includes('business') || lowerActions.includes('dealership')) {
+      return 'Professional business atmosphere with light background activity'
+    } else if (lowerActions.includes('car') || lowerActions.includes('vehicle') || lowerActions.includes('driving')) {
+      return 'Vehicle interior with engine hum and road sounds'
+    } else if (lowerActions.includes('home') || lowerActions.includes('house') || lowerActions.includes('kitchen')) {
+      return 'Comfortable indoor atmosphere with room tone'
+    } else if (lowerActions.includes('christmas') || lowerActions.includes('holiday')) {
+      return 'Warm holiday atmosphere with gentle background ambiance'
     }
 
-    return 'clear audio environment'
+    return 'Clean room tone with subtle ambient sounds'
   }
 
 
