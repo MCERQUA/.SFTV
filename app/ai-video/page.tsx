@@ -31,7 +31,8 @@ export default function AIVideoPage() {
   const [currentSessionId, setCurrentSessionId] = useState<string | null>(null)
   const [sessions, setSessions] = useState<ChatSession[]>([])
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [prompt, setPrompt] = useState("")
+  const [actions, setActions] = useState("")
+  const [speech, setSpeech] = useState("")
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -41,6 +42,79 @@ export default function AIVideoPage() {
   const [activeTab, setActiveTab] = useState<'history' | 'images' | 'videos'>('history')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Convert user input to Ovi-formatted prompt
+  const formatOviPrompt = (actions: string, speech: string): string => {
+    const parts = []
+
+    // Add ambient audio description based on actions
+    const ambientAudio = generateAmbientAudio(actions)
+    parts.push(`<AUDCAP>${ambientAudio}<ENDAUDCAP>`)
+
+    // Add speech if provided
+    if (speech.trim()) {
+      // Split speech into segments of ~10 words for better lip sync
+      const speechSegments = splitSpeechIntoSegments(speech.trim())
+      speechSegments.forEach(segment => {
+        parts.push(`<S>${segment}<E>`)
+      })
+    }
+
+    // Add visual description
+    parts.push(actions.trim())
+
+    return parts.join('\n\n')
+  }
+
+  // Generate ambient audio description based on action context
+  const generateAmbientAudio = (actions: string): string => {
+    const lowerActions = actions.toLowerCase()
+
+    if (lowerActions.includes('outdoor') || lowerActions.includes('outside') || lowerActions.includes('street')) {
+      return "Outdoor ambiance with gentle wind and distant city sounds"
+    } else if (lowerActions.includes('office') || lowerActions.includes('work') || lowerActions.includes('desk')) {
+      return "Quiet office environment with subtle keyboard sounds"
+    } else if (lowerActions.includes('kitchen') || lowerActions.includes('cooking')) {
+      return "Kitchen ambiance with soft background sounds"
+    } else if (lowerActions.includes('car') || lowerActions.includes('driving')) {
+      return "Car interior with engine hum and road sounds"
+    } else {
+      return "Clean room tone with subtle ambient sounds"
+    }
+  }
+
+  // Split speech into optimal segments for lip sync
+  const splitSpeechIntoSegments = (speech: string): string[] => {
+    const sentences = speech.split(/[.!?]+/).filter(s => s.trim())
+    const segments = []
+
+    for (const sentence of sentences) {
+      const words = sentence.trim().split(/\s+/)
+      if (words.length <= 10) {
+        segments.push(sentence.trim())
+      } else {
+        // Split longer sentences at natural breaks
+        const chunks = []
+        let currentChunk = []
+
+        for (const word of words) {
+          currentChunk.push(word)
+          if (currentChunk.length >= 8 && (word.endsWith(',') || word.endsWith(';'))) {
+            chunks.push(currentChunk.join(' ').replace(/,$|;$/, ''))
+            currentChunk = []
+          }
+        }
+
+        if (currentChunk.length > 0) {
+          chunks.push(currentChunk.join(' '))
+        }
+
+        segments.push(...chunks)
+      }
+    }
+
+    return segments.filter(s => s.length > 0)
+  }
 
   // Load sessions from localStorage on mount and set initial sidebar state
   useEffect(() => {
@@ -208,8 +282,8 @@ export default function AIVideoPage() {
   }
 
   const handleGenerate = async () => {
-    if (!prompt.trim()) {
-      setError("Please enter a video prompt")
+    if (!actions.trim()) {
+      setError("Please describe the actions/scene")
       return
     }
 
@@ -223,19 +297,24 @@ export default function AIVideoPage() {
       createNewSession()
     }
 
-    // Add user message
+    // Generate the properly formatted Ovi prompt
+    const formattedPrompt = formatOviPrompt(actions, speech)
+
+    // Add user message showing what they entered
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       type: 'user',
-      content: prompt,
+      content: `Actions: ${actions}${speech ? `\nSpeech: ${speech}` : ''}`,
       image: imagePreview || undefined,
       timestamp: new Date()
     }
     addMessage(userMessage)
 
     // Clear input
-    const currentPrompt = prompt
-    setPrompt("")
+    const currentActions = actions
+    const currentSpeech = speech
+    setActions("")
+    setSpeech("")
     setSelectedImage(null)
     setImagePreview(null)
     if (fileInputRef.current) {
@@ -248,7 +327,7 @@ export default function AIVideoPage() {
 
     try {
       const formData = new FormData()
-      formData.append('prompt', currentPrompt)
+      formData.append('prompt', formattedPrompt)
       formData.append('image', selectedImage!)
 
       // Start the job
@@ -274,7 +353,7 @@ export default function AIVideoPage() {
 
       if (data.async && data.jobId) {
         // Poll for job completion
-        await pollJobStatus(data.jobId, currentPrompt)
+        await pollJobStatus(data.jobId, formattedPrompt)
       } else {
         // Fallback to old sync response format
         const assistantMessage: ChatMessage = {
@@ -636,20 +715,43 @@ export default function AIVideoPage() {
               )}
 
               <div className="flex items-end gap-3">
-                <div className="flex-1">
-                  <Textarea
-                    placeholder="Describe the video animation you want to create..."
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        handleGenerate()
-                      }
-                    }}
-                    rows={3}
-                    className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
-                  />
+                <div className="flex-1 space-y-2">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                      Actions/Scene
+                    </label>
+                    <Textarea
+                      placeholder="Describe the visual actions and scene (e.g., 'A person waves while standing in front of a building')"
+                      value={actions}
+                      onChange={(e) => setActions(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault()
+                          handleGenerate()
+                        }
+                      }}
+                      rows={2}
+                      className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1 block">
+                      Speech (Optional)
+                    </label>
+                    <Textarea
+                      placeholder="What should be said? (e.g., 'Welcome to our store! We have great deals today.')"
+                      value={speech}
+                      onChange={(e) => setSpeech(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault()
+                          handleGenerate()
+                        }
+                      }}
+                      rows={2}
+                      className="resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex gap-2">
@@ -672,7 +774,7 @@ export default function AIVideoPage() {
                   <Button
                     size="sm"
                     onClick={handleGenerate}
-                    disabled={isGenerating || !prompt.trim() || !selectedImage}
+                    disabled={isGenerating || !actions.trim() || !selectedImage}
                     className="h-8 w-8 p-0"
                   >
                     <Send className="h-4 w-4" />
