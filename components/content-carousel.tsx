@@ -39,6 +39,7 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
   const [isHovered, setIsHovered] = useState(false)
   const [videoThumbnail, setVideoThumbnail] = useState<string | null>(null)
   const [thumbnailError, setThumbnailError] = useState(false)
+  const [thumbnailLoaded, setThumbnailLoaded] = useState(false)
   const [viewCount, setViewCount] = useState<number | null>(null)
   const [hasTrackedView, setHasTrackedView] = useState(false)
 
@@ -156,20 +157,22 @@ function VideoCard({ item, onExpand }: { item: CarouselItem; onExpand: () => voi
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Always show thumbnail image */}
-      {(videoThumbnail || (item.thumbnail && !thumbnailError)) ? (
+      {/* Always show placeholder first, then thumbnail when loaded */}
+      <div className="absolute inset-0">
+        <PlaceholderThumbnail title={item.title} category={item.category} />
+      </div>
+
+      {/* Thumbnail overlay (shows when loaded) */}
+      {(videoThumbnail || item.thumbnail) && (
         <img
           src={videoThumbnail || item.thumbnail}
           alt={item.title}
           className={`absolute inset-0 h-full w-full object-cover transition-all duration-300 group-hover:scale-105 ${
-            isPlaying ? 'opacity-0' : 'opacity-100'
+            isPlaying ? 'opacity-0' : thumbnailLoaded && !thumbnailError ? 'opacity-100' : 'opacity-0'
           }`}
+          onLoad={() => setThumbnailLoaded(true)}
           onError={() => setThumbnailError(true)}
         />
-      ) : (
-        <div className="absolute inset-0">
-          <PlaceholderThumbnail title={item.title} category={item.category} />
-        </div>
       )}
 
       {/* Video element (hidden until hover) */}
