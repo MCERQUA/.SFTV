@@ -62,17 +62,7 @@ export default function AIVideoPage() {
       })
     }
 
-    // Debug: Log the exact formatted prompt
-    const formattedPrompt = parts.join('\n')
-    console.log('=== FORMATTED PROMPT DEBUG ===')
-    console.log('Raw actions:', actions)
-    console.log('Raw speech:', speech)
-    console.log('Enhanced actions:', enhancedActions)
-    console.log('Final formatted prompt:')
-    console.log(formattedPrompt)
-    console.log('=== END DEBUG ===')
-
-    return formattedPrompt
+    return parts.join('\n')
   }
 
   // Split speech into segments at commas for better lip sync
@@ -90,31 +80,11 @@ export default function AIVideoPage() {
 
   // Enhance visual descriptions for better video quality (no commas)
   const enhanceVisualDescription = (actions: string): string => {
-    let enhanced = actions
+    let enhanced = actions.trim()
 
-    // Add cinematic quality descriptors
-    if (!enhanced.toLowerCase().includes('professional') && !enhanced.toLowerCase().includes('cinematic')) {
-      enhanced = `Professional cinematic ${enhanced}`
-    }
-
-    // Add lighting cues for better quality
-    if (!enhanced.toLowerCase().includes('lighting') && !enhanced.toLowerCase().includes('lit')) {
-      if (enhanced.toLowerCase().includes('outdoor') || enhanced.toLowerCase().includes('outside')) {
-        enhanced += ' with natural lighting'
-      } else {
-        enhanced += ' with professional lighting'
-      }
-    }
-
-    // Add specific action cues for better animation without commas
-    if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture')) {
-      enhanced += ' and gives a small nod with smooth movements'
-    } else if (enhanced.toLowerCase().includes('gift') || enhanced.toLowerCase().includes('present') || enhanced.toLowerCase().includes('holiday')) {
-      enhanced += ' and gives a small nod with natural expressions'
-    } else if (enhanced.toLowerCase().includes('point') || enhanced.toLowerCase().includes('show')) {
-      enhanced += ' with a welcoming gesture and confident posture'
-    } else {
-      enhanced += ' with natural body language'
+    // Add simple motion cue for better animation (matching working examples)
+    if (!enhanced.toLowerCase().includes('nod') && !enhanced.toLowerCase().includes('gesture')) {
+      enhanced += ' and gives a small nod'
     }
 
     // Remove any commas from the description to avoid speech conflicts
@@ -326,6 +296,10 @@ export default function AIVideoPage() {
       createNewSession()
     }
 
+    // Store current values before clearing input
+    const currentActions = actions
+    const currentSpeech = speech
+
     // Generate the properly formatted Ovi prompt
     const formattedPrompt = formatOviPrompt(actions, speech)
     console.log('Formatted prompt being sent:', formattedPrompt)
@@ -339,10 +313,6 @@ export default function AIVideoPage() {
       timestamp: new Date()
     }
     addMessage(userMessage)
-
-    // Clear input
-    const currentActions = actions
-    const currentSpeech = speech
     setActions("")
     setSpeech("")
     setSelectedImage(null)

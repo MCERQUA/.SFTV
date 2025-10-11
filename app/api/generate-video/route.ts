@@ -65,11 +65,6 @@ export async function POST(request: NextRequest) {
 
     console.log('Received prompt:', prompt)
     console.log('Received image file:', imageFile ? 'Yes' : 'No')
-    console.log('=== API PROMPT DEBUG ===')
-    console.log('Exact prompt being sent to fal-ai:')
-    console.log(JSON.stringify(prompt))
-    console.log('Prompt character length:', prompt.length)
-    console.log('=== END API DEBUG ===')
 
     if (!prompt) {
       return NextResponse.json(
