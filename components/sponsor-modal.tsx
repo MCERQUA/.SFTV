@@ -250,12 +250,12 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
                           <SelectValue placeholder="Select budget range" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="500">Under $500</SelectItem>
-                          <SelectItem value="1k">$500 - $1,000</SelectItem>
-                          <SelectItem value="2.5k">$1,000 - $2,500</SelectItem>
-                          <SelectItem value="5k">$2,500 - $5,000</SelectItem>
-                          <SelectItem value="10k">$5,000 - $10,000</SelectItem>
-                          <SelectItem value="10k+">Over $10,000</SelectItem>
+                          <SelectItem value="2k">$2,000 - $5,000</SelectItem>
+                          <SelectItem value="5k">$5,000 - $10,000</SelectItem>
+                          <SelectItem value="10k">$10,000 - $15,000</SelectItem>
+                          <SelectItem value="20k">$15,000 - $25,000</SelectItem>
+                          <SelectItem value="35k">$25,000 - $35,000</SelectItem>
+                          <SelectItem value="50k">$35,000 - $50,000</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
