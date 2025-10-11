@@ -151,15 +151,27 @@ async function processVideoGenerationAsync(jobId: string, prompt: string, imageA
     // Convert the ArrayBuffer to a Blob so the provider keeps the correct MIME type
     const imageInput = new Blob([imageArrayBuffer], { type: mimeType })
 
-    // Call HuggingFace API
+    // Call HuggingFace API with optimized Ovi parameters for maximum quality
     const videoBlob = await client.imageToVideo({
       model: 'chetwinlow1/Ovi',
       provider: 'fal-ai',
       inputs: imageInput,
       parameters: {
         prompt,
-        // The Ovi model expects combined text/audio tags for richer prompts.
-        // If the prompt already contains custom formatting we leave it as-is.
+        // Cloud-optimized settings for maximum quality
+        num_steps: 55,
+        solver_name: "dpmpp",
+        shift: 5.5,
+        audio_guidance_scale: 4.0,
+        video_guidance_scale: 6.0,
+        slg_layer: 11,
+        // High-quality settings - no memory optimization needed for cloud
+        cpu_offload: false,
+        fp8: false,
+        // Quality output settings
+        video_frame_height_width: [720, 720],
+        video_negative_prompt: "jitter, bad hands, blur, distortion, low quality, pixelated, artifacts",
+        audio_negative_prompt: "robotic, muffled, echo, distorted, low quality, compressed, static"
       },
     })
 

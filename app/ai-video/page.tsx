@@ -82,13 +82,29 @@ export default function AIVideoPage() {
   const enhanceVisualDescription = (actions: string): string => {
     let enhanced = actions
 
+    // Add cinematic quality descriptors
+    if (!enhanced.toLowerCase().includes('professional') && !enhanced.toLowerCase().includes('cinematic')) {
+      enhanced = `Professional cinematic ${enhanced}`
+    }
+
+    // Add lighting cues for better quality
+    if (!enhanced.toLowerCase().includes('lighting') && !enhanced.toLowerCase().includes('lit')) {
+      if (enhanced.toLowerCase().includes('outdoor') || enhanced.toLowerCase().includes('outside')) {
+        enhanced += ' with natural lighting'
+      } else {
+        enhanced += ' with professional lighting'
+      }
+    }
+
     // Add specific action cues for better animation without commas
     if (enhanced.toLowerCase().includes('wave') || enhanced.toLowerCase().includes('gesture')) {
-      enhanced += ' and gives a small nod'
+      enhanced += ' and gives a small nod with smooth movements'
     } else if (enhanced.toLowerCase().includes('gift') || enhanced.toLowerCase().includes('present') || enhanced.toLowerCase().includes('holiday')) {
-      enhanced += ' and gives a small nod'
+      enhanced += ' and gives a small nod with natural expressions'
     } else if (enhanced.toLowerCase().includes('point') || enhanced.toLowerCase().includes('show')) {
-      enhanced += ' with a welcoming gesture'
+      enhanced += ' with a welcoming gesture and confident posture'
+    } else {
+      enhanced += ' with natural body language'
     }
 
     // Remove any commas from the description to avoid speech conflicts

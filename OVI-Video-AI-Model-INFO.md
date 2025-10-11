@@ -37,24 +37,22 @@ These are the most important tunable parameters and what they actually do (in pl
 
 Ovi reads special tags to decide what to synthesize:
 
-### ✅ Correct Template
+### ✅ Working Template (Tested with fal-ai Ovi model)
 ```
-<AUDCAP>Gentle background music with soft wind sounds<ENDAUDCAP>
+A smiling salesman waves his hand beside an RV and gives a small nod
 
-<S>Hello there! Welcome to RV City.<E>
-<S>We've got the best deals under the sun.<E>
-
-A smiling salesman waves his hand beside an RV.
-Camera pans slowly from left to right under warm sunlight.
+<S>"Hello there! Welcome to RV City"<E>
+<S>"We've got the best deals under the sun"<E>
 ```
 
-### 🧩 Rules:
-- `<S> … <E>` → spoken lines
-- `<AUDCAP> … <ENDAUDCAP>` → ambient/FX description
-- Anything outside the tags → visual description
-- Keep each speech line under ~10 words for best lip-sync
-- Avoid punctuation spam or emojis
-- Separate shots = separate CSV rows if batching
+### 🧩 Rules for fal-ai Implementation:
+- **Visual description first** → Plain text without commas or instructional text
+- `<S>"speech"<E>` → Spoken lines must be in quotes within S tags
+- **No AUDCAP tags** → These get read as speech, avoid them
+- Keep each speech segment under ~10 words for best lip-sync
+- Split speech at commas for natural breaks
+- Remove all commas from visual descriptions
+- Avoid instructional text like "Use input image as subject"
 
 ## 🧰 4. Pre-Processor (LLM Prompt Translator)
 
@@ -65,11 +63,11 @@ You can build a prompt translator in your chat app so users can type anything li
 "Make the guy say 'I like apples' while waving his hand"
 ```
 
-**Auto-Generated Output:**
+**Auto-Generated Output (Working Format):**
 ```
-<AUDCAP>Quiet room tone, faint footsteps<ENDAUDCAP>
-<S>I like apples!<E>
-A cheerful man waves his hand as he speaks, camera at chest level.
+A cheerful man waves his hand and gives a small nod
+
+<S>"I like apples!"<E>
 ```
 
 This can be done with a small LLM wrapper (e.g., GPT-4-mini or Claude Haiku).
@@ -143,11 +141,11 @@ For "talking head" scenes, ensure the `<AUDCAP>` includes clear cues like "camer
 
 ## 🎬 8. Sample Prompts You Can Use to Test
 
-| Type | Example |
-|------|---------|
-| **Basic talking** | `<AUDCAP>Room tone, light hum<ENDAUDCAP>`<br>`<S>I like apples!<E>`<br>`A man smiles and talks to the camera.` |
-| **Ambient + motion** | `<AUDCAP>City street noise, light traffic<ENDAUDCAP>`<br>`<S>The future is now.<E>`<br>`A woman walks across a crosswalk, camera following behind.` |
-| **Thematic** | `<AUDCAP>Electric hum and mechanical whirring<ENDAUDCAP>`<br>`<S>Machines will rise again.<E>`<br>`A soldier looks up at giant robots under dark clouds.` |
+| Type | Working Example (Tested) |
+|------|--------------------------|
+| **Basic talking** | `A man smiles and talks to the camera and gives a small nod`<br><br>`<S>"I like apples!"<E>` |
+| **Business scene** | `A woman walks across a crosswalk and gives a welcoming gesture`<br><br>`<S>"The future is now"<E>` |
+| **Holiday theme** | `Christmas themed scene and gives a small nod`<br><br>`<S>"Happy holidays from our team!"<E>` |
 
 ## 🧰 9. Optional Advanced Ideas
 
