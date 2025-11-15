@@ -98,16 +98,16 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 min-h-screen">
       <div
-        className="absolute inset-0 bg-background/90 backdrop-blur-md"
+        className="absolute inset-0 bg-background/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
       <div className="relative z-[101] w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto my-2 sm:my-4">
         <div className="bg-card rounded-lg shadow-2xl border-2 border-primary ring-2 ring-primary/20">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-border p-4 md:p-6">
-            <div className="flex-1 min-w-0 pr-4">
-              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+          <div className="relative border-b border-border p-4 md:p-6">
+            <div className="text-center">
+              <h2 className="text-xl md:text-2xl font-bold flex items-center justify-center gap-2">
                 <Sparkles className="h-6 w-6 text-primary" />
                 Bring Your Brand to Life
               </h2>
@@ -119,9 +119,9 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
               size="icon"
               variant="ghost"
               onClick={onClose}
-              className="rounded-full"
+              className="absolute top-4 right-4 rounded-full border-2 border-primary hover:bg-primary/10"
             >
-              <X className="h-5 w-5 text-orange-500" />
+              <X className="h-5 w-5 text-primary" />
               <span className="sr-only">Close</span>
             </Button>
           </div>
