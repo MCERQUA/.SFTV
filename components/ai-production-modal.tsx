@@ -102,8 +102,19 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
         onClick={onClose}
       />
 
-      <div className="relative z-[101] w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto my-2 sm:my-4">
-        <div className="bg-card rounded-lg shadow-2xl border-2 border-primary ring-2 ring-primary/20">
+      <div className="relative z-[101] w-full max-w-2xl my-2 sm:my-4">
+        {/* Cozy Bear Character holding the form */}
+        <div className="relative w-full flex justify-center mb-[-40px] sm:mb-[-50px] z-10">
+          <img
+            src="/peak.png"
+            alt="Cozy Bear"
+            className="w-[280px] sm:w-[320px] md:w-[360px] h-auto pointer-events-none select-none"
+            draggable="false"
+          />
+        </div>
+
+        <div className="relative max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
+          <div className="bg-card rounded-lg shadow-2xl border-2 border-primary ring-2 ring-primary/20">
           {/* Header */}
           <div className="relative border-b border-border p-4 md:p-6">
             <div className="text-center">
@@ -314,6 +325,7 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
               </>
             )}
           </form>
+          </div>
         </div>
       </div>
     </div>
