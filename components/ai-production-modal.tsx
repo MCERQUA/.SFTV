@@ -96,13 +96,13 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 min-h-screen">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 min-h-screen">
       <div
-        className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+        className="absolute inset-0 bg-background/90 backdrop-blur-md"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto my-2 sm:my-4">
+      <div className="relative z-[101] w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto my-2 sm:my-4">
         <div className="bg-card rounded-lg shadow-2xl border-2 border-primary ring-2 ring-primary/20">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-border p-4 md:p-6">
