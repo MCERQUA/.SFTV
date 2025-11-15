@@ -5,10 +5,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, Radio, X } from "lucide-react"
 import { SponsorModal } from "@/components/sponsor-modal"
+import { AIProductionModal } from "@/components/ai-production-modal"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSponsorModalOpen, setIsSponsorModalOpen] = useState(false)
+  const [isAIProductionModalOpen, setIsAIProductionModalOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
@@ -51,9 +53,23 @@ export function Header() {
             >
               AI Video
             </Link>
+            <button
+              onClick={() => setIsAIProductionModalOpen(true)}
+              className="text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            >
+              AI Production
+            </button>
           </nav>
         </div>
         <div className="flex items-center gap-4">
+          <Button
+            size="sm"
+            variant="outline"
+            className="hidden md:inline-flex"
+            onClick={() => setIsAIProductionModalOpen(true)}
+          >
+            Get AI Videos
+          </Button>
           <Button
             size="sm"
             className="hidden md:inline-flex"
@@ -119,15 +135,30 @@ export function Header() {
             <button
               onClick={() => {
                 setIsMenuOpen(false)
-                setIsSponsorModalOpen(true)
+                setIsAIProductionModalOpen(true)
               }}
               className="block py-2 text-sm font-medium text-primary transition-colors hover:opacity-80 text-left"
+            >
+              AI Production
+            </button>
+            <button
+              onClick={() => {
+                setIsMenuOpen(false)
+                setIsSponsorModalOpen(true)
+              }}
+              className="block py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground text-left"
             >
               Sponsor Kit
             </button>
           </nav>
         </div>
       )}
+
+      {/* AI Production Modal */}
+      <AIProductionModal
+        isOpen={isAIProductionModalOpen}
+        onClose={() => setIsAIProductionModalOpen(false)}
+      />
 
       {/* Sponsor Modal */}
       <SponsorModal
