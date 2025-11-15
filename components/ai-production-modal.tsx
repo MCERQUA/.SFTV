@@ -104,7 +104,7 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
 
       <div className="relative z-[101] w-full max-w-2xl my-2 sm:my-4">
         {/* Cozy Bear Character holding the form */}
-        <div className="relative w-full flex justify-center mb-[-60px] sm:mb-[-65px] md:mb-[-70px] z-10">
+        <div className="relative w-full flex justify-center mb-[-20px] sm:mb-[-25px] md:mb-[-25px] z-10">
           <img
             src="/peak.png"
             alt="Cozy Bear"
