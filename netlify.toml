@@ -10,3 +10,15 @@
 
 [functions]
   node_bundler = "esbuild"
+
+[[notifications]]
+  form_name = "quote"
+  [notifications.webhook]
+    url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
+    events = ["submission_created"]
+
+[[notifications]]
+  form_name = "contact"
+  [notifications.webhook]
+    url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
+    events = ["submission_created"]
