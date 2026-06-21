@@ -9,9 +9,6 @@
   CLOUDINARY_URL = "cloudinary://placeholder:placeholder@placeholder"
   NPM_FLAGS = "--legacy-peer-deps"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 [[notifications]]
   form_name = "quote"
   [notifications.webhook]
