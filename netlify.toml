@@ -1,11 +1,13 @@
 [build]
-  command = "pnpm install --no-frozen-lockfile && pnpm run build"
+  command = "pnpm install --no-frozen-lockfile --ignore-workspace && pnpm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
-  NEXT_DISABLE_TURBOPACK = "1"
   NEXT_TELEMETRY_DISABLED = "1"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[notifications]]
   form_name = "quote"
