@@ -1,5 +1,5 @@
 [build]
-  command = "npm install --legacy-peer-deps && npm run build"
+  command = "node --version && npm --version && ls package-lock.json pnpm* 2>/dev/null && npm install --legacy-peer-deps && npm run build"
   publish = ".next"
 
 [build.environment]
