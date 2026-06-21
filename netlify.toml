@@ -7,6 +7,7 @@
   NODE_VERSION = "20"
   NEXT_TELEMETRY_DISABLED = "1"
   CLOUDINARY_URL = "cloudinary://placeholder:placeholder@placeholder"
+  NPM_FLAGS = "--legacy-peer-deps"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

@@ -82,7 +82,7 @@
     "tw-animate-css": "1.3.3",
     "typescript": "^5"
   },
-  "pnpm": {
+  "_pnpm_local_only": {
     "onlyBuiltDependencies": [
       "sharp",
       "@tailwindcss/oxide"
