@@ -1,3 +1,5 @@
 verifyDepsBeforeRun: false
 onlyBuiltDependencies:
   - sharp
+packages:
+  - "."
