@@ -4,3 +4,6 @@ onlyBuiltDependencies:
   - "@tailwindcss/oxide"
 packages:
   - "."
+allowBuilds:
+  '@tailwindcss/oxide': true
+  sharp: true
