@@ -1,17 +1,14 @@
 [build]
-  command = "npm install --legacy-peer-deps && npm run build"
+  command = "pnpm run build"
   publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
+  NEXT_DISABLE_TURBOPACK = "1"
   NEXT_TELEMETRY_DISABLED = "1"
-  SECRETS_SCAN_OMIT_KEYS = "CLOUDINARY_CLOUD_NAME,NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET,NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[functions]
-  node_bundler = "esbuild"
 
 [[notifications]]
   form_name = "quote"
