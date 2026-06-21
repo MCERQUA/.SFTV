@@ -7,9 +7,6 @@
   NEXT_DISABLE_TURBOPACK = "1"
   NEXT_TELEMETRY_DISABLED = "1"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 [[notifications]]
   form_name = "quote"
   [notifications.webhook]
