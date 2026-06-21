@@ -1,4 +1,0 @@
-[    1550ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://app.netlify.com/access-control/bb-api/api/v1/sites/azbarndo.netlify.app:0
-[    2342ms] [ERROR] Framing 'https://www.google.com/' violates the following report-only Content Security Policy directive: "frame-ancestors 'self'". The violation has been logged, but no further action has been taken.
- @ :0
-[    3997ms] [WARNING] [.WebGL-0x231c06f21e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ https://app.netlify.com/projects/azbarndo/deploys/6a380a1f1b56a3ce831d29db:0
