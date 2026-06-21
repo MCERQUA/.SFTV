@@ -2,12 +2,8 @@ verifyDepsBeforeRun: false
 onlyBuiltDependencies:
   - sharp
   - "@tailwindcss/oxide"
-  - canvas
-  - "@ffmpeg-installer/ffmpeg"
 packages:
   - "."
 allowBuilds:
   '@tailwindcss/oxide': true
   sharp: true
-  canvas: true
-  '@ffmpeg-installer/ffmpeg': true
