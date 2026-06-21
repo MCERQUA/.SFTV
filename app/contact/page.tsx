@@ -45,9 +45,14 @@ export default function ContactPage() {
           </div>
         ) : (
           <form
+            name="contact"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
             onSubmit={handleSubmit}
             className="bg-card border border-border rounded-2xl p-8 space-y-5"
           >
+            <input type="hidden" name="form-name" value="contact" />
+            <input name="bot-field" type="hidden" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
                 <label className="block text-sm font-medium text-muted-foreground mb-1.5">Name *</label>
