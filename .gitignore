@@ -24,3 +24,13 @@ test/
 
 # Generated AI videos
 public/generated-videos/
+
+# Netlify build cache
+.netlify/
+
+# Playwright CLI logs
+.playwright-cli/
+
+# Backup lockfiles
+pnpm-lock.yaml.bak
+
