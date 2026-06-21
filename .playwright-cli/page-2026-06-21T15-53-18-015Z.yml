@@ -1,0 +1,73 @@
+- generic [active] [ref=e1]:
+  - img [ref=e2]
+  - generic [ref=e3]:
+    - main [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e6]
+        - paragraph [ref=e15]: Loading Netlify dashboard…
+    - status [ref=e16]
+    - generic [ref=e17]:
+      - link "Skip to main content ↓" [ref=e18] [cursor=pointer]:
+        - /url: "#main"
+        - generic [ref=e19]: Skip to main content
+        - text: ↓
+      - main "Log in" [ref=e24]:
+        - generic [ref=e26]:
+          - generic [ref=e28]:
+            - generic "Log in" [ref=e29]:
+              - img [ref=e31]
+              - heading "Log in" [level=1] [ref=e34]
+            - generic [ref=e35]:
+              - generic [ref=e37]:
+                - button "Log in with Google" [ref=e38] [cursor=pointer]:
+                  - img [ref=e40]
+                  - text: Log in with Google
+                - button "Log in with GitHub" [ref=e45] [cursor=pointer]:
+                  - img [ref=e47]
+                  - text: Log in with GitHub
+                - button "Log in with GitLab" [ref=e50] [cursor=pointer]:
+                  - img [ref=e52]
+                  - text: Log in with GitLab
+                - button "Log in with Bitbucket" [ref=e57] [cursor=pointer]:
+                  - img [ref=e59]
+                  - text: Log in with Bitbucket
+              - paragraph [ref=e64]:
+                - button "Log in with email" [ref=e65] [cursor=pointer]
+              - paragraph [ref=e66]:
+                - link "Log in with SSO" [ref=e67] [cursor=pointer]:
+                  - /url: /sso?redirect=/login
+              - paragraph [ref=e68]:
+                - text: No account yet?
+                - link "Sign up" [ref=e69] [cursor=pointer]:
+                  - /url: /signup
+            - paragraph [ref=e71]:
+              - text: By logging in to Netlify, you agree to our
+              - link "terms of service" [ref=e72] [cursor=pointer]:
+                - /url: https://www.netlify.com/legal/self-serve-subscription-agreement/
+              - text: and
+              - link "privacy policy" [ref=e73] [cursor=pointer]:
+                - /url: https://www.netlify.com/privacy
+              - text: .
+          - generic [ref=e74]:
+            - img [ref=e75]
+            - complementary "Why sign up" [ref=e88]:
+              - generic [ref=e89]:
+                - generic [ref=e90]:
+                  - heading "Publish on the web instantly" [level=2] [ref=e91]:
+                    - img [ref=e93]
+                    - text: Publish on the web instantly
+                  - paragraph [ref=e96]:
+                    - text: We simplify deploying on the web for millions so
+                    - strong [ref=e97]: anyone
+                    - text: "can do it: drag and drop your project’s files, import a Git repository, or use our API or CLI."
+                - generic [ref=e98]:
+                  - heading "Make it yours" [level=2] [ref=e99]:
+                    - img [ref=e101]
+                    - text: Make it yours
+                  - paragraph [ref=e103]: Customize with your own domain, forms, password protection, and more. Build experiences with your favorite AI agent using Agent Runners.
+                - generic [ref=e104]:
+                  - heading "Iterate and grow" [level=2] [ref=e105]:
+                    - img [ref=e107]
+                    - text: Iterate and grow
+                  - paragraph [ref=e109]: Share Deploy Previews for feedback. We have you covered as you grow with observability, security, support, and more.
+    - region "Notifications alt+T"

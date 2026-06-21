@@ -1,0 +1,53 @@
+functionsDirectory = "/workspace/Websites/_batch2/sprayfoamtv.com/netlify/functions"
+functionsDirectoryOrigin = "default"
+headers = []
+redirects = []
+
+[build]
+publish = "/workspace/Websites/_batch2/sprayfoamtv.com/.next"
+publishOrigin = "config"
+commandOrigin = "config"
+command = "pnpm run build"
+functions = "/workspace/Websites/_batch2/sprayfoamtv.com/netlify/functions"
+
+[build.environment]
+SECRETS_SCAN_ENABLED = "false"
+NODE_VERSION = "20"
+NEXT_TELEMETRY_DISABLED = "1"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[notifications]]
+form_name = "quote"
+
+[notifications.webhook]
+url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
+events = ["submission_created"]
+
+[[notifications]]
+form_name = "contact"
+
+[notifications.webhook]
+url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
+events = ["submission_created"]
+
+[functions]
+
+[functions."*"]
+
+[[plugins]]
+origin = "config"
+package = "@netlify/plugin-nextjs"
+pinned_version = "5"
+
+[plugins.inputs]

@@ -1,0 +1,25 @@
+- generic [active] [ref=e1]:
+  - img [ref=e2]
+  - generic [ref=e3]:
+    - status [ref=e4]
+    - generic [ref=e5]:
+      - text: ↓
+      - generic [ref=e9]:
+        - list [ref=e12]:
+          - listitem [ref=e13]:
+            - link "Log in" [ref=e14] [cursor=pointer]:
+              - /url: /login?next=/projects/azbarndo/deploys/6a380a1f1b56a3ce831d29db
+          - listitem [ref=e15]:
+            - link "Sign up" [ref=e16] [cursor=pointer]:
+              - /url: /signup?next=/projects/azbarndo/deploys/6a380a1f1b56a3ce831d29db
+        - main "Deploy details" [ref=e17]:
+          - generic [ref=e20]:
+            - link "Netlify" [ref=e21] [cursor=pointer]:
+              - /url: /
+              - img "Netlify" [ref=e22]
+            - heading "Unauthorized" [level=1] [ref=e25]
+            - paragraph [ref=e26]: Access Denied
+            - paragraph [ref=e27]:
+              - link "Log in" [ref=e28] [cursor=pointer]:
+                - /url: /
+    - region "Notifications alt+T"

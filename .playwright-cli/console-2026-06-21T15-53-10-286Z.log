@@ -1,0 +1,5 @@
+[    4336ms] [ERROR] Not signed in with the identity provider. @ https://app.netlify.com/login:0
+[    8199ms] [WARNING] [.WebGL-0xa3c02ac0c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ https://app.netlify.com/login:0
+[   11831ms] [WARNING] [.WebGL-0xa3c02ac1e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ https://app.netlify.com/login:0
+[   14031ms] [ERROR] [GSI_LOGGER]: FedCM get() rejects with NetworkError: Error retrieving a token. @ https://app.netlify.com/monitoring.vendor.bundle.js:160
+[   42225ms] [WARNING] [.WebGL-0xa3c02ac5a00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels @ https://app.netlify.com/login:0
