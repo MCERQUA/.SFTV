@@ -11,16 +11,9 @@
   NODE_OPTIONS = "--max-old-space-size=4096"
 
 [[notifications]]
-  form_name = "quote"
-  [notifications.webhook]
-    url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
-    events = ["submission_created"]
-
-[[notifications]]
-  form_name = "contact"
-  [notifications.webhook]
-    url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
-    events = ["submission_created"]
+  event = "submission_created"
+  url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
+  form = "contact"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

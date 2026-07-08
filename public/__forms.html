@@ -1,22 +1,15 @@
 <!--
   Static form definitions for Netlify form detection.
-  Netlify scans this file at build time to register the "quote" and "contact"
-  forms. The actual interactive forms live in the app pages. This file is not linked from the UI.
+  Netlify scans this file at build time to register the "contact" form.
+  The actual interactive form lives in /contact and posts the same field
+  names. This file is not linked from the UI.
 -->
-<form name="quote" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="quote" />
-  <input name="bot-field" />
-  <input name="name" />
-  <input name="email" />
-  <input name="phone" />
-  <textarea name="message"></textarea>
-</form>
-
 <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="contact" />
-  <input name="bot-field" />
-  <input name="name" />
-  <input name="email" />
-  <input name="phone" />
+  <input name="bot-field" type="text" />
+  <input name="name" type="text" />
+  <input name="email" type="email" />
+  <input name="phone" type="tel" />
+  <select name="inquiry_type"></select>
   <textarea name="message"></textarea>
 </form>
