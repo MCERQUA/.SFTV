@@ -34,3 +34,6 @@ public/generated-videos/
 # Backup lockfiles
 pnpm-lock.yaml.bak
 
+
+deploy_key
+deploy_key.pub
