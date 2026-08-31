@@ -6,6 +6,11 @@ import { Play, Pause, Volume2, Maximize } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 
 const videoPlaylist = [
+  // Channel compilation built by mac-claude 2026-08-31 (3:31, 1080p) — all client mascot
+  // clips + the Off-Ratio episode scenes cut together with channel-flip transitions.
+  // Leads the loop so the homepage opens on the current channel reel. A v2 with the back
+  // half of the episode is expected; swap the file, this path stays the same.
+  "/videos/channel/sprayfoamtv-stream-v1.mp4",
   "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
   "/videos/commercial-shorts/Graco Fusion AP.mp4",
   "/videos/commercial-shorts/duckcleaning-commerical.mp4",
