@@ -49,11 +49,17 @@ export function LiveHero() {
   }, [isPlaying])
 
   useEffect(() => {
-    // Start playing on first user interaction if not already playing
-    if (userInteracted && !isPlaying && isVideoLoaded) {
+    // AUTOPLAY (2026-08-31). This used to require `userInteracted`, so the channel sat on a
+    // still frame until someone clicked — on a page whose whole promise is "24/7 livestream".
+    // Muted autoplay is permitted by every current browser; UNmuted autoplay is not, and the
+    // video mounts with muted={isMuted} and isMuted=true. So start as soon as it is loaded
+    // while muted, and keep the interaction path for the unmuted case.
+    // If a browser still refuses, the play().catch above resets isPlaying to false and the
+    // play button appears — the page degrades to the old behaviour rather than breaking.
+    if (!isPlaying && isVideoLoaded && (isMuted || userInteracted)) {
       setIsPlaying(true)
     }
-  }, [userInteracted, isVideoLoaded])
+  }, [userInteracted, isVideoLoaded, isMuted])
 
   useEffect(() => {
     const video = videoRef.current
@@ -122,8 +128,9 @@ export function LiveHero() {
           ref={videoRef}
           className={`h-full w-full object-cover opacity-60 ${!isVideoLoaded ? 'invisible' : ''}`}
           muted={isMuted}
+          autoPlay
           playsInline
-          preload="metadata"
+          preload="auto"
         >
           <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
         </video>
