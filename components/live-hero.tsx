@@ -34,6 +34,8 @@ export function LiveHero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const autoUnmutedRef = useRef(false)     // we only ever auto-unmute ONCE
+  const userSetMuteRef = useRef(false)     // set when the viewer uses the mute button
 
   useEffect(() => {
     if (videoRef.current) {
@@ -60,6 +62,49 @@ export function LiveHero() {
       setIsPlaying(true)
     }
   }, [userInteracted, isVideoLoaded, isMuted])
+
+  // UNMUTE ON FIRST INTERACTION (2026-08-31).
+  // Browsers block autoplay WITH SOUND until the page has been "activated" by a real user
+  // gesture — but once any gesture has happened, unmuting is allowed. This page auto-opens
+  // AIProductionModal one second in, so nearly every visitor produces a gesture by closing
+  // it. We listen for the first gesture ANYWHERE rather than coupling to that modal, so it
+  // still works if the modal is suppressed (sessionStorage 'hasSeenAIProductionModal') or
+  // removed later.
+  //
+  // Two things we deliberately do NOT do:
+  //  - fight the viewer: if their gesture was the mute button itself, userSetMuteRef is set
+  //    and we leave it muted forever.
+  //  - retry: autoUnmutedRef makes this strictly once per page load.
+  useEffect(() => {
+    const unmuteOnce = (e: Event) => {
+      if (autoUnmutedRef.current || userSetMuteRef.current) return
+      // ignore a gesture that landed on the mute control — that viewer is choosing silence
+      const t = e.target as HTMLElement | null
+      if (t && t.closest && t.closest('[data-mute-toggle]')) return
+      autoUnmutedRef.current = true
+      const v = videoRef.current
+      if (!v) return
+      v.muted = false
+      setIsMuted(false)
+      // a gesture also satisfies the play policy, so make sure it is actually rolling
+      v.play().catch(() => {
+        // sound refused for some other reason — fall back to muted playback rather than
+        // leaving a paused player behind
+        v.muted = true
+        setIsMuted(true)
+        v.play().catch(() => {})
+      })
+    }
+    const opts = { once: false, capture: true } as AddEventListenerOptions
+    document.addEventListener('pointerdown', unmuteOnce, opts)
+    document.addEventListener('keydown', unmuteOnce, opts)
+    document.addEventListener('touchstart', unmuteOnce, opts)
+    return () => {
+      document.removeEventListener('pointerdown', unmuteOnce, opts)
+      document.removeEventListener('keydown', unmuteOnce, opts)
+      document.removeEventListener('touchstart', unmuteOnce, opts)
+    }
+  }, [])
 
   useEffect(() => {
     const video = videoRef.current
@@ -112,6 +157,8 @@ export function LiveHero() {
 
   const toggleMute = () => {
     if (videoRef.current) {
+      userSetMuteRef.current = true      // viewer owns the audio state from here on
+      autoUnmutedRef.current = true
       videoRef.current.muted = !videoRef.current.muted
       setIsMuted(!isMuted)
     }
@@ -195,6 +242,7 @@ export function LiveHero() {
           variant="secondary"
           className="h-12 w-12 md:h-10 md:w-10 bg-black/70 backdrop-blur hover:bg-black/80 border border-white/20"
           onClick={toggleMute}
+          data-mute-toggle
         >
           <Volume2 className={`h-5 w-5 md:h-4 md:w-4 text-white ${isMuted ? 'opacity-50' : ''}`} />
           <span className="sr-only">{isMuted ? "Unmute" : "Mute"}</span>
