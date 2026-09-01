@@ -63,5 +63,14 @@ const shows = [
     schedule: "Coming 2024",
     thumbnail: "/placeholder.svg",
     status: "Coming Soon"
+  },
+  {
+    id: 4,
+    title: "The Off-Ratio Bar",
+    description: "Adult-audience sitcom set in the industry's favorite off-the-clock hangout — every mascot on the roster off the clock, roasting the trade, themselves, and each other.",
+    host: "The Cast",
+    schedule: "Streaming now",
+    thumbnail: "/thumbnails/shows/off-ratio-bar.jpg",
+    status: "Active"
   }
 ]
