@@ -124,3 +124,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* The hero video lives as a 60%-opacity, object-cover BACKGROUND behind the overlay copy.
+   Those two properties belong to the background role and follow the element into
+   fullscreen, where they are wrong: a dimmed, cropped picture. Undo them for the
+   duration of fullscreen only. Added 2026-09-01 with the Watch Live fix. */
+video:fullscreen,
+video:-webkit-full-screen {
+  opacity: 1 !important;
+  object-fit: contain;
+  background: #000;
+}

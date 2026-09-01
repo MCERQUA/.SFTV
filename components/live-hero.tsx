@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Play, Pause, Volume2, Maximize } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
+import Link from "next/link"
 
 const videoPlaylist = [
   // Channel compilation built by mac-claude 2026-08-31 (3:31, 1080p) — all client mascot
@@ -145,14 +146,82 @@ export function LiveHero() {
     setIsPlaying(!isPlaying)
   }
 
-  const toggleFullscreen = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen()
-      } else {
-        videoRef.current.requestFullscreen()
-      }
+  // The page's own control cluster is positioned inside the hero and is NOT visible once
+  // the video element itself is fullscreen, which would leave a viewer with sound they
+  // cannot mute and nothing but Esc. Lend them the browser's native controls for exactly
+  // as long as they are fullscreen, then take them back.
+  useEffect(() => {
+    const onFsChange = () => {
+      const video = videoRef.current
+      if (!video) return
+      video.controls = document.fullscreenElement === video
     }
+    document.addEventListener('fullscreenchange', onFsChange)
+    document.addEventListener('webkitfullscreenchange', onFsChange)
+    return () => {
+      document.removeEventListener('fullscreenchange', onFsChange)
+      document.removeEventListener('webkitfullscreenchange', onFsChange)
+    }
+  }, [])
+
+  // Fullscreen, the way the four browsers that matter actually spell it.
+  // iOS Safari has NO Element.requestFullscreen at all — only the video-only
+  // webkitEnterFullscreen — so a bare requestFullscreen() is a no-op on iPhone.
+  const enterFullscreen = (video: HTMLVideoElement) => {
+    if (document.fullscreenElement) return
+    const el = video as any
+    const req = video.requestFullscreen?.bind(video) ?? el.webkitRequestFullscreen?.bind(el)
+    if (req) {
+      Promise.resolve(req()).catch(() => el.webkitEnterFullscreen?.())
+    } else {
+      el.webkitEnterFullscreen?.()
+    }
+  }
+
+  const toggleFullscreen = () => {
+    const video = videoRef.current
+    if (!video) return
+    if (document.fullscreenElement) {
+      document.exitFullscreen()
+    } else {
+      enterFullscreen(video)
+    }
+  }
+
+  // WATCH LIVE (fixed 2026-09-01).
+  // This button used to be `setUserInteracted(true); if (isVideoLoaded) setIsPlaying(true)`.
+  // That was correct until muted autoplay landed the day before: by the time anyone can
+  // click, isPlaying is ALREADY true, so setIsPlaying(true) is a no-op React bails out of,
+  // the [isPlaying] effect never re-runs, and setUserInteracted only feeds an effect guarded
+  // by `!isPlaying`. The document-level unmute-on-first-gesture has also already fired on
+  // whatever the visitor clicked first (usually the AI-production modal's Close), so even
+  // that path short-circuits on autoUnmutedRef. Measured on production: clicking it changed
+  // paused/muted/fullscreen/url by nothing at all.
+  //
+  // The hero video is a 60%-opacity BACKGROUND behind the overlay copy, so "already playing"
+  // was never what the button promised. It promises watching. So: take the audio (this click
+  // is a real gesture, which is exactly what the autoplay policy wants), guarantee playback,
+  // and go fullscreen on the video.
+  const handleWatchLive = () => {
+    const video = videoRef.current
+    setUserInteracted(true)
+    if (!video) return
+
+    autoUnmutedRef.current = true    // don't let the global handler double-unmute after this
+    userSetMuteRef.current = false   // clicking Watch Live is choosing sound, not silence
+    video.muted = false
+    setIsMuted(false)
+    setIsPlaying(true)
+
+    video.play().catch(() => {
+      // Sound refused for some other reason — keep the picture rather than leaving a dead
+      // player behind, same degradation the auto-unmute path uses.
+      video.muted = true
+      setIsMuted(true)
+      video.play().catch(() => {})
+    })
+
+    enterFullscreen(video)
   }
 
   const toggleMute = () => {
@@ -205,21 +274,12 @@ export function LiveHero() {
               Entertainment for the Spray Foam Industry
             </p>
             <div className="flex flex-wrap items-center gap-4 pt-4">
-              <Button
-                size="lg"
-                className="gap-2"
-                onClick={() => {
-                  setUserInteracted(true)
-                  if (isVideoLoaded) {
-                    setIsPlaying(true)
-                  }
-                }}
-              >
+              <Button size="lg" className="gap-2" onClick={handleWatchLive}>
                 <Play className="h-5 w-5" />
                 Watch Live
               </Button>
-              <Button size="lg" variant="outline">
-                View Schedule
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/schedule">View Schedule</Link>
               </Button>
             </div>
           </div>
