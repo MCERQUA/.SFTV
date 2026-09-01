@@ -15,5 +15,11 @@
   url = "https://josh.jam-bot.com/social-api/api/leads/webhook/netlify?tenant=josh&site=sprayfoamtv.com"
   form = "contact"
 
+[[redirects]]
+  from = "/stream/hls/*"
+  to = "https://games.jam-bot.com/stream/hls/:splat"
+  status = 200
+  force = true
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"

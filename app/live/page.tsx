@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Radio, CalendarClock, ExternalLink, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LIVE_SOURCES, LIVE_STREAMS, type StreamStatus } from "@/lib/live-streams";
+import LivePlayer from "./live-player";
 
 export const metadata: Metadata = {
   title: "Live Streams — Spray Foam Industry Livestreams",
@@ -71,6 +72,14 @@ export default function LivePage() {
             always credited to the real company broadcasting them.
           </p>
         </div>
+      </section>
+
+      <section className="container mx-auto px-4 pt-16">
+        <p className="mb-4 inline-flex items-center gap-2 text-sm font-medium text-red-600">
+          <span className="inline-block h-2.5 w-2.5 animate-pulse rounded-full bg-red-600" />
+          Live now — 24/7 rotation of client commercials
+        </p>
+        <LivePlayer />
       </section>
 
       <section className="container mx-auto px-4 py-16">
