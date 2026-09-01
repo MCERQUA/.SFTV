@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xmeml>
+<xmeml version="5">
+  <sequence id="sprayfoamtv">
+    <name>SprayFoam TV — channel assembly</name>
+    <duration>46830</duration>
+    <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+    <media>
+      <video>
+        <format><samplecharacteristics>
+          <width>1920</width><height>1080</height>
+          <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        </samplecharacteristics></format>
+        <track><clipitem id="clip-1"><name>4c55e9f5ec464e37acbbfedb4a31ead3</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>0</start><end>240</end><in>0</in><out>192</out>
+      <file id="file-1"><name>4c55e9f5ec464e37acbbfedb4a31ead3.mp4</name><pathurl>file://localhost/media/4c55e9f5ec464e37acbbfedb4a31ead3.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>1280</width><height>720</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-2"><name>ai-gen-wan-1782846903003</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>240</start><end>347</end><in>0</in><out>57</out>
+      <file id="file-2"><name>ai-gen-wan-1782846903003.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782846903003.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>576</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-3"><name>ai-gen-wan-1782847363615</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>347</start><end>454</end><in>0</in><out>57</out>
+      <file id="file-3"><name>ai-gen-wan-1782847363615.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782847363615.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>576</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-4"><name>ai-gen-wan-1782847456949</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>454</start><end>561</end><in>0</in><out>57</out>
+      <file id="file-4"><name>ai-gen-wan-1782847456949.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782847456949.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>576</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-5"><name>ai-gen-wan-1782850335697</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>561</start><end>668</end><in>0</in><out>57</out>
+      <file id="file-5"><name>ai-gen-wan-1782850335697.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782850335697.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>640</width><height>640</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-6"><name>ai-gen-wan-1782850394922</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>668</start><end>775</end><in>0</in><out>57</out>
+      <file id="file-6"><name>ai-gen-wan-1782850394922.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782850394922.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>640</width><height>640</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-7"><name>ai-gen-wan-1782853886422</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>775</start><end>882</end><in>0</in><out>57</out>
+      <file id="file-7"><name>ai-gen-wan-1782853886422.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782853886422.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>832</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-8"><name>ai-gen-wan-1782854498474</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>882</start><end>989</end><in>0</in><out>57</out>
+      <file id="file-8"><name>ai-gen-wan-1782854498474.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782854498474.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>640</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-9"><name>ai-gen-wan-1782855103220</name><enabled>TRUE</enabled>
+      <duration>57</duration>
+      <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+      <start>989</start><end>1096</end><in>0</in><out>57</out>
+      <file id="file-9"><name>ai-gen-wan-1782855103220.mp4</name><pathurl>file://localhost/media/ai-gen-wan-1782855103220.mp4</pathurl>
+        <rate><timebase>16</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>57</duration>
+        <media><video><samplecharacteristics><width>832</width><height>640</height></samplecharacteristics></video></media>
+        </file></clipitem>
+<clipitem id="clip-10"><name>allstate_cozybear_correct_hyphen_00001_</name><enabled>TRUE</enabled>
+      <duration>107</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1096</start><end>1230</end><in>0</in><out>107</out>
+      <file id="file-10"><name>allstate_cozybear_correct_hyphen_00001_.mp4</name><pathurl>file://localhost/media/allstate_cozybear_correct_hyphen_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>107</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-11"><name>allstate_cozybear_correct_sprayfoam_00001_</name><enabled>TRUE</enabled>
+      <duration>107</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1230</start><end>1364</end><in>0</in><out>107</out>
+      <file id="file-11"><name>allstate_cozybear_correct_sprayfoam_00001_.mp4</name><pathurl>file://localhost/media/allstate_cozybear_correct_sprayfoam_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>107</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-12"><name>allstate_cozybear_correct_twoword_00001_</name><enabled>TRUE</enabled>
+      <duration>107</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1364</start><end>1498</end><in>0</in><out>107</out>
+      <file id="file-12"><name>allstate_cozybear_correct_twoword_00001_.mp4</name><pathurl>file://localhost/media/allstate_cozybear_correct_twoword_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>107</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-13"><name>allstate_cozybear_quickhit_00001_</name><enabled>TRUE</enabled>
+      <duration>107</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1498</start><end>1632</end><in>0</in><out>107</out>
+      <file id="file-13"><name>allstate_cozybear_quickhit_00001_.mp4</name><pathurl>file://localhost/media/allstate_cozybear_quickhit_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>107</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-14"><name>allstate_endcard_animated_test_00001_</name><enabled>TRUE</enabled>
+      <duration>90</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1632</start><end>1744</end><in>0</in><out>90</out>
+      <file id="file-14"><name>allstate_endcard_animated_test_00001_.mp4</name><pathurl>file://localhost/media/allstate_endcard_animated_test_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>90</duration>
+        <media><video><samplecharacteristics><width>576</width><height>1024</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-15"><name>bhb_kyle_talking_test_00001_</name><enabled>TRUE</enabled>
+      <duration>124</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1744</start><end>1899</end><in>0</in><out>124</out>
+      <file id="file-15"><name>bhb_kyle_talking_test_00001_.mp4</name><pathurl>file://localhost/media/bhb_kyle_talking_test_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>124</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-16"><name>camera_test_22_pushin_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>1899</start><end>2139</end><in>0</in><out>192</out>
+      <file id="file-16"><name>camera_test_22_pushin_00001_.mp4</name><pathurl>file://localhost/media/camera_test_22_pushin_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-17"><name>dtag_test_foam_official_syntax_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>2139</start><end>2379</end><in>0</in><out>192</out>
+      <file id="file-17"><name>dtag_test_foam_official_syntax_00001_.mp4</name><pathurl>file://localhost/media/dtag_test_foam_official_syntax_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-18"><name>e40c969183634f47bab29acaa0fc9faf</name><enabled>TRUE</enabled>
+      <duration>2147</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>2379</start><end>4526</end><in>0</in><out>2147</out>
+      <file id="file-18"><name>e40c969183634f47bab29acaa0fc9faf.mp4</name><pathurl>file://localhost/media/e40c969183634f47bab29acaa0fc9faf.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>2147</duration>
+        <media><video><samplecharacteristics><width>1280</width><height>720</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-19"><name>foamology-commercial</name><enabled>TRUE</enabled>
+      <duration>902</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>4526</start><end>5428</end><in>0</in><out>902</out>
+      <file id="file-19"><name>foamology-commercial.mp4</name><pathurl>file://localhost/media/foamology-commercial.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>902</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-20"><name>ica-commercial-graphical</name><enabled>TRUE</enabled>
+      <duration>900</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>5428</start><end>6328</end><in>0</in><out>900</out>
+      <file id="file-20"><name>ica-commercial-graphical.mp4</name><pathurl>file://localhost/media/ica-commercial-graphical.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>900</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-21"><name>iso_resin_joint_scene_00001_</name><enabled>TRUE</enabled>
+      <duration>124</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>6328</start><end>6483</end><in>0</in><out>124</out>
+      <file id="file-21"><name>iso_resin_joint_scene_00001_.mp4</name><pathurl>file://localhost/media/iso_resin_joint_scene_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>124</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-22"><name>iso_scene_truckbed_rant_00001_</name><enabled>TRUE</enabled>
+      <duration>243</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>6483</start><end>6787</end><in>0</in><out>243</out>
+      <file id="file-22"><name>iso_scene_truckbed_rant_00001_.mp4</name><pathurl>file://localhost/media/iso_scene_truckbed_rant_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>243</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-23"><name>iso_solo_rant_00001_</name><enabled>TRUE</enabled>
+      <duration>243</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>6787</start><end>7091</end><in>0</in><out>243</out>
+      <file id="file-23"><name>iso_solo_rant_00001_.mp4</name><pathurl>file://localhost/media/iso_solo_rant_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>243</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-24"><name>koolfoam-commercial-v2-graphical</name><enabled>TRUE</enabled>
+      <duration>900</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>7091</start><end>7991</end><in>0</in><out>900</out>
+      <file id="file-24"><name>koolfoam-commercial-v2-graphical.mp4</name><pathurl>file://localhost/media/koolfoam-commercial-v2-graphical.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>900</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-25"><name>koolfoam-commercial-v3-mascot</name><enabled>TRUE</enabled>
+      <duration>950</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>7991</start><end>8941</end><in>0</in><out>950</out>
+      <file id="file-25"><name>koolfoam-commercial-v3-mascot.mp4</name><pathurl>file://localhost/media/koolfoam-commercial-v3-mascot.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>950</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-26"><name>offratio_s01_l1_22_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>8941</start><end>9202</end><in>0</in><out>209</out>
+      <file id="file-26"><name>offratio_s01_l1_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s01_l1_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-27"><name>offratio_s01_l2_FOAMHELPER_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>9202</start><end>9442</end><in>0</in><out>192</out>
+      <file id="file-27"><name>offratio_s01_l2_FOAMHELPER_00001_.mp4</name><pathurl>file://localhost/media/offratio_s01_l2_FOAMHELPER_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-28"><name>offratio_s01_l3_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>9442</start><end>9682</end><in>0</in><out>192</out>
+      <file id="file-28"><name>offratio_s01_l3_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s01_l3_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-29"><name>offratio_s01_l4_22_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>9682</start><end>9922</end><in>0</in><out>192</out>
+      <file id="file-29"><name>offratio_s01_l4_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s01_l4_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-30"><name>offratio_s02_l1_ISO_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>9922</start><end>10162</end><in>0</in><out>192</out>
+      <file id="file-30"><name>offratio_s02_l1_ISO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s02_l1_ISO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-31"><name>offratio_s02_l2_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>10162</start><end>10402</end><in>0</in><out>192</out>
+      <file id="file-31"><name>offratio_s02_l2_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s02_l2_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-32"><name>offratio_s02_l3_ISO_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>10402</start><end>10663</end><in>0</in><out>209</out>
+      <file id="file-32"><name>offratio_s02_l3_ISO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s02_l3_ISO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-33"><name>offratio_s02_l4_22_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>10663</start><end>10903</end><in>0</in><out>192</out>
+      <file id="file-33"><name>offratio_s02_l4_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s02_l4_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-34"><name>offratio_s03_l1_NOBLE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>10903</start><end>11143</end><in>0</in><out>192</out>
+      <file id="file-34"><name>offratio_s03_l1_NOBLE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s03_l1_NOBLE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-35"><name>offratio_s03_l2_22_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>11143</start><end>11383</end><in>0</in><out>192</out>
+      <file id="file-35"><name>offratio_s03_l2_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s03_l2_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-36"><name>offratio_s03_l3_NOBLE_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>11383</start><end>11644</end><in>0</in><out>209</out>
+      <file id="file-36"><name>offratio_s03_l3_NOBLE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s03_l3_NOBLE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-37"><name>offratio_s03_l4_FRONTIERFOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>11644</start><end>11884</end><in>0</in><out>192</out>
+      <file id="file-37"><name>offratio_s03_l4_FRONTIERFOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s03_l4_FRONTIERFOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-38"><name>offratio_s04_l1_FRONTIERFOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>11884</start><end>12124</end><in>0</in><out>192</out>
+      <file id="file-38"><name>offratio_s04_l1_FRONTIERFOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s04_l1_FRONTIERFOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-39"><name>offratio_s04_l2_GRANDE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>12124</start><end>12364</end><in>0</in><out>192</out>
+      <file id="file-39"><name>offratio_s04_l2_GRANDE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s04_l2_GRANDE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-40"><name>offratio_s04_l3_SERIO_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>12364</start><end>12604</end><in>0</in><out>192</out>
+      <file id="file-40"><name>offratio_s04_l3_SERIO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s04_l3_SERIO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-41"><name>offratio_s04_l4_FRONTIERFOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>12604</start><end>12844</end><in>0</in><out>192</out>
+      <file id="file-41"><name>offratio_s04_l4_FRONTIERFOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s04_l4_FRONTIERFOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-42"><name>offratio_s05_l1_FOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>12844</start><end>13084</end><in>0</in><out>192</out>
+      <file id="file-42"><name>offratio_s05_l1_FOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s05_l1_FOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-43"><name>offratio_s05_l2_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>13084</start><end>13324</end><in>0</in><out>192</out>
+      <file id="file-43"><name>offratio_s05_l2_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s05_l2_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-44"><name>offratio_s05_l3_FOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>13324</start><end>13564</end><in>0</in><out>192</out>
+      <file id="file-44"><name>offratio_s05_l3_FOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s05_l3_FOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-45"><name>offratio_s05_l4_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>13564</start><end>13804</end><in>0</in><out>192</out>
+      <file id="file-45"><name>offratio_s05_l4_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s05_l4_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-46"><name>offratio_s06_l1_FOAMHELPER_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>13804</start><end>14044</end><in>0</in><out>192</out>
+      <file id="file-46"><name>offratio_s06_l1_FOAMHELPER_00001_.mp4</name><pathurl>file://localhost/media/offratio_s06_l1_FOAMHELPER_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-47"><name>offratio_s06_l1_FOAMHELPER_00002_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>14044</start><end>14284</end><in>0</in><out>192</out>
+      <file id="file-47"><name>offratio_s06_l1_FOAMHELPER_00002_.mp4</name><pathurl>file://localhost/media/offratio_s06_l1_FOAMHELPER_00002_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-48"><name>offratio_s06_l2_22_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>14284</start><end>14524</end><in>0</in><out>192</out>
+      <file id="file-48"><name>offratio_s06_l2_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s06_l2_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-49"><name>offratio_s06_l3_FOAMHELPER_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>14524</start><end>14764</end><in>0</in><out>192</out>
+      <file id="file-49"><name>offratio_s06_l3_FOAMHELPER_00001_.mp4</name><pathurl>file://localhost/media/offratio_s06_l3_FOAMHELPER_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-50"><name>offratio_s06_l4_22_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>14764</start><end>15025</end><in>0</in><out>209</out>
+      <file id="file-50"><name>offratio_s06_l4_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s06_l4_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-51"><name>offratio_s07_l1_NOBLE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>15025</start><end>15265</end><in>0</in><out>192</out>
+      <file id="file-51"><name>offratio_s07_l1_NOBLE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s07_l1_NOBLE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-52"><name>offratio_s07_l2_FRONTIERFOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>15265</start><end>15526</end><in>0</in><out>209</out>
+      <file id="file-52"><name>offratio_s07_l2_FRONTIERFOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s07_l2_FRONTIERFOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-53"><name>offratio_s07_l3_NOBLE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>15526</start><end>15766</end><in>0</in><out>192</out>
+      <file id="file-53"><name>offratio_s07_l3_NOBLE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s07_l3_NOBLE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-54"><name>offratio_s07_l4_FRONTIERFOAM_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>15766</start><end>16027</end><in>0</in><out>209</out>
+      <file id="file-54"><name>offratio_s07_l4_FRONTIERFOAM_00001_.mp4</name><pathurl>file://localhost/media/offratio_s07_l4_FRONTIERFOAM_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-55"><name>offratio_s08_l1_GRANDE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>16027</start><end>16267</end><in>0</in><out>192</out>
+      <file id="file-55"><name>offratio_s08_l1_GRANDE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s08_l1_GRANDE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-56"><name>offratio_s08_l2_SERIO_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>16267</start><end>16507</end><in>0</in><out>192</out>
+      <file id="file-56"><name>offratio_s08_l2_SERIO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s08_l2_SERIO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-57"><name>offratio_s08_l3_ISO_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>16507</start><end>16747</end><in>0</in><out>192</out>
+      <file id="file-57"><name>offratio_s08_l3_ISO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s08_l3_ISO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-58"><name>offratio_s08_l4_GRANDE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>16747</start><end>16987</end><in>0</in><out>192</out>
+      <file id="file-58"><name>offratio_s08_l4_GRANDE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s08_l4_GRANDE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-59"><name>offratio_s09_l1_ISO_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>16987</start><end>17227</end><in>0</in><out>192</out>
+      <file id="file-59"><name>offratio_s09_l1_ISO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s09_l1_ISO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-60"><name>offratio_s09_l2_NOBLE_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>17227</start><end>17467</end><in>0</in><out>192</out>
+      <file id="file-60"><name>offratio_s09_l2_NOBLE_00001_.mp4</name><pathurl>file://localhost/media/offratio_s09_l2_NOBLE_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-61"><name>offratio_s09_l3_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>17467</start><end>17707</end><in>0</in><out>192</out>
+      <file id="file-61"><name>offratio_s09_l3_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s09_l3_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-62"><name>offratio_s09_l4_ISO_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>17707</start><end>17968</end><in>0</in><out>209</out>
+      <file id="file-62"><name>offratio_s09_l4_ISO_00001_.mp4</name><pathurl>file://localhost/media/offratio_s09_l4_ISO_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-63"><name>offratio_s10_l1_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>17968</start><end>18208</end><in>0</in><out>192</out>
+      <file id="file-63"><name>offratio_s10_l1_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s10_l1_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-64"><name>offratio_s10_l2_FOAMHELPER_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>18208</start><end>18448</end><in>0</in><out>192</out>
+      <file id="file-64"><name>offratio_s10_l2_FOAMHELPER_00001_.mp4</name><pathurl>file://localhost/media/offratio_s10_l2_FOAMHELPER_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-65"><name>offratio_s10_l3_22_00001_</name><enabled>TRUE</enabled>
+      <duration>209</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>18448</start><end>18709</end><in>0</in><out>209</out>
+      <file id="file-65"><name>offratio_s10_l3_22_00001_.mp4</name><pathurl>file://localhost/media/offratio_s10_l3_22_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>209</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-66"><name>offratio_s10_l4_RESIN_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>18709</start><end>18949</end><in>0</in><out>192</out>
+      <file id="file-66"><name>offratio_s10_l4_RESIN_00001_.mp4</name><pathurl>file://localhost/media/offratio_s10_l4_RESIN_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-67"><name>otm_marksman_fixed_hyphen_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>18949</start><end>19189</end><in>0</in><out>192</out>
+      <file id="file-67"><name>otm_marksman_fixed_hyphen_00001_.mp4</name><pathurl>file://localhost/media/otm_marksman_fixed_hyphen_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-68"><name>otm_marksman_fixed_sprayfoam_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>19189</start><end>19429</end><in>0</in><out>192</out>
+      <file id="file-68"><name>otm_marksman_fixed_sprayfoam_00001_.mp4</name><pathurl>file://localhost/media/otm_marksman_fixed_sprayfoam_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-69"><name>otm_marksman_fixed_twoword_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>19429</start><end>19669</end><in>0</in><out>192</out>
+      <file id="file-69"><name>otm_marksman_fixed_twoword_00001_.mp4</name><pathurl>file://localhost/media/otm_marksman_fixed_twoword_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-70"><name>otm_marksman_longline_v2_fixed_00001_</name><enabled>TRUE</enabled>
+      <duration>192</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>19669</start><end>19909</end><in>0</in><out>192</out>
+      <file id="file-70"><name>otm_marksman_longline_v2_fixed_00001_.mp4</name><pathurl>file://localhost/media/otm_marksman_longline_v2_fixed_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>192</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-71"><name>otm_marksman_talking_test_00001_</name><enabled>TRUE</enabled>
+      <duration>141</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>19909</start><end>20085</end><in>0</in><out>141</out>
+      <file id="file-71"><name>otm_marksman_talking_test_00001_.mp4</name><pathurl>file://localhost/media/otm_marksman_talking_test_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>141</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-72"><name>resin_scene_warehouse_chill_00001_</name><enabled>TRUE</enabled>
+      <duration>124</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>20085</start><end>20240</end><in>0</in><out>124</out>
+      <file id="file-72"><name>resin_scene_warehouse_chill_00001_.mp4</name><pathurl>file://localhost/media/resin_scene_warehouse_chill_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>124</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-73"><name>resin_solo_chill_00001_</name><enabled>TRUE</enabled>
+      <duration>124</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>20240</start><end>20395</end><in>0</in><out>124</out>
+      <file id="file-73"><name>resin_solo_chill_00001_.mp4</name><pathurl>file://localhost/media/resin_solo_chill_00001_.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>124</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-74"><name>rita-ovui__71af6cf9</name><enabled>TRUE</enabled>
+      <duration>6175</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>20395</start><end>26570</end><in>0</in><out>6175</out>
+      <file id="file-74"><name>rita-ovui__71af6cf9.mp4</name><pathurl>file://localhost/media/rita-ovui__71af6cf9.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>6175</duration>
+        <media><video><samplecharacteristics><width>1280</width><height>720</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-75"><name>rita-ovui__78f89e4a</name><enabled>TRUE</enabled>
+      <duration>6175</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>26570</start><end>32745</end><in>0</in><out>6175</out>
+      <file id="file-75"><name>rita-ovui__78f89e4a.mp4</name><pathurl>file://localhost/media/rita-ovui__78f89e4a.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>6175</duration>
+        <media><video><samplecharacteristics><width>1280</width><height>720</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-76"><name>static_transition</name><enabled>TRUE</enabled>
+      <duration>12</duration>
+      <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+      <start>32745</start><end>32760</end><in>0</in><out>12</out>
+      <file id="file-76"><name>static_transition.mp4</name><pathurl>file://localhost/media/static_transition.mp4</pathurl>
+        <rate><timebase>24</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>12</duration>
+        <media><video><samplecharacteristics><width>864</width><height>576</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-77"><name>template-answer-foamology-v1</name><enabled>TRUE</enabled>
+      <duration>660</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>32760</start><end>33420</end><in>0</in><out>660</out>
+      <file id="file-77"><name>template-answer-foamology-v1.mp4</name><pathurl>file://localhost/media/template-answer-foamology-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>660</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-78"><name>template-answer-foamology-vert-v1</name><enabled>TRUE</enabled>
+      <duration>660</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>33420</start><end>34080</end><in>0</in><out>660</out>
+      <file id="file-78"><name>template-answer-foamology-vert-v1.mp4</name><pathurl>file://localhost/media/template-answer-foamology-vert-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>660</duration>
+        <media><video><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-79"><name>template-blitz-koolfoam-v2</name><enabled>TRUE</enabled>
+      <duration>450</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>34080</start><end>34530</end><in>0</in><out>450</out>
+      <file id="file-79"><name>template-blitz-koolfoam-v2.mp4</name><pathurl>file://localhost/media/template-blitz-koolfoam-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>450</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-80"><name>template-blitz-koolfoam-vert-v2</name><enabled>TRUE</enabled>
+      <duration>450</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>34530</start><end>34980</end><in>0</in><out>450</out>
+      <file id="file-80"><name>template-blitz-koolfoam-vert-v2.mp4</name><pathurl>file://localhost/media/template-blitz-koolfoam-vert-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>450</duration>
+        <media><video><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-81"><name>template-blitz-koolfoam</name><enabled>TRUE</enabled>
+      <duration>450</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>34980</start><end>35430</end><in>0</in><out>450</out>
+      <file id="file-81"><name>template-blitz-koolfoam.mp4</name><pathurl>file://localhost/media/template-blitz-koolfoam.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>450</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-82"><name>template-blitzcount-azrim-v2</name><enabled>TRUE</enabled>
+      <duration>600</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>35430</start><end>36030</end><in>0</in><out>600</out>
+      <file id="file-82"><name>template-blitzcount-azrim-v2.mp4</name><pathurl>file://localhost/media/template-blitzcount-azrim-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>600</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-83"><name>template-blitzcount-azrim-vert-v2</name><enabled>TRUE</enabled>
+      <duration>600</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>36030</start><end>36630</end><in>0</in><out>600</out>
+      <file id="file-83"><name>template-blitzcount-azrim-vert-v2.mp4</name><pathurl>file://localhost/media/template-blitzcount-azrim-vert-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>600</duration>
+        <media><video><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-84"><name>template-blitzgrid-src-v2</name><enabled>TRUE</enabled>
+      <duration>450</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>36630</start><end>37080</end><in>0</in><out>450</out>
+      <file id="file-84"><name>template-blitzgrid-src-v2.mp4</name><pathurl>file://localhost/media/template-blitzgrid-src-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>450</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-85"><name>template-blitzgrid-src-vert-v2</name><enabled>TRUE</enabled>
+      <duration>450</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>37080</start><end>37530</end><in>0</in><out>450</out>
+      <file id="file-85"><name>template-blitzgrid-src-vert-v2.mp4</name><pathurl>file://localhost/media/template-blitzgrid-src-vert-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>450</duration>
+        <media><video><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-86"><name>template-blueprint-edi-v2</name><enabled>TRUE</enabled>
+      <duration>810</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>37530</start><end>38340</end><in>0</in><out>810</out>
+      <file id="file-86"><name>template-blueprint-edi-v2.mp4</name><pathurl>file://localhost/media/template-blueprint-edi-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>810</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-87"><name>template-blueprint-edi</name><enabled>TRUE</enabled>
+      <duration>810</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>38340</start><end>39150</end><in>0</in><out>810</out>
+      <file id="file-87"><name>template-blueprint-edi.mp4</name><pathurl>file://localhost/media/template-blueprint-edi.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>810</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-88"><name>template-heritage-dsf-v2</name><enabled>TRUE</enabled>
+      <duration>840</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>39150</start><end>39990</end><in>0</in><out>840</out>
+      <file id="file-88"><name>template-heritage-dsf-v2.mp4</name><pathurl>file://localhost/media/template-heritage-dsf-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>840</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-89"><name>template-heritage-dsf</name><enabled>TRUE</enabled>
+      <duration>840</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>39990</start><end>40830</end><in>0</in><out>840</out>
+      <file id="file-89"><name>template-heritage-dsf.mp4</name><pathurl>file://localhost/media/template-heritage-dsf.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>840</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-90"><name>template-proof-ica-v2</name><enabled>TRUE</enabled>
+      <duration>840</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>40830</start><end>41670</end><in>0</in><out>840</out>
+      <file id="file-90"><name>template-proof-ica-v2.mp4</name><pathurl>file://localhost/media/template-proof-ica-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>840</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-91"><name>template-proof-ica</name><enabled>TRUE</enabled>
+      <duration>840</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>41670</start><end>42510</end><in>0</in><out>840</out>
+      <file id="file-91"><name>template-proof-ica.mp4</name><pathurl>file://localhost/media/template-proof-ica.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>840</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-92"><name>template-reveal-foamology-v1</name><enabled>TRUE</enabled>
+      <duration>720</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>42510</start><end>43230</end><in>0</in><out>720</out>
+      <file id="file-92"><name>template-reveal-foamology-v1.mp4</name><pathurl>file://localhost/media/template-reveal-foamology-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>720</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-93"><name>template-territory-ica-v1</name><enabled>TRUE</enabled>
+      <duration>720</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>43230</start><end>43950</end><in>0</in><out>720</out>
+      <file id="file-93"><name>template-territory-ica-v1.mp4</name><pathurl>file://localhost/media/template-territory-ica-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>720</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-94"><name>template-ticket-koolfoam-v1</name><enabled>TRUE</enabled>
+      <duration>540</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>43950</start><end>44490</end><in>0</in><out>540</out>
+      <file id="file-94"><name>template-ticket-koolfoam-v1.mp4</name><pathurl>file://localhost/media/template-ticket-koolfoam-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>540</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-95"><name>template-ticket-koolfoam-vert-v1</name><enabled>TRUE</enabled>
+      <duration>540</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>44490</start><end>45030</end><in>0</in><out>540</out>
+      <file id="file-95"><name>template-ticket-koolfoam-vert-v1.mp4</name><pathurl>file://localhost/media/template-ticket-koolfoam-vert-v1.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>540</duration>
+        <media><video><samplecharacteristics><width>1080</width><height>1920</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-96"><name>template-xray-foamology-v2</name><enabled>TRUE</enabled>
+      <duration>900</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>45030</start><end>45930</end><in>0</in><out>900</out>
+      <file id="file-96"><name>template-xray-foamology-v2.mp4</name><pathurl>file://localhost/media/template-xray-foamology-v2.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>900</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem>
+<clipitem id="clip-97"><name>template-xray-foamology</name><enabled>TRUE</enabled>
+      <duration>900</duration>
+      <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+      <start>45930</start><end>46830</end><in>0</in><out>900</out>
+      <file id="file-97"><name>template-xray-foamology.mp4</name><pathurl>file://localhost/media/template-xray-foamology.mp4</pathurl>
+        <rate><timebase>30</timebase><ntsc>FALSE</ntsc></rate>
+        <duration>900</duration>
+        <media><video><samplecharacteristics><width>1920</width><height>1080</height></samplecharacteristics></video><audio><channelcount>2</channelcount></audio></media>
+        </file></clipitem></track>
+      </video>
+    </media>
+    <marker><name>4c55e9f5ec464e37acbbfedb4a31ead3</name><comment>4c55e9f5ec464e37acbbfedb4a31ead3.mp4  (8.0s, 1280x720 @ 24fps)</comment>
+      <in>0</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782846903003</name><comment>ai-gen-wan-1782846903003.mp4  (3.6s, 832x576 @ 16fps)</comment>
+      <in>240</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782847363615</name><comment>ai-gen-wan-1782847363615.mp4  (3.6s, 832x576 @ 16fps)</comment>
+      <in>347</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782847456949</name><comment>ai-gen-wan-1782847456949.mp4  (3.6s, 832x576 @ 16fps)</comment>
+      <in>454</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782850335697</name><comment>ai-gen-wan-1782850335697.mp4  (3.6s, 640x640 @ 16fps)</comment>
+      <in>561</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782850394922</name><comment>ai-gen-wan-1782850394922.mp4  (3.6s, 640x640 @ 16fps)</comment>
+      <in>668</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782853886422</name><comment>ai-gen-wan-1782853886422.mp4  (3.6s, 832x832 @ 16fps)</comment>
+      <in>775</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782854498474</name><comment>ai-gen-wan-1782854498474.mp4  (3.6s, 832x640 @ 16fps)</comment>
+      <in>882</in><out>-1</out></marker>
+<marker><name>ai-gen-wan-1782855103220</name><comment>ai-gen-wan-1782855103220.mp4  (3.6s, 832x640 @ 16fps)</comment>
+      <in>989</in><out>-1</out></marker>
+<marker><name>allstate_cozybear_correct_hyphen_00001_</name><comment>allstate_cozybear_correct_hyphen_00001_.mp4  (4.5s, 864x576 @ 24fps)</comment>
+      <in>1096</in><out>-1</out></marker>
+<marker><name>allstate_cozybear_correct_sprayfoam_00001_</name><comment>allstate_cozybear_correct_sprayfoam_00001_.mp4  (4.5s, 864x576 @ 24fps)</comment>
+      <in>1230</in><out>-1</out></marker>
+<marker><name>allstate_cozybear_correct_twoword_00001_</name><comment>allstate_cozybear_correct_twoword_00001_.mp4  (4.5s, 864x576 @ 24fps)</comment>
+      <in>1364</in><out>-1</out></marker>
+<marker><name>allstate_cozybear_quickhit_00001_</name><comment>allstate_cozybear_quickhit_00001_.mp4  (4.5s, 864x576 @ 24fps)</comment>
+      <in>1498</in><out>-1</out></marker>
+<marker><name>allstate_endcard_animated_test_00001_</name><comment>allstate_endcard_animated_test_00001_.mp4  (3.8s, 576x1024 @ 24fps)</comment>
+      <in>1632</in><out>-1</out></marker>
+<marker><name>bhb_kyle_talking_test_00001_</name><comment>bhb_kyle_talking_test_00001_.mp4  (5.2s, 864x576 @ 24fps)</comment>
+      <in>1744</in><out>-1</out></marker>
+<marker><name>camera_test_22_pushin_00001_</name><comment>camera_test_22_pushin_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>1899</in><out>-1</out></marker>
+<marker><name>dtag_test_foam_official_syntax_00001_</name><comment>dtag_test_foam_official_syntax_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>2139</in><out>-1</out></marker>
+<marker><name>e40c969183634f47bab29acaa0fc9faf</name><comment>e40c969183634f47bab29acaa0fc9faf.mp4  (71.6s, 1280x720 @ 30fps)</comment>
+      <in>2379</in><out>-1</out></marker>
+<marker><name>foamology-commercial</name><comment>foamology-commercial.mp4  (30.1s, 1920x1080 @ 30fps)</comment>
+      <in>4526</in><out>-1</out></marker>
+<marker><name>ica-commercial-graphical</name><comment>ica-commercial-graphical.mp4  (30.0s, 1920x1080 @ 30fps)</comment>
+      <in>5428</in><out>-1</out></marker>
+<marker><name>iso_resin_joint_scene_00001_</name><comment>iso_resin_joint_scene_00001_.mp4  (5.2s, 864x576 @ 24fps)</comment>
+      <in>6328</in><out>-1</out></marker>
+<marker><name>iso_scene_truckbed_rant_00001_</name><comment>iso_scene_truckbed_rant_00001_.mp4  (10.1s, 864x576 @ 24fps)</comment>
+      <in>6483</in><out>-1</out></marker>
+<marker><name>iso_solo_rant_00001_</name><comment>iso_solo_rant_00001_.mp4  (10.1s, 864x576 @ 24fps)</comment>
+      <in>6787</in><out>-1</out></marker>
+<marker><name>koolfoam-commercial-v2-graphical</name><comment>koolfoam-commercial-v2-graphical.mp4  (30.0s, 1920x1080 @ 30fps)</comment>
+      <in>7091</in><out>-1</out></marker>
+<marker><name>koolfoam-commercial-v3-mascot</name><comment>koolfoam-commercial-v3-mascot.mp4  (31.7s, 1920x1080 @ 30fps)</comment>
+      <in>7991</in><out>-1</out></marker>
+<marker><name>offratio_s01_l1_22_00001_</name><comment>offratio_s01_l1_22_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>8941</in><out>-1</out></marker>
+<marker><name>offratio_s01_l2_FOAMHELPER_00001_</name><comment>offratio_s01_l2_FOAMHELPER_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>9202</in><out>-1</out></marker>
+<marker><name>offratio_s01_l3_RESIN_00001_</name><comment>offratio_s01_l3_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>9442</in><out>-1</out></marker>
+<marker><name>offratio_s01_l4_22_00001_</name><comment>offratio_s01_l4_22_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>9682</in><out>-1</out></marker>
+<marker><name>offratio_s02_l1_ISO_00001_</name><comment>offratio_s02_l1_ISO_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>9922</in><out>-1</out></marker>
+<marker><name>offratio_s02_l2_RESIN_00001_</name><comment>offratio_s02_l2_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>10162</in><out>-1</out></marker>
+<marker><name>offratio_s02_l3_ISO_00001_</name><comment>offratio_s02_l3_ISO_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>10402</in><out>-1</out></marker>
+<marker><name>offratio_s02_l4_22_00001_</name><comment>offratio_s02_l4_22_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>10663</in><out>-1</out></marker>
+<marker><name>offratio_s03_l1_NOBLE_00001_</name><comment>offratio_s03_l1_NOBLE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>10903</in><out>-1</out></marker>
+<marker><name>offratio_s03_l2_22_00001_</name><comment>offratio_s03_l2_22_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>11143</in><out>-1</out></marker>
+<marker><name>offratio_s03_l3_NOBLE_00001_</name><comment>offratio_s03_l3_NOBLE_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>11383</in><out>-1</out></marker>
+<marker><name>offratio_s03_l4_FRONTIERFOAM_00001_</name><comment>offratio_s03_l4_FRONTIERFOAM_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>11644</in><out>-1</out></marker>
+<marker><name>offratio_s04_l1_FRONTIERFOAM_00001_</name><comment>offratio_s04_l1_FRONTIERFOAM_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>11884</in><out>-1</out></marker>
+<marker><name>offratio_s04_l2_GRANDE_00001_</name><comment>offratio_s04_l2_GRANDE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>12124</in><out>-1</out></marker>
+<marker><name>offratio_s04_l3_SERIO_00001_</name><comment>offratio_s04_l3_SERIO_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>12364</in><out>-1</out></marker>
+<marker><name>offratio_s04_l4_FRONTIERFOAM_00001_</name><comment>offratio_s04_l4_FRONTIERFOAM_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>12604</in><out>-1</out></marker>
+<marker><name>offratio_s05_l1_FOAM_00001_</name><comment>offratio_s05_l1_FOAM_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>12844</in><out>-1</out></marker>
+<marker><name>offratio_s05_l2_RESIN_00001_</name><comment>offratio_s05_l2_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>13084</in><out>-1</out></marker>
+<marker><name>offratio_s05_l3_FOAM_00001_</name><comment>offratio_s05_l3_FOAM_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>13324</in><out>-1</out></marker>
+<marker><name>offratio_s05_l4_RESIN_00001_</name><comment>offratio_s05_l4_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>13564</in><out>-1</out></marker>
+<marker><name>offratio_s06_l1_FOAMHELPER_00001_</name><comment>offratio_s06_l1_FOAMHELPER_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>13804</in><out>-1</out></marker>
+<marker><name>offratio_s06_l1_FOAMHELPER_00002_</name><comment>offratio_s06_l1_FOAMHELPER_00002_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>14044</in><out>-1</out></marker>
+<marker><name>offratio_s06_l2_22_00001_</name><comment>offratio_s06_l2_22_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>14284</in><out>-1</out></marker>
+<marker><name>offratio_s06_l3_FOAMHELPER_00001_</name><comment>offratio_s06_l3_FOAMHELPER_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>14524</in><out>-1</out></marker>
+<marker><name>offratio_s06_l4_22_00001_</name><comment>offratio_s06_l4_22_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>14764</in><out>-1</out></marker>
+<marker><name>offratio_s07_l1_NOBLE_00001_</name><comment>offratio_s07_l1_NOBLE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>15025</in><out>-1</out></marker>
+<marker><name>offratio_s07_l2_FRONTIERFOAM_00001_</name><comment>offratio_s07_l2_FRONTIERFOAM_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>15265</in><out>-1</out></marker>
+<marker><name>offratio_s07_l3_NOBLE_00001_</name><comment>offratio_s07_l3_NOBLE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>15526</in><out>-1</out></marker>
+<marker><name>offratio_s07_l4_FRONTIERFOAM_00001_</name><comment>offratio_s07_l4_FRONTIERFOAM_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>15766</in><out>-1</out></marker>
+<marker><name>offratio_s08_l1_GRANDE_00001_</name><comment>offratio_s08_l1_GRANDE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>16027</in><out>-1</out></marker>
+<marker><name>offratio_s08_l2_SERIO_00001_</name><comment>offratio_s08_l2_SERIO_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>16267</in><out>-1</out></marker>
+<marker><name>offratio_s08_l3_ISO_00001_</name><comment>offratio_s08_l3_ISO_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>16507</in><out>-1</out></marker>
+<marker><name>offratio_s08_l4_GRANDE_00001_</name><comment>offratio_s08_l4_GRANDE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>16747</in><out>-1</out></marker>
+<marker><name>offratio_s09_l1_ISO_00001_</name><comment>offratio_s09_l1_ISO_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>16987</in><out>-1</out></marker>
+<marker><name>offratio_s09_l2_NOBLE_00001_</name><comment>offratio_s09_l2_NOBLE_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>17227</in><out>-1</out></marker>
+<marker><name>offratio_s09_l3_RESIN_00001_</name><comment>offratio_s09_l3_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>17467</in><out>-1</out></marker>
+<marker><name>offratio_s09_l4_ISO_00001_</name><comment>offratio_s09_l4_ISO_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>17707</in><out>-1</out></marker>
+<marker><name>offratio_s10_l1_RESIN_00001_</name><comment>offratio_s10_l1_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>17968</in><out>-1</out></marker>
+<marker><name>offratio_s10_l2_FOAMHELPER_00001_</name><comment>offratio_s10_l2_FOAMHELPER_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>18208</in><out>-1</out></marker>
+<marker><name>offratio_s10_l3_22_00001_</name><comment>offratio_s10_l3_22_00001_.mp4  (8.7s, 864x576 @ 24fps)</comment>
+      <in>18448</in><out>-1</out></marker>
+<marker><name>offratio_s10_l4_RESIN_00001_</name><comment>offratio_s10_l4_RESIN_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>18709</in><out>-1</out></marker>
+<marker><name>otm_marksman_fixed_hyphen_00001_</name><comment>otm_marksman_fixed_hyphen_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>18949</in><out>-1</out></marker>
+<marker><name>otm_marksman_fixed_sprayfoam_00001_</name><comment>otm_marksman_fixed_sprayfoam_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>19189</in><out>-1</out></marker>
+<marker><name>otm_marksman_fixed_twoword_00001_</name><comment>otm_marksman_fixed_twoword_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>19429</in><out>-1</out></marker>
+<marker><name>otm_marksman_longline_v2_fixed_00001_</name><comment>otm_marksman_longline_v2_fixed_00001_.mp4  (8.0s, 864x576 @ 24fps)</comment>
+      <in>19669</in><out>-1</out></marker>
+<marker><name>otm_marksman_talking_test_00001_</name><comment>otm_marksman_talking_test_00001_.mp4  (5.9s, 864x576 @ 24fps)</comment>
+      <in>19909</in><out>-1</out></marker>
+<marker><name>resin_scene_warehouse_chill_00001_</name><comment>resin_scene_warehouse_chill_00001_.mp4  (5.2s, 864x576 @ 24fps)</comment>
+      <in>20085</in><out>-1</out></marker>
+<marker><name>resin_solo_chill_00001_</name><comment>resin_solo_chill_00001_.mp4  (5.2s, 864x576 @ 24fps)</comment>
+      <in>20240</in><out>-1</out></marker>
+<marker><name>rita-ovui__71af6cf9</name><comment>rita-ovui__71af6cf9.mp4  (205.8s, 1280x720 @ 30fps)</comment>
+      <in>20395</in><out>-1</out></marker>
+<marker><name>rita-ovui__78f89e4a</name><comment>rita-ovui__78f89e4a.mp4  (205.8s, 1280x720 @ 30fps)</comment>
+      <in>26570</in><out>-1</out></marker>
+<marker><name>static_transition</name><comment>static_transition.mp4  (0.5s, 864x576 @ 24fps)</comment>
+      <in>32745</in><out>-1</out></marker>
+<marker><name>template-answer-foamology-v1</name><comment>template-answer-foamology-v1.mp4  (22.0s, 1920x1080 @ 30fps)</comment>
+      <in>32760</in><out>-1</out></marker>
+<marker><name>template-answer-foamology-vert-v1</name><comment>template-answer-foamology-vert-v1.mp4  (22.0s, 1080x1920 @ 30fps)</comment>
+      <in>33420</in><out>-1</out></marker>
+<marker><name>template-blitz-koolfoam-v2</name><comment>template-blitz-koolfoam-v2.mp4  (15.0s, 1920x1080 @ 30fps)</comment>
+      <in>34080</in><out>-1</out></marker>
+<marker><name>template-blitz-koolfoam-vert-v2</name><comment>template-blitz-koolfoam-vert-v2.mp4  (15.0s, 1080x1920 @ 30fps)</comment>
+      <in>34530</in><out>-1</out></marker>
+<marker><name>template-blitz-koolfoam</name><comment>template-blitz-koolfoam.mp4  (15.0s, 1920x1080 @ 30fps)</comment>
+      <in>34980</in><out>-1</out></marker>
+<marker><name>template-blitzcount-azrim-v2</name><comment>template-blitzcount-azrim-v2.mp4  (20.0s, 1920x1080 @ 30fps)</comment>
+      <in>35430</in><out>-1</out></marker>
+<marker><name>template-blitzcount-azrim-vert-v2</name><comment>template-blitzcount-azrim-vert-v2.mp4  (20.0s, 1080x1920 @ 30fps)</comment>
+      <in>36030</in><out>-1</out></marker>
+<marker><name>template-blitzgrid-src-v2</name><comment>template-blitzgrid-src-v2.mp4  (15.0s, 1920x1080 @ 30fps)</comment>
+      <in>36630</in><out>-1</out></marker>
+<marker><name>template-blitzgrid-src-vert-v2</name><comment>template-blitzgrid-src-vert-v2.mp4  (15.0s, 1080x1920 @ 30fps)</comment>
+      <in>37080</in><out>-1</out></marker>
+<marker><name>template-blueprint-edi-v2</name><comment>template-blueprint-edi-v2.mp4  (27.0s, 1920x1080 @ 30fps)</comment>
+      <in>37530</in><out>-1</out></marker>
+<marker><name>template-blueprint-edi</name><comment>template-blueprint-edi.mp4  (27.0s, 1920x1080 @ 30fps)</comment>
+      <in>38340</in><out>-1</out></marker>
+<marker><name>template-heritage-dsf-v2</name><comment>template-heritage-dsf-v2.mp4  (28.0s, 1920x1080 @ 30fps)</comment>
+      <in>39150</in><out>-1</out></marker>
+<marker><name>template-heritage-dsf</name><comment>template-heritage-dsf.mp4  (28.0s, 1920x1080 @ 30fps)</comment>
+      <in>39990</in><out>-1</out></marker>
+<marker><name>template-proof-ica-v2</name><comment>template-proof-ica-v2.mp4  (28.0s, 1920x1080 @ 30fps)</comment>
+      <in>40830</in><out>-1</out></marker>
+<marker><name>template-proof-ica</name><comment>template-proof-ica.mp4  (28.0s, 1920x1080 @ 30fps)</comment>
+      <in>41670</in><out>-1</out></marker>
+<marker><name>template-reveal-foamology-v1</name><comment>template-reveal-foamology-v1.mp4  (24.0s, 1920x1080 @ 30fps)</comment>
+      <in>42510</in><out>-1</out></marker>
+<marker><name>template-territory-ica-v1</name><comment>template-territory-ica-v1.mp4  (24.0s, 1920x1080 @ 30fps)</comment>
+      <in>43230</in><out>-1</out></marker>
+<marker><name>template-ticket-koolfoam-v1</name><comment>template-ticket-koolfoam-v1.mp4  (18.0s, 1920x1080 @ 30fps)</comment>
+      <in>43950</in><out>-1</out></marker>
+<marker><name>template-ticket-koolfoam-vert-v1</name><comment>template-ticket-koolfoam-vert-v1.mp4  (18.0s, 1080x1920 @ 30fps)</comment>
+      <in>44490</in><out>-1</out></marker>
+<marker><name>template-xray-foamology-v2</name><comment>template-xray-foamology-v2.mp4  (30.0s, 1920x1080 @ 30fps)</comment>
+      <in>45030</in><out>-1</out></marker>
+<marker><name>template-xray-foamology</name><comment>template-xray-foamology.mp4  (30.0s, 1920x1080 @ 30fps)</comment>
+      <in>45930</in><out>-1</out></marker>
+  </sequence>
+</xmeml>

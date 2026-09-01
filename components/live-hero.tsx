@@ -10,7 +10,7 @@ const videoPlaylist = [
   // clips + the Off-Ratio episode scenes cut together with channel-flip transitions.
   // Leads the loop so the homepage opens on the current channel reel. A v2 with the back
   // half of the episode is expected; swap the file, this path stays the same.
-  "/videos/channel/sprayfoamtv-stream-v1.mp4",
+  "/videos/channel/sprayfoamtv-stream-v2.mp4",
   "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
   "/videos/commercial-shorts/Graco Fusion AP.mp4",
   "/videos/commercial-shorts/duckcleaning-commerical.mp4",
