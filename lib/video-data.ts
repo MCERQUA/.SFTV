@@ -131,6 +131,16 @@ export const musicVideoCommercials = [
 
 export const funnyClips = [
   {
+    id: 106,
+    title: "The Off-Ratio Bar - Episode 1",
+    thumbnail: "/thumbnails/funny-clips/Off-Ratio-Bar-Episode-1.jpg",
+    videoPath: "/videos/funny-clips/Off-Ratio-Bar-Episode-1.mp4",
+    category: "Sitcom",
+    duration: "5:39",
+    company: "JamSocial",
+    companySlug: "jamsocial"
+  },
+  {
     id: 22,
     title: "Pickle Juice Energy Drink",
     thumbnail: "/thumbnails/funny-clips/Pickle-Juice-Energy-Drink.jpg",
