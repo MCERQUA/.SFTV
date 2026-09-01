@@ -41,10 +41,16 @@ export default function LivePlayer() {
             }, 4000);
           }
         });
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      } else if (
+        typeof (window as any).MediaSource === "undefined" &&
+        video.canPlayType("application/vnd.apple.mpegurl")
+      ) {
+        // iOS Safari only: no MediaSource means hls.js can never attach.
+        // Chromium answers canPlayType with "maybe" but cannot play HLS natively,
+        // so this branch must never fire there — it kills the video permanently.
         video.src = src;
       } else {
-        setTimeout(attach, 1000); // hls.js not loaded yet
+        setTimeout(attach, 250); // hls.js not loaded yet
       }
     };
 
