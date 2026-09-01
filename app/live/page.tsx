@@ -82,29 +82,18 @@ export default function LivePage() {
         <LivePlayer />
       </section>
 
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold sm:text-3xl">
-          {live.length > 0 ? "Live now" : "Scheduled streams"}
-        </h2>
-        {hasStreams ? (
+      {hasStreams && (
+        <section className="container mx-auto px-4 py-16">
+          <h2 className="text-2xl font-bold sm:text-3xl">
+            {live.length > 0 ? "Live now" : "Scheduled streams"}
+          </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[...live, ...upcoming].map((stream) => (
               <StreamCard key={stream.slug} {...stream} />
             ))}
           </div>
-        ) : (
-          <div className="mt-8 rounded-xl border bg-card p-8 text-center">
-            <p className="text-lg font-medium">No streams scheduled right now.</p>
-            <p className="mt-2 text-muted-foreground">
-              When a live session is scheduled it will appear here with its own watch page.
-            </p>
-            <p className="mt-4 text-sm text-muted-foreground">
-              In the meantime, the industry&rsquo;s regular broadcast destinations are below —
-              follow them to catch sessions as they happen.
-            </p>
-          </div>
-        )}
-      </section>
+        </section>
+      )}
 
       <section className="container mx-auto px-4 py-16">
         <h2 className="text-2xl font-bold sm:text-3xl">Where the industry streams live</h2>
