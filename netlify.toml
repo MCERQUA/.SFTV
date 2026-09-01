@@ -21,5 +21,13 @@
   status = 200
   force = true
 
+# HLS playlist must never be cached (edge or browser) — a stale m3u8 after a
+# stream restart leaves players black. Segments are monotonically numbered so
+# they are safe too; no-store everywhere is simplest and correct.
+[[headers]]
+  for = "/stream/hls/*"
+  [headers.values]
+    Cache-Control = "no-store, must-revalidate"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
