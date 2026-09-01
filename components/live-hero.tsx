@@ -25,22 +25,13 @@ import Link from "next/link"
 // Every entry below is ffprobe-verified: has an audio stream, is landscape, and is a
 // complete commercial rather than a cut-down.
 const videoPlaylist = [
-  "/videos/commercials-longer/EDI-Commerical.mp4",
-  "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",
-  "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
-  "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
-  "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4",
-  "/videos/commercial-shorts/koolfoam-fly-south.mp4",
-  "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
-  "/videos/commercial-shorts/Graco Fusion AP.mp4",
-  "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
-  "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
-  "/videos/commercial-shorts/duckcleaning-commerical.mp4",
-  "/videos/funny-clips/Breaking-Batts.mp4",
-  // Cartoon2 is the LANDSCAPE cut. Its sibling Insulated-chicken-brothers-cartoon.mp4 is
-  // 704x1280 — a VERTICAL video, which object-cover crops to a stretched sliver in a 16:9
-  // hero. Left on disk and in the catalog; it just cannot be a widescreen channel clip.
-  "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4"
+  // CHECK 1 (Mike, 2026-09-01): prove the hero rotates through more than one clip and
+  // carries sound. Three music/hype spots, ffprobe-verified to have an audio stream and
+  // to be landscape, ~4m15s round trip so a rotation is visible without waiting.
+  // The wider commercial list is one commit back (32942ea) when we want it again.
+  "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",   // 1:29, music video
+  "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",          // 1:13, party spot
+  "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4"      // 1:32, music video
 ]
 
 export function LiveHero() {
