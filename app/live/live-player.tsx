@@ -75,7 +75,8 @@ export default function LivePlayer() {
         muted
         playsInline
         disablePictureInPicture
-        className="aspect-video w-full rounded-xl bg-black"
+        className="fixed inset-0 h-full w-full bg-black object-contain"
+        style={{ width: "100vw", height: "100dvh" }}
       />
     </>
   );
