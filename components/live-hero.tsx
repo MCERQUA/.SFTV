@@ -6,26 +6,41 @@ import { Play, Pause, Volume2, Maximize } from "lucide-react"
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 
+// THE HERO PLAYS FINISHED CLIENT COMMERCIALS. That is the whole rule for this list.
+//
+// It used to lead with /videos/channel/sprayfoamtv-stream-v2.mp4 — a 5m47s compilation cut
+// from the shared test-dev render pool. Measured 2026-09-01, that one file was 40% of the
+// loop's runtime and the first thing every visitor saw, and it is the source of every
+// complaint about this player:
+//   - it is SCENE FRAGMENTS from one sitcom (The Off-Ratio Bar), not the commercials we made
+//   - several of its segments are near-still talking-head renders, so it reads as a slideshow
+//   - the pillarbox padding and the static bumpers between segments are BAKED INTO the file,
+//     which is where the black screens come from — object-cover on the element cannot undo
+//     letterboxing that is already pixels
+//   - the pool it was cut from is /mnt/clients/test-dev/openvoiceui/uploads, which is every
+//     tenant's render scratch, not a spray-foam library, so off-channel clients leaked in
+// The file is still on disk and still in the video catalog; it just does not get to be the
+// channel. If a compilation leads again, cut it from THIS list, not from the shared pool.
+//
+// Every entry below is ffprobe-verified: has an audio stream, is landscape, and is a
+// complete commercial rather than a cut-down.
 const videoPlaylist = [
-  // Channel compilation built by mac-claude 2026-08-31 (3:31, 1080p) — all client mascot
-  // clips + the Off-Ratio episode scenes cut together with channel-flip transitions.
-  // Leads the loop so the homepage opens on the current channel reel. A v2 with the back
-  // half of the episode is expected; swap the file, this path stays the same.
-  "/videos/channel/sprayfoamtv-stream-v2.mp4",
-  "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
-  "/videos/commercial-shorts/Graco Fusion AP.mp4",
-  "/videos/commercial-shorts/duckcleaning-commerical.mp4",
-  "/videos/commercial-shorts/koolfoam-fly-south.mp4",
-  "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
   "/videos/commercials-longer/EDI-Commerical.mp4",
-  "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
-  "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
-  "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
   "/videos/music-video-commercials/Mrs-SprayFoam-Call-Me-Maybe.mp4",
+  "/videos/commercial-shorts/Cortex-industries-Rex-oring-game-sm.mp4",
+  "/videos/commercials-longer/ICA-Getting-Ducts-Clean.mp4",
   "/videos/music-video-commercials/Mrs-Sprayfoam-Let-It-Foam.mp4",
+  "/videos/commercial-shorts/koolfoam-fly-south.mp4",
+  "/videos/commercials-longer/Only-Foam-SprayFoam-Party.mp4",
+  "/videos/commercial-shorts/Graco Fusion AP.mp4",
+  "/videos/commercials-longer/ICA-Duct-Clean-Bodywash.mp4",
+  "/videos/commercial-shorts/noble-insulation-commerical-sm.mp4",
+  "/videos/commercial-shorts/duckcleaning-commerical.mp4",
   "/videos/funny-clips/Breaking-Batts.mp4",
-  "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4",
-  "/videos/funny-clips/Insulated-chicken-brothers-cartoon.mp4"
+  // Cartoon2 is the LANDSCAPE cut. Its sibling Insulated-chicken-brothers-cartoon.mp4 is
+  // 704x1280 — a VERTICAL video, which object-cover crops to a stretched sliver in a 16:9
+  // hero. Left on disk and in the catalog; it just cannot be a widescreen channel clip.
+  "/videos/funny-clips/Insulated-Chicken-Brothers-Cartoon2.mp4"
 ]
 
 export function LiveHero() {
