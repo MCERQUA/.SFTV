@@ -134,17 +134,7 @@ video:-webkit-full-screen {
   opacity: 1 !important;
   object-fit: contain;
   background: #000;
-  /* The hero video carries pointer-events-none because it is a BACKGROUND: with native
-     controls on it, it covered the whole hero and swallowed clicks meant for the overlay
-     buttons — View Schedule became unclickable. Measured on production 2026-09-02.
-     In fullscreen the video IS the page, there is no overlay to block, and the native
-     controls are the only way to mute, so hand pointer events back for that state only. */
+  /* The hero video carries pointer-events-none because it is a BACKGROUND behind the
+     overlay buttons. In fullscreen it IS the page, so hand pointer events back. */
   pointer-events: auto !important;
-}
-
-/* Belt and suspenders: if a fullscreenchange event is ever missed on exit, the controls
-   attribute can linger. pointer-events-none already stops it blocking clicks; this stops
-   a stray control bar being drawn over the hero. */
-video:not(:fullscreen)::-webkit-media-controls {
-  display: none !important;
 }

@@ -152,24 +152,6 @@ export function LiveHero() {
     setIsPlaying(!isPlaying)
   }
 
-  // The page's own control cluster is positioned inside the hero and is NOT visible once
-  // the video element itself is fullscreen, which would leave a viewer with sound they
-  // cannot mute and nothing but Esc. Lend them the browser's native controls for exactly
-  // as long as they are fullscreen, then take them back.
-  useEffect(() => {
-    const onFsChange = () => {
-      const video = videoRef.current
-      if (!video) return
-      video.controls = document.fullscreenElement === video
-    }
-    document.addEventListener('fullscreenchange', onFsChange)
-    document.addEventListener('webkitfullscreenchange', onFsChange)
-    return () => {
-      document.removeEventListener('fullscreenchange', onFsChange)
-      document.removeEventListener('webkitfullscreenchange', onFsChange)
-    }
-  }, [])
-
   // Fullscreen, the way the four browsers that matter actually spell it.
   // iOS Safari has NO Element.requestFullscreen at all — only the video-only
   // webkitEnterFullscreen — so a bare requestFullscreen() is a no-op on iPhone.
