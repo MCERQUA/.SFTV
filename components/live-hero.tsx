@@ -248,7 +248,7 @@ export function LiveHero() {
 
         <video
           ref={videoRef}
-          className={`h-full w-full object-cover opacity-60 ${!isVideoLoaded ? 'invisible' : ''}`}
+          className={`h-full w-full object-cover opacity-60 pointer-events-none ${!isVideoLoaded ? 'invisible' : ''}`}
           muted={isMuted}
           autoPlay
           playsInline
