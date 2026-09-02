@@ -41,6 +41,7 @@ export function LiveHero() {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const didInitialLoadRef = useRef(false)  // the <source> tag owns the FIRST fetch
   const autoUnmutedRef = useRef(false)     // we only ever auto-unmute ONCE
   const userSetMuteRef = useRef(false)     // set when the viewer uses the mute button
 
@@ -130,19 +131,33 @@ export function LiveHero() {
 
   useEffect(() => {
     if (videoRef.current) {
-      setIsVideoLoaded(false)
-      videoRef.current.load()
+      // DO NOT load() ON FIRST MOUNT. The <source> tag already points at
+      // videoPlaylist[0] and the browser has begun fetching it; calling load() here
+      // ABORTS that request and starts a second one for the same file. Measured on
+      // production 2026-09-02: the homepage pulled Call-Me-Maybe twice, 21.97 MB then
+      // 18.20 MB — 40 MB to show one 89-second clip. Only re-load when the index has
+      // actually changed, which is the only case this effect exists for.
+      if (didInitialLoadRef.current) {
+        setIsVideoLoaded(false)
+        videoRef.current.load()
+      }
+      didInitialLoadRef.current = true
 
-      const handleCanPlay = () => {
+      const markLoaded = () => {
         setIsVideoLoaded(true)
         if (userInteracted && isPlaying) {
           videoRef.current?.play().catch(() => {})
         }
       }
 
-      videoRef.current.addEventListener('canplay', handleCanPlay)
+      // canplay is the signal we want, but with preload="metadata" a browser can settle
+      // on metadata alone and not emit it. loadeddata is the backstop so the loading
+      // spinner can never become permanent and leave the video stuck `invisible`.
+      videoRef.current.addEventListener('canplay', markLoaded)
+      videoRef.current.addEventListener('loadeddata', markLoaded)
       return () => {
-        videoRef.current?.removeEventListener('canplay', handleCanPlay)
+        videoRef.current?.removeEventListener('canplay', markLoaded)
+        videoRef.current?.removeEventListener('loadeddata', markLoaded)
       }
     }
   }, [currentVideoIndex])
@@ -234,7 +249,7 @@ export function LiveHero() {
           muted={isMuted}
           autoPlay
           playsInline
-          preload="auto"
+          preload="metadata"
         >
           <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
         </video>
