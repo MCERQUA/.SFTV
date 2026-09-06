@@ -24,6 +24,13 @@ import Link from "next/link"
 //
 // Every entry below is ffprobe-verified: has an audio stream, is landscape, and is a
 // complete commercial rather than a cut-down.
+// The 24/7 broadcast. One ffmpeg channel on the VPS (keeper-restarted, cron */1)
+// loops every clip with static bumpers between segments, out as HLS.
+// sprayfoamtv.com itself is on Netlify and cannot run the streamer, so the
+// segments are served from the VPS origin via Cloudflare (CORS is open there).
+// If the stream is unreachable the player falls back to the local playlist below.
+const LIVE_URL = "https://sftv.jam-bot.com/live.m3u8"
+
 const videoPlaylist = [
   // CHECK 1 (Mike, 2026-09-01): prove the hero rotates through more than one clip and
   // carries sound. Three music/hype spots, ffprobe-verified to have an audio stream and
@@ -40,10 +47,66 @@ export function LiveHero() {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0)
   const [isVideoLoaded, setIsVideoLoaded] = useState(false)
   const [userInteracted, setUserInteracted] = useState(false)
+  // live=true while the HLS broadcast is attached. Any fatal HLS error (origin
+  // down, CORS, DNS) drops us to live=false and the local mp4 playlist runs
+  // exactly as it did before — the homepage never shows a dead player.
+  const [liveMode, setLiveMode] = useState(false)
+  const hlsRef = useRef<any>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const didInitialLoadRef = useRef(false)  // the <source> tag owns the FIRST fetch
   const autoUnmutedRef = useRef(false)     // we only ever auto-unmute ONCE
   const userSetMuteRef = useRef(false)     // set when the viewer uses the mute button
+
+  // Attach the live broadcast once, on mount.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    let cancelled = false
+
+    const fallbackToPlaylist = () => {
+      if (cancelled) return
+      hlsRef.current?.destroy?.()
+      hlsRef.current = null
+      setLiveMode(false)
+      video.src = videoPlaylist[0]
+      video.load()
+    }
+
+    const tryHls = (Hls: any) => {
+      if (cancelled) return
+      if (Hls.isSupported()) {
+        const hls = new Hls({ lowLatencyMode: false, maxBufferLength: 12 })
+        hlsRef.current = hls
+        hls.loadSource(LIVE_URL)
+        hls.attachMedia(video)
+        hls.on(Hls.Events.ERROR, (_evt: any, data: any) => {
+          if (data?.fatal) fallbackToPlaylist()
+        })
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        // Safari plays HLS natively
+        video.src = LIVE_URL
+        video.addEventListener('error', fallbackToPlaylist, { once: true })
+      } else {
+        fallbackToPlaylist()
+        return
+      }
+      if (!cancelled) setLiveMode(true)
+    }
+
+    const script = document.createElement('script')
+    script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js'
+    script.async = true
+    script.onload = () => tryHls((window as any).Hls)
+    script.onerror = fallbackToPlaylist
+    document.head.appendChild(script)
+
+    return () => {
+      cancelled = true
+      hlsRef.current?.destroy?.()
+      hlsRef.current = null
+      script.remove()
+    }
+  }, [])
 
   useEffect(() => {
     if (videoRef.current) {
@@ -114,7 +177,10 @@ export function LiveHero() {
     }
   }, [])
 
+  // A live broadcast never fires 'ended' — playlist rotation only applies in
+  // fallback mode.
   useEffect(() => {
+    if (liveMode) return
     const video = videoRef.current
     if (!video) return
 
@@ -127,9 +193,10 @@ export function LiveHero() {
     return () => {
       video.removeEventListener('ended', handleVideoEnd)
     }
-  }, [currentVideoIndex])
+  }, [currentVideoIndex, liveMode])
 
   useEffect(() => {
+    if (liveMode) return
     if (videoRef.current) {
       // DO NOT load() ON FIRST MOUNT. The <source> tag already points at
       // videoPlaylist[0] and the browser has begun fetching it; calling load() here
@@ -160,7 +227,22 @@ export function LiveHero() {
         videoRef.current?.removeEventListener('loadeddata', markLoaded)
       }
     }
-  }, [currentVideoIndex])
+  }, [currentVideoIndex, liveMode])
+
+  // In live mode there is no canplay-driven load() cycle, so mark loaded once
+  // the stream is actually producing frames.
+  useEffect(() => {
+    if (!liveMode) return
+    const video = videoRef.current
+    if (!video) return
+    const markLoaded = () => setIsVideoLoaded(true)
+    video.addEventListener('playing', markLoaded, { once: true })
+    video.addEventListener('loadeddata', markLoaded, { once: true })
+    return () => {
+      video.removeEventListener('playing', markLoaded)
+      video.removeEventListener('loadeddata', markLoaded)
+    }
+  }, [liveMode])
 
   const handlePlayClick = () => {
     setUserInteracted(true)
@@ -251,7 +333,7 @@ export function LiveHero() {
           playsInline
           preload="metadata"
         >
-          <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />
+          {!liveMode && <source src={videoPlaylist[currentVideoIndex]} type="video/mp4" />}
         </video>
 
         {/* Loading indicator */}
