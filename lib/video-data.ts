@@ -136,7 +136,7 @@ export const funnyClips = [
     thumbnail: "/thumbnails/funny-clips/Shooters-Episode-1.jpg",
     videoPath: "/videos/funny-clips/Shooters-Episode-1.mp4",
     category: "Sitcom",
-    duration: "5:24",
+    duration: "5:22",
     company: "JamSocial",
     companySlug: "jamsocial"
   },
