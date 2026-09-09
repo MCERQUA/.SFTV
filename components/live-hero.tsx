@@ -12,7 +12,7 @@ import Link from "next/link"
 // from the shared test-dev render pool. Measured 2026-09-01, that one file was 40% of the
 // loop's runtime and the first thing every visitor saw, and it is the source of every
 // complaint about this player:
-//   - it is SCENE FRAGMENTS from one sitcom (The Off-Ratio Bar), not the commercials we made
+//   - it is SCENE FRAGMENTS from one sitcom (SHOOTERS), not the commercials we made
 //   - several of its segments are near-still talking-head renders, so it reads as a slideshow
 //   - the pillarbox padding and the static bumpers between segments are BAKED INTO the file,
 //     which is where the black screens come from — object-cover on the element cannot undo

@@ -132,11 +132,11 @@ export const musicVideoCommercials = [
 export const funnyClips = [
   {
     id: 106,
-    title: "Shooters Bar - Episode 1",
-    thumbnail: "/thumbnails/funny-clips/Shooters-Bar-Episode-1.jpg",
-    videoPath: "/videos/funny-clips/Shooters-Bar-Episode-1.mp4",
+    title: "SHOOTERS - Episode 1",
+    thumbnail: "/thumbnails/funny-clips/Shooters-Episode-1.jpg",
+    videoPath: "/videos/funny-clips/Shooters-Episode-1.mp4",
     category: "Sitcom",
-    duration: "5:39",
+    duration: "5:24",
     company: "JamSocial",
     companySlug: "jamsocial"
   },

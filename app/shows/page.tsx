@@ -66,11 +66,11 @@ const shows = [
   },
   {
     id: 4,
-    title: "The Off-Ratio Bar",
-    description: "Adult-audience sitcom set in the industry's favorite off-the-clock hangout — every mascot on the roster off the clock, roasting the trade, themselves, and each other.",
+    title: "SHOOTERS",
+    description: "Where “the big guns” hang out — adult-audience sitcom set in the industry's favorite off-the-clock hangout, every mascot on the roster roasting the trade, themselves, and each other.",
     host: "The Cast",
     schedule: "Streaming now",
-    thumbnail: "/thumbnails/shows/off-ratio-bar.jpg",
+    thumbnail: "/thumbnails/shows/shooters.jpg",
     status: "Active"
   }
 ]
