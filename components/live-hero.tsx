@@ -29,7 +29,11 @@ import Link from "next/link"
 // sprayfoamtv.com itself is on Netlify and cannot run the streamer, so the
 // segments are served from the VPS origin via Cloudflare (CORS is open there).
 // If the stream is unreachable the player falls back to the local playlist below.
-const LIVE_URL = "https://sftv.jam-bot.com/live.m3u8"
+// 2026-09-09 (host): sftv.jam-bot.com is the UN-INSTALLED decoy vhost (docs/jambot/livestream-system-overview.md)
+// and answers 520 — the player threw a client-side exception on the homepage the moment this shipped
+// (Mike's photo, 19:51Z). The on-air ladder is games.jam-bot.com, proxied same-origin by netlify.toml
+// as /stream/hls/* — the same path app/live/live-player.tsx already uses. Never point the hero at a host.
+const LIVE_URL = "/stream/hls/index.m3u8"
 
 const videoPlaylist = [
   // CHECK 1 (Mike, 2026-09-01): prove the hero rotates through more than one clip and
