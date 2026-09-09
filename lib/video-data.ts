@@ -141,6 +141,16 @@ export const funnyClips = [
     companySlug: "jamsocial"
   },
   {
+    id: 107,
+    title: "SprayFoamTV Actors",
+    thumbnail: "/thumbnails/funny-clips/SprayFoamTV-Actors.jpg",
+    videoPath: "/videos/funny-clips/SprayFoamTV-Actors.mp4",
+    category: "Sitcom",
+    duration: "2:04",
+    company: "JamSocial",
+    companySlug: "jamsocial"
+  },
+  {
     id: 22,
     title: "Pickle Juice Energy Drink",
     thumbnail: "/thumbnails/funny-clips/Pickle-Juice-Energy-Drink.jpg",
