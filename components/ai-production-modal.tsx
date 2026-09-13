@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { X, Video, Mail, Phone, User, MessageSquare, Building2, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -13,6 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
+// useLayoutEffect warns during server rendering; the modal only ever opens in the browser.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect
 
 interface AIProductionModalProps {
   isOpen: boolean
@@ -32,6 +35,35 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+
+  // The bear and the form must fit the screen at ANY size with no scroll bar. They are scaled
+  // together as ONE unit, so the bear's hands stay exactly where they are on the top of the form.
+  const fitRef = useRef<HTMLDivElement>(null)
+  const [fitScale, setFitScale] = useState(1)
+  const refit = useCallback(() => {
+    const el = fitRef.current
+    const box = el?.parentElement
+    if (!el || !box || !el.offsetHeight || !el.offsetWidth) return
+    // Available space = the full-screen container minus its own padding (p-2 / sm:p-4).
+    const cs = getComputedStyle(box)
+    const availH = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+    const availW = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+    const next = Math.min(1, availH / el.offsetHeight, availW / el.offsetWidth)
+    setFitScale(next > 0 ? next : 1)
+  }, [])
+  useIsomorphicLayoutEffect(() => {
+    if (!isOpen) return
+    refit()
+    const el = fitRef.current
+    // offsetWidth/offsetHeight ignore the transform, so observing size changes cannot loop.
+    const ro = el && typeof ResizeObserver !== "undefined" ? new ResizeObserver(refit) : null
+    if (ro && el) ro.observe(el)
+    window.addEventListener("resize", refit)
+    return () => {
+      ro?.disconnect()
+      window.removeEventListener("resize", refit)
+    }
+  }, [isOpen, refit])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,24 +128,30 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4 min-h-screen">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden p-2 sm:p-4">
       <div
         className="absolute inset-0 bg-background/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
-      <div className="relative z-[101] w-full max-w-2xl my-2 sm:my-4">
+      <div
+        ref={fitRef}
+        className="relative z-[101] w-full max-w-2xl shrink-0"
+        style={{ transform: `scale(${fitScale})`, transformOrigin: "center center" }}
+      >
         {/* Cozy Bear Character holding the form */}
         <div className="relative w-full flex justify-center mb-[-20px] sm:mb-[-25px] md:mb-[-25px] z-10">
           <img
             src="/peak.png"
             alt="Cozy Bear"
+            width={800}
+            height={664}
             className="w-[280px] sm:w-[320px] md:w-[360px] h-auto pointer-events-none select-none"
             draggable="false"
           />
         </div>
 
-        <div className="relative max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
+        <div className="relative">
           <div className="bg-card rounded-lg shadow-2xl border-2 border-primary ring-2 ring-primary/20">
           {/* Header */}
           <div className="relative border-b border-border p-4 md:p-6">
@@ -241,7 +279,7 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
                         <SelectTrigger>
                           <SelectValue placeholder="Select project type" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[200]">
                           <SelectItem value="commercial-short">Short Commercial (10-30s)</SelectItem>
                           <SelectItem value="commercial-long">Long-Form Commercial (30s-2min)</SelectItem>
                           <SelectItem value="music-video">Music Video Commercial</SelectItem>
@@ -262,7 +300,7 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
                         <SelectTrigger>
                           <SelectValue placeholder="Select timeline" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="z-[200]">
                           <SelectItem value="urgent">Urgent (1-2 weeks)</SelectItem>
                           <SelectItem value="standard">Standard (2-4 weeks)</SelectItem>
                           <SelectItem value="flexible">Flexible (1-2 months)</SelectItem>
@@ -280,26 +318,10 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
                       value={formData.message}
                       onChange={handleInputChange}
                       placeholder="Tell us about your vision, target audience, brand message, or any specific ideas you have in mind..."
-                      rows={4}
+                      rows={3}
                       className="resize-none"
                     />
                   </div>
-                </div>
-
-                {/* Benefits Info */}
-                <div className="rounded-lg bg-primary/5 p-4 space-y-2">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    What You'll Get:
-                  </h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Professional AI-generated video content tailored to your brand</li>
-                    <li>• Broadcast-quality commercials and promotional material</li>
-                    <li>• Featured placement on SprayFoam TV platform</li>
-                    <li>• Social media ready content in multiple formats</li>
-                    <li>• Fast turnaround with unlimited revision rounds</li>
-                    <li>• Full commercial rights to all created content</li>
-                  </ul>
                 </div>
 
                 {/* Submit Button */}
