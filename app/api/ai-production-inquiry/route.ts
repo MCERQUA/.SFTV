@@ -104,36 +104,10 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  try {
-    // Create table if it doesn't exist
-    await query(`
-      CREATE TABLE IF NOT EXISTS ai_production_inquiries (
-        id TEXT PRIMARY KEY,
-        company_name TEXT NOT NULL,
-        contact_name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        phone TEXT,
-        project_type TEXT NOT NULL,
-        timeline TEXT,
-        message TEXT,
-        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        status TEXT DEFAULT 'pending'
-      )
-    `)
-
-    // Fetch all AI production inquiries
-    const inquiries = await query(`
-      SELECT * FROM ai_production_inquiries
-      ORDER BY submitted_at DESC
-    `)
-
-    return NextResponse.json(inquiries)
-
-  } catch (error) {
-    console.error("Error in GET /api/ai-production-inquiry:", error)
-    return NextResponse.json(
-      { error: "Failed to fetch AI production consultation requests" },
-      { status: 500 }
-    )
-  }
+  // Inquiries carry names, emails and phone numbers. This listing had no authentication and no
+  // consumer (only the consultation modal POSTs here), so it is not served (2026-09-13).
+  return NextResponse.json(
+    { error: "Method not allowed" },
+    { status: 405, headers: { Allow: "POST" } }
+  )
 }

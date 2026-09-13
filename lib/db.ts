@@ -110,6 +110,28 @@ export async function initDatabase() {
   }
 }
 
+// Generic query helper (2026-09-13). app/api/ai-production-inquiry/route.ts (added 2025-11-15)
+// imports `query` from this module, which never existed, so every consultation POST threw
+// "(0 , s.query) is not a function" and the form has never saved a single inquiry. That route
+// also writes SQLite-style `?` placeholders; Postgres needs $1..$n, so they are converted here
+// (outside single-quoted strings) and the rows are returned.
+export async function query(text: string, params: unknown[] = []): Promise<any[]> {
+  let n = 0
+  let inQuote = false
+  let sql = ''
+  for (const ch of text) {
+    if (ch === "'") inQuote = !inQuote
+    if (ch === '?' && !inQuote) {
+      n += 1
+      sql += `$${n}`
+    } else {
+      sql += ch
+    }
+  }
+  const result = await pool.query(sql, params)
+  return result.rows
+}
+
 // Get all submissions
 export async function getSubmissions(): Promise<VideoSubmission[]> {
   try {
