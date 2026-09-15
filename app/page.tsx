@@ -17,14 +17,24 @@ export default function HomePage() {
   const [isAIProductionModalOpen, setIsAIProductionModalOpen] = useState(false)
 
   useEffect(() => {
-    // Check if modal has been shown before in this session
-    const hasSeenModal = sessionStorage.getItem('hasSeenAIProductionModal')
+    // In-app browsers (Messenger, Instagram) throw SecurityError on storage access —
+    // an uncaught throw here crashes the whole React tree (client-side exception page).
+    let hasSeenModal: string | null = null
+    try {
+      hasSeenModal = sessionStorage.getItem('hasSeenAIProductionModal')
+    } catch {
+      // storage blocked: show the modal once per page load instead of crashing
+    }
 
     if (!hasSeenModal) {
       // Delay modal appearance by 1 second for better UX
       const timer = setTimeout(() => {
         setIsAIProductionModalOpen(true)
-        sessionStorage.setItem('hasSeenAIProductionModal', 'true')
+        try {
+          sessionStorage.setItem('hasSeenAIProductionModal', 'true')
+        } catch {
+          // storage blocked: non-fatal, modal just re-shows on next load
+        }
       }, 1000)
 
       return () => clearTimeout(timer)
