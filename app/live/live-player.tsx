@@ -60,7 +60,11 @@ export default function LivePlayer() {
     setNeedsGesture(false);
     // A gesture-driven play() is always permitted — this also covers the case
     // where even the muted autoplay never started.
-    void video.play().catch(() => {});
+    void video.play().catch(() => {
+      // Refused even with the tap (rare) — put the prompt back so the viewer
+      // can try again instead of staring at a dead player.
+      setNeedsGesture(true);
+    });
   }, []);
 
   const toggleSound = useCallback(() => {
@@ -145,11 +149,22 @@ export default function LivePlayer() {
       }
     };
 
+    // iOS Safari / Facebook in-app browser often refuse even MUTED autoplay and
+    // never fire loadeddata, so the tap-to-play prompt below would never show.
+    // If no data has arrived after a grace period, put the prompt up anyway —
+    // its tap is a user gesture, which is exactly what earns the play().
+    const gestureFallback = setTimeout(() => {
+      if (!stopped && video.readyState < 2) {
+        setNeedsGesture(true);
+      }
+    }, 4000);
+
     video.addEventListener("seeking", pin);
     video.addEventListener("loadeddata", tryUnmutedAutoplay, { once: true });
     attach();
     return () => {
       stopped = true;
+      clearTimeout(gestureFallback);
       hls?.destroy();
       video.removeEventListener("seeking", pin);
       video.removeEventListener("loadeddata", tryUnmutedAutoplay);
