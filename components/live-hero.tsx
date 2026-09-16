@@ -226,7 +226,23 @@ export function LiveHero() {
       // spinner can never become permanent and leave the video stuck `invisible`.
       videoRef.current.addEventListener('canplay', markLoaded)
       videoRef.current.addEventListener('loadeddata', markLoaded)
+
+      // THE LISTENER CAN BE LATE. The <video> and its <source> are in the SSR HTML, so the
+      // browser starts fetching at parse time — long before this effect runs (hydration has
+      // to download and execute the bundle first). On a warm cache the media events fire
+      // BEFORE we subscribe, markLoaded never runs, and the video stays `invisible` behind a
+      // spinner that spins forever. Ask the element what it already knows.
+      if (videoRef.current.readyState >= 2) markLoaded()
+
+      // AND THE EVENTS MAY NEVER COME AT ALL. iOS Safari and the Facebook in-app browser
+      // refuse even MUTED autoplay and can sit on a video without emitting loadeddata
+      // (measured on /live, 783d2af). The spinner must never become permanent: reveal the
+      // video regardless after a grace period. Worst case the viewer sees a still frame with
+      // working play/mute controls instead of an endless spinner.
+      const revealAnyway = setTimeout(() => setIsVideoLoaded(true), 4000)
+
       return () => {
+        clearTimeout(revealAnyway)
         videoRef.current?.removeEventListener('canplay', markLoaded)
         videoRef.current?.removeEventListener('loadeddata', markLoaded)
       }
@@ -242,7 +258,13 @@ export function LiveHero() {
     const markLoaded = () => setIsVideoLoaded(true)
     video.addEventListener('playing', markLoaded, { once: true })
     video.addEventListener('loadeddata', markLoaded, { once: true })
+    // Same two escape hatches as the playlist path: the stream may already be producing
+    // frames by the time we subscribe, and a browser that refuses autoplay may never fire
+    // either event. Neither case may leave the hero stuck `invisible`.
+    if (video.readyState >= 2) markLoaded()
+    const revealAnyway = setTimeout(() => setIsVideoLoaded(true), 4000)
     return () => {
+      clearTimeout(revealAnyway)
       video.removeEventListener('playing', markLoaded)
       video.removeEventListener('loadeddata', markLoaded)
     }
