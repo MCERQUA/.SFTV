@@ -18,8 +18,21 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
 
   useEffect(() => {
     if (isOpen && videoRef.current) {
-      videoRef.current.play()
-      setIsPlaying(true)
+      const v = videoRef.current
+      // Try WITH SOUND first — opening this modal took a click, and a gesture is exactly
+      // what the autoplay policy wants. If it is refused anyway, fall back to muted
+      // playback rather than leaving a dead black player behind (same degradation the
+      // hero uses). A bare play() here used to reject unhandled while setIsPlaying(true)
+      // claimed it was rolling, so the button showed Pause over a frozen frame.
+      v.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          v.muted = true
+          setIsMuted(true)
+          v.play()
+            .then(() => setIsPlaying(true))
+            .catch(() => setIsPlaying(false))
+        })
 
       // Track view when modal opens
       fetch('/api/video-views', {
@@ -58,10 +71,13 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
 
     if (isPlaying) {
       videoRef.current.pause()
+      setIsPlaying(false)
     } else {
+      // Report what actually happened, not what we asked for.
       videoRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false))
     }
-    setIsPlaying(!isPlaying)
   }
 
   const toggleMute = () => {
@@ -87,6 +103,7 @@ export function VideoModal({ isOpen, onClose, videoPath, title }: VideoModalProp
               className="h-full w-full"
               src={videoPath}
               autoPlay
+              playsInline
               muted={isMuted}
             />
 
