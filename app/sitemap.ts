@@ -19,7 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/contractors`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/events`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/live`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/live/_stream-watch-template`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/netlify-forms`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/privacy`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/schedule`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
