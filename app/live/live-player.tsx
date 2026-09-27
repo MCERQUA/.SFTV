@@ -208,7 +208,7 @@ export default function LivePlayer() {
         onClick={toggleSound}
         aria-label={muted ? "Turn on sound" : "Mute"}
         aria-pressed={!muted}
-        className="fixed bottom-5 right-5 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 text-white ring-1 ring-white/20 backdrop-blur-sm transition hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]"
+        className="fixed bottom-5 right-5 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-black/60 text-white ring-1 ring-white/20 backdrop-blur-sm transition hover:bg-black/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#DA611B]"
       >
         {muted ? <SpeakerOffIcon /> : <SpeakerOnIcon />}
       </button>

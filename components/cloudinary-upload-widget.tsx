@@ -81,18 +81,18 @@ export function CloudinaryUploadWidget({
         styles: {
           palette: {
             window: "#FFFFFF",
-            windowBorder: "#90A0B3",
-            tabIcon: "#0078FF",
-            menuIcons: "#5A616A",
+            windowBorder: "#AF9B8A",
+            tabIcon: "#CD5B19",
+            menuIcons: "#685F55",
             textDark: "#000000",
             textLight: "#FFFFFF",
-            link: "#0078FF",
+            link: "#CD5B19",
             action: "#FF620C",
-            inactiveTabIcon: "#0E2F5A",
+            inactiveTabIcon: "#4D240C",
             error: "#F44235",
-            inProgress: "#0078FF",
+            inProgress: "#CD5B19",
             complete: "#20B832",
-            sourceBg: "#E4EBF1"
+            sourceBg: "#F0E9E0"
           },
           fonts: {
             default: {
