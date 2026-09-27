@@ -269,7 +269,7 @@ export const upcomingShows = [
     thumbnail: "/thumbnails/shows/foam-files.jpg",
     show: "Documentary Series",
     episodes: 8,
-    status: "Coming Q2 2025"
+    status: "Coming soon"
   },
   {
     id: 102,
@@ -277,7 +277,7 @@ export const upcomingShows = [
     thumbnail: "/thumbnails/shows/contractor-chronicles.jpg",
     show: "Reality Series",
     episodes: 10,
-    status: "Coming Q3 2025"
+    status: "Coming soon"
   },
   {
     id: 103,
@@ -285,7 +285,7 @@ export const upcomingShows = [
     thumbnail: "/thumbnails/shows/safety-first.jpg",
     show: "Educational Series",
     episodes: 12,
-    status: "Coming Q2 2025"
+    status: "Coming soon"
   },
   {
     id: 104,
@@ -293,6 +293,6 @@ export const upcomingShows = [
     thumbnail: "/thumbnails/shows/foam-academy.jpg",
     show: "Training Series",
     episodes: 20,
-    status: "Coming Q4 2025"
+    status: "Coming soon"
   }
 ]

@@ -60,7 +60,7 @@ const shows = [
     title: "The Foam Rangers",
     description: "Animated series for the next generation of insulators",
     host: "Various",
-    schedule: "Coming 2024",
+    schedule: "Coming soon",
     thumbnail: "/placeholder.svg",
     status: "Coming Soon"
   },
