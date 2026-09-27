@@ -256,7 +256,7 @@ export function AIProductionModal({ isOpen, onClose }: AIProductionModalProps) {
                         type="tel"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+1 (555) 123-4567"
+                        placeholder="Best number to reach you"
                       />
                     </div>
                   </div>

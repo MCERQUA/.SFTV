@@ -66,7 +66,7 @@ export default function ContactPage() {
 
             <div>
               <label className="block text-sm font-medium text-muted-foreground mb-1.5">Phone</label>
-              <input name="phone" type="tel" className={input} placeholder="(555) 123-4567" />
+              <input name="phone" type="tel" className={input} placeholder="Best number to reach you" />
             </div>
 
             <div>

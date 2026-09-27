@@ -121,11 +121,11 @@ export default function AdminSubmissionsPage() {
   const getSourceBadge = (sourceType: string) => {
     const colors: { [key: string]: string } = {
       youtube: "bg-red-500",
-      vimeo: "bg-blue-500",
-      direct: "bg-purple-500",
-      cloudinary: "bg-indigo-500",
+      vimeo: "bg-orange-600",
+      direct: "bg-orange-600",
+      cloudinary: "bg-orange-600",
       "google-drive": "bg-yellow-500",
-      dropbox: "bg-blue-600",
+      dropbox: "bg-orange-700",
       streamable: "bg-orange-500",
       other: "bg-gray-500"
     }

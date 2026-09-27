@@ -349,7 +349,7 @@ export function LiveHero() {
       {/* Video background */}
       <div className="absolute inset-0 bg-gradient-to-br from-muted/50 to-background">
         {/* Fallback gradient for mobile/loading state */}
-        <div className={`absolute inset-0 bg-gradient-to-br from-orange-600/20 via-blue-600/20 to-purple-600/20 ${isVideoLoaded && isPlaying ? 'opacity-0' : ''} transition-opacity duration-500`} />
+        <div className={`absolute inset-0 bg-gradient-to-br from-orange-600/20 via-orange-700/20 to-orange-700/20 ${isVideoLoaded && isPlaying ? 'opacity-0' : ''} transition-opacity duration-500`} />
 
         <video
           ref={videoRef}
