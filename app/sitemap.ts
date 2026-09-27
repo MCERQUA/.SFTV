@@ -16,7 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/ai-video`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/channels`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/contractors`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/events`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/live`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/netlify-forms`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },

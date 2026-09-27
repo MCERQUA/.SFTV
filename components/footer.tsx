@@ -53,11 +53,6 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/contractors" className="text-muted-foreground transition-colors hover:text-foreground">
-                  Find a Contractor
-                </Link>
-              </li>
-              <li>
                 <Link href="/sponsor" className="text-muted-foreground transition-colors hover:text-foreground">
                   Sponsor Kit
                 </Link>

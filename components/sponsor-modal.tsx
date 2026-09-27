@@ -284,7 +284,6 @@ export function SponsorModal({ isOpen, onClose }: SponsorModalProps) {
                     <li>• Logo placement and brand mentions throughout content</li>
                     <li>• Industry event sponsorship opportunities</li>
                     <li>• Social media promotion across all channels</li>
-                    <li>• Featured placement in contractor directory</li>
                   </ul>
                 </div>
 
