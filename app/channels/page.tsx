@@ -1,6 +1,7 @@
 "use client";
 
 import { Header } from "@/components/header"
+import { Tv } from "lucide-react"
 import { Footer } from "@/components/footer"
 
 export default function ChannelsPage() {
@@ -103,7 +104,7 @@ export default function ChannelsPage() {
                 {/* Video Count Badge */}
                 <div className="absolute top-3 right-3">
                   <div className="bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-md">
-                    📺 {company.videos}
+                    <Tv className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{company.videos}
                   </div>
                 </div>
               </div>

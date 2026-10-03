@@ -3,6 +3,7 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { notFound } from "next/navigation"
+import { MapPin, Phone, Tv, Clapperboard, Timer, Eye, Calendar, Globe, Clock } from "lucide-react"
 
 interface ChannelPageProps {
   params: {
@@ -253,9 +254,9 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                   : `Professional spray foam insulation services in ${company.location}`}
               </p>
               <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm text-gray-300">
-                <span>📍 {company.slug === 'allstate-spray-foam' ? 'Visalia, CA' : company.location}</span>
-                <span>📞 {company.slug === 'allstate-spray-foam' ? '(559) 739-9519' : 'Contact for info'}</span>
-                <span>📺 {company.videos} Videos</span>
+                <span><MapPin className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{company.slug === 'allstate-spray-foam' ? 'Visalia, CA' : company.location}</span>
+                <span><Phone className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{company.slug === 'allstate-spray-foam' ? '(559) 739-9519' : 'Contact for info'}</span>
+                <span><Tv className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{company.videos} Videos</span>
               </div>
             </div>
 
@@ -295,9 +296,9 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                 <div className="mt-4">
                   <h3 className="text-lg font-semibold text-foreground">{videos[0].title}</h3>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                    <span>🎬 {videos[0].category}</span>
-                    <span>⏱️ {videos[0].duration}</span>
-                    <span>👁️ {videos[0].views.toLocaleString()} Views</span>
+                    <span><Clapperboard className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{videos[0].category}</span>
+                    <span><Timer className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{videos[0].duration}</span>
+                    <span><Eye className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{videos[0].views.toLocaleString()} Views</span>
                   </div>
                 </div>
               </section>
@@ -332,8 +333,8 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                         <h3 className="font-semibold text-foreground mb-1 line-clamp-1">{video.title}</h3>
                         <p className="text-sm text-muted-foreground mb-3">{video.category}</p>
                         <div className="flex justify-between items-center text-xs text-muted-foreground">
-                          <span>👁️ {video.views.toLocaleString()} Views</span>
-                          <span>📅 {Math.floor(Math.random() * 30) + 1} days ago</span>
+                          <span><Eye className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{video.views.toLocaleString()} Views</span>
+                          <span><Calendar className="inline-block w-4 h-4 mr-1 align-[-2px]" aria-hidden="true" />{Math.floor(Math.random() * 30) + 1} days ago</span>
                         </div>
                       </div>
                     </div>
@@ -342,7 +343,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
               ) : (
                 <div className="text-center py-12">
                   <div className="text-muted-foreground mb-4">
-                    <span className="text-4xl">🎬</span>
+                    <Clapperboard className="w-10 h-10" aria-hidden="true" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">No Videos Yet</h3>
                   <p className="text-muted-foreground">
@@ -388,7 +389,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
               <h3 className="font-bold text-foreground mb-4">Contact</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex items-center gap-3">
-                  <span>📍</span>
+                  <MapPin className="w-5 h-5" aria-hidden="true" />
                   <span className="text-muted-foreground">
                     {company.slug === 'allstate-spray-foam'
                       ? '125 W Oak View Dr, Visalia, CA 93277'
@@ -396,7 +397,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span>📞</span>
+                  <Phone className="w-5 h-5" aria-hidden="true" />
                   <span className="text-muted-foreground">
                     {company.slug === 'allstate-spray-foam'
                       ? '(559) 739-9519'
@@ -404,7 +405,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span>🌐</span>
+                  <Globe className="w-5 h-5" aria-hidden="true" />
                   <span className="text-muted-foreground">
                     {company.slug === 'allstate-spray-foam'
                       ? 'allstatesprayfoam.com'
@@ -412,7 +413,7 @@ export default function ChannelPage({ params }: ChannelPageProps) {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span>🕒</span>
+                  <Clock className="w-5 h-5" aria-hidden="true" />
                   <span className="text-muted-foreground">
                     {company.slug === 'allstate-spray-foam'
                       ? 'Mon-Sat 8am-5pm, Sun Closed'
